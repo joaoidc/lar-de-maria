@@ -78,7 +78,7 @@ export function PartnersSection() {
           <div className="partners-slider-container">
             <Swiper
               modules={[Autoplay, Navigation]}
-              spaceBetween={40}
+              spaceBetween={20}
               slidesPerView={2}
               loop={true}
               navigation={true}
@@ -88,18 +88,27 @@ export function PartnersSection() {
                 pauseOnMouseEnter: true,
               }}
               breakpoints={{
-                640: { slidesPerView: 3 },
-                768: { slidesPerView: 4 },
-                1024: { slidesPerView: 5 },
+                640: {
+                  slidesPerView: 3,
+                  spaceBetween: 30,
+                },
+                768: {
+                  slidesPerView: 4,
+                  spaceBetween: 40,
+                },
+                1024: {
+                  slidesPerView: 5,
+                  spaceBetween: 40,
+                },
               }}
-              className="py-8 px-16"
+              className="py-8 px-8 sm:px-16"
             >
               {partners.map((partner, index) => (
                 <SwiperSlide key={index}>
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: "spring", stiffness: 300, damping: 10 }}
-                    className="flex items-center justify-center p-6"
+                    className="flex items-center justify-center p-4 sm:p-6"
                   >
                     <a
                       href={partner.url}
@@ -111,7 +120,7 @@ export function PartnersSection() {
                       <img
                         src={partner.logo}
                         alt={partner.name}
-                        className="max-h-32 w-full object-contain grayscale hover:grayscale-0 transition-all duration-300"
+                        className="h-24 sm:h-28 md:h-32 w-full object-contain grayscale hover:grayscale-0 transition-all duration-300"
                       />
                     </a>
                   </motion.div>
@@ -120,16 +129,24 @@ export function PartnersSection() {
             </Swiper>
           </div>
 
-          <style jsx global>{`
+          <style>{`
             .partners-slider-container .swiper-button-next,
             .partners-slider-container .swiper-button-prev {
-              width: 48px;
-              height: 48px;
+              width: 40px;
+              height: 40px;
               background-color: white;
               border-radius: 50%;
               box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
               opacity: 0;
               transition: all 0.3s ease;
+            }
+
+            @media (min-width: 640px) {
+              .partners-slider-container .swiper-button-next,
+              .partners-slider-container .swiper-button-prev {
+                width: 48px;
+                height: 48px;
+              }
             }
 
             .partners-slider-container:hover .swiper-button-next,
@@ -144,16 +161,23 @@ export function PartnersSection() {
 
             .partners-slider-container .swiper-button-next::after,
             .partners-slider-container .swiper-button-prev::after {
-              font-size: 20px;
+              font-size: 16px;
               color: #10a3b4;
             }
 
+            @media (min-width: 640px) {
+              .partners-slider-container .swiper-button-next::after,
+              .partners-slider-container .swiper-button-prev::after {
+                font-size: 20px;
+              }
+            }
+
             .partners-slider-container .swiper-button-prev {
-              left: 4px;
+              left: 0;
             }
 
             .partners-slider-container .swiper-button-next {
-              right: 4px;
+              right: 0;
             }
           `}</style>
         </motion.div>
