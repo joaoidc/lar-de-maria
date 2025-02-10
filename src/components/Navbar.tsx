@@ -1,31 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "../lib/utils";
 
-export function NavBar() {
+export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const buttonStyles =
     "bg-[#10B5B5] hover:bg-[#10B5B5]/90 text-white rounded-full px-6 py-2 transition-colors duration-300";
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300",
-        isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm" : "bg-white"
-      )}
-    >
-      <div className="mx-auto flex h-20 max-w-[1366px] items-center px-4">
+    <header className="bg-white w-full z-50 shadow-sm">
+      <div className="mx-auto flex h-20 max-w-[1366px] items-center px-4 relative">
         <Link to="/" className="flex items-center z-10">
           <img
             src="https://res.cloudinary.com/dggewyuon/image/upload/v1739215911/lardemaria-logo_uiyipm.png"
@@ -64,7 +49,7 @@ export function NavBar() {
 
           <nav
             className={cn(
-              "fixed inset-0 bg-white lg:bg-transparent lg:static transition-all duration-300 ease-in-out z-40",
+              "fixed inset-0 bg-white/95 backdrop-blur-sm lg:bg-transparent lg:static transition-all duration-300 ease-in-out z-40",
               isOpen
                 ? "opacity-100 visible"
                 : "opacity-0 invisible lg:opacity-100 lg:visible"

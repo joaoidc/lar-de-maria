@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
-import { NavBar } from "./Navbar";
+import { Navbar } from "./Navbar";
+import { Footer } from "./footer";
+import { ScrollToTop } from "./ScrollToTop";
 
 interface LayoutProps {
   children: ReactNode;
@@ -7,9 +9,11 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-background">
-      <NavBar />
-      <main>{children}</main>
+    <div className="flex min-h-screen flex-col overflow-x-hidden">
+      <Navbar />
+      <main className="flex-1 w-full">{children}</main>
+      <Footer />
+      <ScrollToTop />
     </div>
   );
 }
