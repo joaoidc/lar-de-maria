@@ -1,5 +1,3 @@
-"use client";
-
 import { motion } from "framer-motion";
 
 const stats = [
@@ -27,8 +25,8 @@ const stats = [
 
 export function StatsSection() {
   return (
-    <section className="py-24 bg-white">
-      <div className="container mx-auto">
+    <section className="py-16 bg-gray-50">
+      <div className="container mx-auto px-4">
         <div className="flex flex-wrap justify-center gap-12 md:gap-20">
           {stats.map((stat, index) => (
             <motion.div

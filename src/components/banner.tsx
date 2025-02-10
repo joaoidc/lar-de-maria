@@ -1,11 +1,11 @@
-import Image from "next/image";
+import { Image } from "./ui/Image";
 
 export function Banner() {
   return (
     <section className="relative w-full h-[600px] overflow-hidden">
       <Image
         src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Lar_de_Maria-kPAAuJPpvkDdQXdZK8f8wf9K8uu96I.png"
-        alt="person banner"
+        alt="Elderly person with mask"
         fill
         priority
         className="object-cover"
