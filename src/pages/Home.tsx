@@ -1,6 +1,8 @@
 import { Helmet } from "react-helmet-async";
 import { Banner } from "../components/banner";
 import { StatsSection } from "../components/stats-section";
+import { AboutSection } from "../components/about-section";
+import { NewsSection } from "../components/news-section";
 
 export function Home() {
   return (
@@ -14,6 +16,8 @@ export function Home() {
       </Helmet>
       <Banner />
       <StatsSection />
+      <AboutSection />
+      <NewsSection />
       {/* Outros componentes da home */}
     </main>
   );
