@@ -28,7 +28,7 @@ export function NavBar() {
       <div className="mx-auto flex h-20 max-w-[1366px] items-center px-4">
         <Link to="/" className="flex items-center z-10">
           <img
-            src="https://res.cloudinary.com/dggewyuon/image/upload/v1739205706/lardemaria-logo_dpio1d.png"
+            src="https://res.cloudinary.com/dggewyuon/image/upload/v1739215911/lardemaria-logo_uiyipm.png"
             alt="Lar de Maria"
             className="w-[106.14px] h-[57px]"
           />

@@ -42,11 +42,11 @@ export function StatsSection() {
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                <span className="text-2xl font-bold text-[#10B5B5]">
+                <span className="text-2xl font-bold text-gray-900">
                   {stat.number}
                 </span>
               </motion.div>
-              <span className="text-sm font-medium text-gray-600">
+              <span className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
                 {stat.label}
               </span>
             </motion.div>
