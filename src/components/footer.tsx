@@ -153,18 +153,8 @@ export function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4">
           <div className="flex flex-col items-center gap-1">
             <p className="text-center text-xs md:text-sm">
-              © 2025 - Todos os direitos reservados
-            </p>
-            <p className="text-[10px] md:text-xs text-gray-400">
-              Desenvolvido por{" "}
-              <a
-                href="https://www.landeev.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[#10B5B5] transition-colors"
-              >
-                Lanna
-              </a>
+              © 2025 - Todos os direitos reservados ao{" "}
+              <span className="text-[#10B5B5]">Lar de Maria</span>
             </p>
           </div>
         </div>

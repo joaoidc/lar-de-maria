@@ -4,17 +4,17 @@ const cards = [
   {
     title: "Nossa Missão",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "Promover assistência social e educacional para crianças e idosos em situação de vulnerabilidade, baseando-se nos princípios de amor e caridade da doutrina espírita.",
   },
   {
     title: "Nossa Visão",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "Ser referência em assistência e acolhimento, expandindo projetos que transformem vidas e fortaleçam valores éticos e morais, contribuindo para uma sociedade mais justa e solidária.",
   },
   {
     title: "Nossos Valores",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "Compromisso com a caridade, solidariedade, ética, respeito ao próximo e dedicação ao bem-estar social, guiados pelos ensinamentos do espiritismo.",
   },
 ];
 

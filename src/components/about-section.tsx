@@ -34,18 +34,25 @@ export function AboutSection() {
             <h2 className="text-3xl lg:text-4xl font-playfair mb-6">
               Quem somos
             </h2>
-            <p className="text-white/90 mb-6">
-              "O Lar de Maria foi fundado em 15 de agosto de 1947, como uma casa
-              de assistência social, cuja finalidade era atender crianças e
-              idosos em situação de vulnerabilidade."
+            <p className="text-white text-lg leading-relaxed mb-6">
+              <span className="font-semibold">
+                O Lar de Maria foi fundado em 15 de agosto de 1947
+              </span>
+              , como uma casa de assistência social, cuja finalidade era atender
+              crianças e idosos em situação de vulnerabilidade.
             </p>
-            <p className="text-white/80 mb-8">
-              Entre os idealizadores e articuladores de sua construção temos
-              Oswaldo de Assunção Castro, Olga Castro, que muito embalam pelo
-              seu sonho de filantropia, entre empreendedores. Mas também muitos
-              outros nomes se tornaram a materialização desse ideal como Pacheco
-              e esposa (a) Manoel, Ferreira, Ferro Pacheco, José Antunes,
-              Godomar Antunes, Maria Antunes e Alberto Milhomens.
+            <p className="text-white text-lg leading-relaxed mb-8">
+              Movidos pelos valores do amor e da caridade, seus idealizadores,
+              como
+              <span className="font-semibold">
+                {" "}
+                Oswaldo de Assunção Castro e Olga Castro
+              </span>
+              , sonhavam em criar um espaço de acolhimento e transformação
+              social. Ao longo dos anos, a instituição contou com o esforço
+              coletivo de inúmeros colaboradores e voluntários, que ajudaram a
+              consolidar esse projeto, tornando o Lar de Maria uma referência em
+              assistência e educação social na cidade de Belém.
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}

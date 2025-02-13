@@ -6,8 +6,9 @@ import { NewsSection } from "../components/news-section";
 import { MissionSection } from "../components/mission-section";
 import { PromotionalBanner } from "../components/promotional-banner";
 import { PartnersSection } from "../components/partners-section";
+import { GallerySection } from "../components/gallery-section";
 
-export function Home() {
+export function HomePage() {
   return (
     <main>
       <Helmet>
@@ -18,6 +19,7 @@ export function Home() {
         />
       </Helmet>
       <Banner />
+      <GallerySection />
       <StatsSection />
       <AboutSection />
       <NewsSection />

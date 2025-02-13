@@ -66,7 +66,7 @@ export function Navbar() {
                 { to: "/quem-somos", label: "Quem somos" },
                 { to: "/projetos-sociais", label: "Projetos sociais" },
                 {
-                  to: "/atividades-doutrinárias",
+                  to: "/atividades-doutrianarias",
                   label: "Atividades doutrinárias",
                 },
                 { to: "/contato", label: "Contato" },

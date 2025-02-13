@@ -8,44 +8,61 @@ import "swiper/css/scrollbar";
 
 const partners = [
   {
-    name: "Ipsun Engenharia",
-    logo: "https://media.licdn.com/dms/image/v2/C4D0BAQF9r1YeGdu3cw/company-logo_200_200/company-logo_200_200/0/1647431883422/ipsun___manuteno_e_instalaes_industriais_ltda___me_logo?e=2147483647&v=beta&t=TKGhsrNI9Gv4stB2M4qWt-KTlK2LYSDfbOumFRkrN4M",
-    url: "#",
+    name: "Associação Criança Feliz",
+    logo: "https://www.acriancafeliz.org.br/assets/site/images/logo_criancaFeliz.png",
+    url: "https://www.acriancafeliz.org.br/doar?utm_source=google&utm_medium=cpc&utm_campaign=doacao&utm_term=doacao&utm_content=ad-grants&gad_source=1",
   },
   {
-    name: "TechSolutions Brasil",
-    logo: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/lorem-ipsum-logo-design-template-198b7fdb1d0a1b972f8232b1a2319123_screen.jpg?ts=1679372636",
-    url: "#",
+    name: "União Espirita Paraense",
+    logo: "https://uep.net.br/wp-content/uploads/2021/08/cropped-cropped-perfil-1536x922.png",
+    url: "https://uep.net.br/",
   },
   {
-    name: "Construtora Horizonte",
-    logo: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/lorem-ipsum-logo-design-template-41292e364405af5884fab0899b980d3a_screen.jpg?ts=1680759649",
-    url: "#",
+    name: "Faculdade Cosmopolita",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0eLQsadqXRyOQPFMWgMWMU1GuPFm06VQx4w&s",
+    url: "https://faculdadecosmopolita.edu.br/",
   },
   {
-    name: "Grupo Industrial Norte",
-    logo: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/lorem-ipsum-logo-design-template-41292e364405af5884fab0899b980d3a_screen.jpg?ts=1680759649",
-    url: "#",
+    name: "Fundação Carlos Gomes",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuerB7twy9ba1DT9OzlcVA95xW986xQcjBmA&s",
+    url: "https://www.fcg.pa.gov.br/",
   },
   {
-    name: "Logística Express",
-    logo: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/lorem-ipsum-logo-design-template-b994e42356986768a8b93d375cda1898_screen.jpg?ts=1687689411",
-    url: "#",
+    name: "Banco da Amazônia",
+    logo: "https://bancariosro.com.br/wp-content/uploads/2021/07/logo-Banco-da-Amazo%CC%82nia.jpg",
+    url: "https://www.bancoamazonia.com.br/",
   },
   {
-    name: "Energia Sustentável S.A.",
-    logo: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/lorem-ipsum-logo-design-template-41292e364405af5884fab0899b980d3a_screen.jpg?ts=1680759649",
-    url: "#",
+    name: "INTECELERI",
+    logo: "https://media.licdn.com/dms/image/v2/C4E0BAQGO-YH9uGy9Lw/company-logo_200_200/company-logo_200_200/0/1630641938887/inteceleri_logo?e=2147483647&v=beta&t=Am1E91v4V-gM-IgHRS4qUezGElss6Meay7SGHiqLD9c",
+    url: "https://www.inteceleri.com.br/",
   },
   {
-    name: "Metalúrgica Progresso",
-    logo: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/lorem-ipsum-design-template-0b095ba6374ee9f151002dae7e277db0_screen.jpg?ts=1684370083",
-    url: "#",
+    name: "MPT",
+    logo: "https://mpt.mp.br/++theme++mpt/images/logo_padrao.png",
+    url: "https://mpt.mp.br/",
   },
   {
-    name: "Consultoria Integrada",
-    logo: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/lorem-ipsum-logo-design-template-41292e364405af5884fab0899b980d3a_screen.jpg?ts=1680759649",
-    url: "#",
+    name: "AA",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRzD_Kv6eGUDyV-hJzD1nVQDK1lW8xkj9AfA&s",
+    url: "https://www.aa.org.br/",
+    imageClassName:
+      "h-16 sm:h-20 md:h-24 w-[100px] object-contain grayscale hover:grayscale-0 transition-all duration-300",
+  },
+  {
+    name: "Amor Exigente",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfJk1UcZkNt60NSdx3Cx3rkTMoVPFscNWHaA&s",
+    url: "https://amorexigente.org/",
+  },
+  {
+    name: "UFPA",
+    logo: "https://ufpa.br/wp-content/uploads/2023/12/Brasao-UFPA-com-descritivo-colorido.png",
+    url: "https://ufpa.br/",
+  },
+  {
+    name: "Renascer PA",
+    logo: "https://res.cloudinary.com/dggewyuon/image/upload/v1739452635/grupr018203_z96fyl.png",
+    url: "https://www.instagram.com/renascer_pa/?hl=pt",
   },
 ];
 
@@ -114,13 +131,16 @@ export function PartnersSection() {
                       href={partner.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block w-full"
+                      className="block w-[200px] h-[120px] sm:h-[140px] md:h-[160px] flex items-center justify-center"
                       title={`Visitar ${partner.name}`}
                     >
                       <img
                         src={partner.logo}
                         alt={partner.name}
-                        className="h-24 sm:h-28 md:h-32 w-full object-contain grayscale hover:grayscale-0 transition-all duration-300"
+                        className={
+                          partner.imageClassName ||
+                          "h-24 sm:h-28 md:h-32 w-[200px] object-contain grayscale hover:grayscale-0 transition-all duration-300"
+                        }
                       />
                     </a>
                   </motion.div>
