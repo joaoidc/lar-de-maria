@@ -1,17 +1,20 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
-const IMAGES_PER_PAGE = 15; // Mostra 15 imagens por vez (3 linhas de 5)
-const images = Array.from({ length: 51 }, (_, i) => ({
-  url: `/images/imageslider (${i + 1}).JPG`,
-  fallbackUrl: `/images/imageslider (${i + 1}).jpg`,
-  title: `Titulo ${i + 1}`,
+const IMAGES_PER_PAGE = 15; // Mostra 15 imagens por vez para evitar travamentos
+const TOTAL_IMAGES = 51; // Quantidade total de imagens
+
+// Criando lista de imagens com os novos nomes
+const images = Array.from({ length: TOTAL_IMAGES }, (_, i) => ({
+  url: `/images/img-${i + 1}.JPG`, // Caminho atualizado
+  fallbackUrl: `/images/img-${i + 1}.jpg`, // Fallback para minúsculas
+  title: `Imagem ${i + 1}`,
   description: "Momentos especiais de nossas ações sociais",
 }));
 
 export function GaleriaPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const totalPages = Math.ceil(images.length / IMAGES_PER_PAGE);
 
   const currentImages = images.slice(
@@ -19,12 +22,12 @@ export function GaleriaPage() {
     currentPage * IMAGES_PER_PAGE
   );
 
-  // Simula carregamento ao mudar de página
+  // Efeito para simular carregamento suave ao mudar de página
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 800);
+    }, 600); // Reduzi o tempo para 600ms para transição mais rápida
     return () => clearTimeout(timer);
   }, [currentPage]);
 
@@ -53,27 +56,7 @@ export function GaleriaPage() {
               exit={{ opacity: 0 }}
               className="flex justify-center items-center min-h-[400px]"
             >
-              <div className="relative w-20 h-20">
-                <div className="absolute top-0 left-0 w-full h-full">
-                  <div className="w-20 h-20 border-8 border-[#10a3b4]/20 rounded-full"></div>
-                  <div className="absolute top-0 left-0 w-20 h-20 border-8 border-[#10a3b4] border-t-transparent rounded-full animate-spin"></div>
-                </div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <svg
-                    className="w-8 h-8 text-[#10a3b4] animate-pulse"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-              </div>
+              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-[#10a3b4]"></div>
             </motion.div>
           ) : (
             <motion.div
@@ -89,7 +72,7 @@ export function GaleriaPage() {
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ delay: index * 0.05 }}
                   whileHover={{ scale: 1.05 }}
                   className="relative aspect-square rounded-xl overflow-hidden shadow-lg"
                 >
@@ -103,7 +86,8 @@ export function GaleriaPage() {
                       }
                     }}
                     alt={image.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-opacity duration-500 opacity-0"
+                    onLoad={(e) => e.currentTarget.classList.add("opacity-100")}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
                     <div className="absolute bottom-0 left-0 right-0 p-4 text-white">

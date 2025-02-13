@@ -6,11 +6,11 @@ import "swiper/css/navigation";
 import "swiper/css/effect-coverflow";
 import { Link } from "react-router-dom";
 
-const images = Array.from({ length: 42 }, (_, i) => {
+const images = Array.from({ length: 51 }, (_, i) => {
   const imageNumber = i + 1;
   return {
-    url: `/images/imageslider (${imageNumber}).JPG`,
-    fallbackUrl: `/images/imageslider (${imageNumber}).jpg`,
+    url: `/images/img-${imageNumber}.JPG`, // Imagem principal
+    fallbackUrl: `/images/img-${imageNumber}.jpg`, // Fallback para JPG minúsculo
     title: `Titulo ${imageNumber}`,
     description: "Momentos especiais de nossas ações sociais",
   };
@@ -88,7 +88,9 @@ export function GallerySection() {
                     }}
                     alt={image.title}
                     className="w-full h-[400px] object-cover"
+                    loading="lazy" // Lazy loading para melhor performance
                   />
+
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                       <h3 className="text-2xl font-semibold mb-2">
