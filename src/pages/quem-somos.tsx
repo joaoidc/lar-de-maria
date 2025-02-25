@@ -201,7 +201,7 @@ export function QuemSomosPage() {
                 {/* Cabeçalho do Card */}
                 <div className="bg-gradient-to-r from-[#115EAC] to-[#00A3E0] p-6 flex items-center gap-4">
                   <img
-                    src="https://res.cloudinary.com/dggewyuon/image/upload/v1740509131/1_tfgz02.png"
+                    src="https://res.cloudinary.com/dggewyuon/image/upload/v1740514162/5434w_wbwx8a.png"
                     alt="Logo Lar de Maria"
                     className="w-16 h-16 object-contain"
                   />
@@ -262,7 +262,7 @@ export function QuemSomosPage() {
                 <div className="bg-gray-50 p-6 flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
                     <img
-                      src="https://res.cloudinary.com/dggewyuon/image/upload/v1740509131/1_tfgz02.png"
+                      src="https://res.cloudinary.com/dggewyuon/image/upload/v1740514162/5434w_wbwx8a.png"
                       alt="Logo Lar de Maria"
                       className="h-8"
                     />
