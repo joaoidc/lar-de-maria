@@ -8,6 +8,16 @@ export function Navbar() {
   const buttonStyles =
     "bg-[#10B5B5] hover:bg-[#10B5B5]/90 text-white rounded-full px-6 py-2 transition-colors duration-300";
 
+  const links = [
+    { to: "/", label: "Início" },
+    { to: "/quem-somos", label: "Quem somos" },
+    { to: "/projetos-sociais", label: "Projetos sociais" },
+    { to: "/atividades-doutrinarias", label: "Atividades doutrinárias" },
+    { to: "/galeria", label: "Galeria" },
+    { to: "/contato", label: "Contato" },
+    // { to: "/doacoes", label: "Doações" },
+  ];
+
   return (
     <header className="bg-white w-full z-50 shadow-sm">
       <div className="mx-auto flex h-20 max-w-[1366px] items-center px-4 relative">
@@ -61,16 +71,7 @@ export function Navbar() {
                 isOpen ? "flex" : "hidden lg:flex"
               )}
             >
-              {[
-                { to: "/", label: "Home" },
-                { to: "/quem-somos", label: "Quem somos" },
-                { to: "/projetos-sociais", label: "Projetos sociais" },
-                {
-                  to: "/atividades-doutrianarias",
-                  label: "Atividades doutrinárias",
-                },
-                { to: "/contato", label: "Contato" },
-              ].map((item) => (
+              {links.map((item) => (
                 <li key={item.to} className="relative group">
                   <Link
                     to={item.to}

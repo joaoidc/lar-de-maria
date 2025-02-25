@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const stats = [
   {
-    number: "1948",
+    number: "1947",
     label: "DESDE",
   },
   {

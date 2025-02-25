@@ -27,7 +27,7 @@ export function Footer() {
                 />
               </Link>
               <p className="text-gray-600 text-xs md:text-sm leading-relaxed text-center md:text-left">
-                <span className="text-[#10B5B5] font-medium">Desde 1948</span>{" "}
+                <span className="text-[#10B5B5] font-medium">Desde 1947</span>{" "}
                 dedicamos nossa missão à promoção do amor e cuidado,
                 transformando vidas através do acolhimento de crianças, jovens,
                 idosos e suas famílias.

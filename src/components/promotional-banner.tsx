@@ -22,7 +22,7 @@ export function PromotionalBanner() {
         viewport={{ once: true }}
       >
         <h2 className="text-2xl md:text-3xl lg:text-[32px] text-white font-playfair font-extrabold text-center leading-tight max-w-4xl">
-          Há 76 anos trabalhando pela promoção humana de crianças, jovens,
+          Há 77 anos trabalhando pela promoção humana de crianças, jovens,
           idosos e suas famílias.
         </h2>
       </motion.div>

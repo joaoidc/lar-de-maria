@@ -6,6 +6,9 @@ import { ThemeProvider } from "./components/theme-provider";
 import { HelmetProvider } from "react-helmet-async";
 import { Footer } from "./components/footer";
 import GaleriaPage from "./pages/galeria";
+import { QuemSomosPage } from "./pages/quem-somos";
+import { ProjetosSociaisPage } from "./pages/projetos-sociais";
+import { AtividadesDoutrinariasPage } from "./pages/atividades-doutrinarias";
 
 export default function App() {
   return (
@@ -17,11 +20,14 @@ export default function App() {
             <div className="flex-grow">
               <Routes>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/quem-somos" element={<MaintenancePage />} />
-                <Route path="/projetos-sociais" element={<MaintenancePage />} />
+                <Route path="/quem-somos" element={<QuemSomosPage />} />
                 <Route
-                  path="/atividades-doutrianarias"
-                  element={<MaintenancePage />}
+                  path="/projetos-sociais"
+                  element={<ProjetosSociaisPage />}
+                />
+                <Route
+                  path="/atividades-doutrinarias"
+                  element={<AtividadesDoutrinariasPage />}
                 />
                 <Route path="/contato" element={<MaintenancePage />} />
                 <Route path="/doacoes" element={<MaintenancePage />} />
