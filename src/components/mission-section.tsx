@@ -24,14 +24,13 @@ export function MissionSection() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
-          src="https://myotandme.com/cdn/shop/articles/friends_1400x.progressive.jpg?v=1588061352"
+          src="https://res.cloudinary.com/dggewyuon/image/upload/v1740509133/2_pardxp.png"
           alt=""
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-80"
         />
+        {/* Overlay mais suave */}
+        <div className="absolute inset-0 bg-black/10"></div>
       </div>
-
-      {/* Overlay Verde */}
-      <div className="absolute inset-0 bg-[#10B5B5]/80"></div>
 
       {/* Background Pattern */}
       <div className="absolute inset-0">

@@ -47,7 +47,7 @@ const partners = [
     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRzD_Kv6eGUDyV-hJzD1nVQDK1lW8xkj9AfA&s",
     url: "https://www.aa.org.br/",
     imageClassName:
-      "h-16 sm:h-20 md:h-24 w-[100px] object-contain grayscale hover:grayscale-0 transition-all duration-300",
+      "h-16 sm:h-20 md:h-24 w-[100px] object-contain transition-all duration-300",
   },
   {
     name: "Amor Exigente",
@@ -139,7 +139,7 @@ export function PartnersSection() {
                         alt={partner.name}
                         className={
                           partner.imageClassName ||
-                          "h-24 sm:h-28 md:h-32 w-[200px] object-contain grayscale hover:grayscale-0 transition-all duration-300"
+                          "h-24 sm:h-28 md:h-32 w-[200px] object-contain transition-all duration-300"
                         }
                       />
                     </a>
