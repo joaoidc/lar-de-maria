@@ -183,12 +183,12 @@ export function QuemSomosPage() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-3xl lg:text-4xl font-playfair text-[#10a3b4] mb-6">
-                Lar de Maria na Mídia
+              {/* <h2 className="text-3xl lg:text-4xl font-playfair text-[#10a3b4] mb-6">
+                Lar de Maria em vídeo
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-                Nossa história de transformação social reconhecida pela imprensa
-              </p>
+                Nossa história de transformação social em video
+              </p> */}
             </motion.div>
 
             <div className="max-w-4xl mx-auto">
@@ -407,6 +407,91 @@ export function QuemSomosPage() {
             </div>
           </div>
         </section>
+
+        {/* Seção de Impacto */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl lg:text-4xl font-playfair text-[#10a3b4] mb-6">
+            Nosso Impacto em 2024
+          </h2>
+          <p className="text-gray-600 max-w-3xl mx-auto mb-12">
+            Através do Programa Construindo o Futuro, impactamos diretamente a
+            vida de centenas de pessoas em nossa comunidade
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+            >
+              <div className="text-[#10a3b4] mb-4">
+                <span className="text-4xl font-bold">129</span>
+                <span className="text-xl ml-1">crianças</span>
+              </div>
+              <p className="text-gray-600">
+                Crianças de 6 a 11 anos atendidas diretamente, impactando
+                indiretamente 387 pessoas
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+            >
+              <div className="text-[#10a3b4] mb-4">
+                <span className="text-4xl font-bold">35</span>
+                <span className="text-xl ml-1">adolescentes</span>
+              </div>
+              <p className="text-gray-600">
+                Adolescentes de 12 a 17 anos atendidos diretamente, impactando
+                indiretamente 105 pessoas
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+            >
+              <div className="text-[#10a3b4] mb-4">
+                <span className="text-4xl font-bold">60</span>
+                <span className="text-xl ml-1">idosos</span>
+              </div>
+              <p className="text-gray-600">
+                Idosos de 60 a 90 anos atendidos diretamente, impactando
+                indiretamente 180 pessoas
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow md:col-span-2 lg:col-span-3"
+            >
+              <div className="text-[#10a3b4] mb-4">
+                <span className="text-4xl font-bold">1.037</span>
+                <span className="text-xl ml-1">pessoas impactadas</span>
+              </div>
+              <p className="text-gray-600">
+                Total de 365 pessoas atendidas diretamente e 672 indiretamente,
+                incluindo 141 famílias beneficiadas
+              </p>
+            </motion.div>
+          </div>
+        </motion.div>
 
         {/* Seção Final com CTA */}
         <section className="py-12 sm:py-16 bg-[#10a3b4] relative overflow-hidden">

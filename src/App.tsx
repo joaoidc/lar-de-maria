@@ -10,6 +10,7 @@ import { QuemSomosPage } from "./pages/quem-somos";
 import { ProjetosSociaisPage } from "./pages/projetos-sociais";
 import { AtividadesDoutrinariasPage } from "./pages/atividades-doutrinarias";
 import { ContatoPage } from "./pages/contato";
+import { ScrollToTop } from "./components/scroll-to-top";
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
               </Routes>
             </div>
             <Footer />
+            <ScrollToTop />
           </div>
         </Router>
       </ThemeProvider>

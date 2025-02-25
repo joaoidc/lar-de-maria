@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Link } from "react-router-dom";
 
 // Import Swiper styles
 import "swiper/css";
@@ -19,6 +20,10 @@ const images = [
 ];
 
 export function AboutSection() {
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
     <section className="bg-[#10B5B5] py-16 lg:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,13 +59,15 @@ export function AboutSection() {
               consolidar esse projeto, tornando o Lar de Maria uma referência em
               assistência e educação social na cidade de Belém.
             </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-white text-[#10B5B5] px-6 py-2 rounded-full font-medium hover:bg-white/90 transition-colors"
-            >
-              Conheça mais
-            </motion.button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                to="/quem-somos"
+                onClick={scrollToTop}
+                className="bg-white text-[#10B5B5] px-6 py-2 rounded-full font-medium hover:bg-white/90 transition-colors inline-block"
+              >
+                Conheça mais
+              </Link>
+            </motion.div>
           </motion.div>
 
           {/* Carrossel de Imagens */}

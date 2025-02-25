@@ -6,19 +6,23 @@ const stats = [
     label: "DESDE",
   },
   {
-    number: "+100",
+    number: "45.000+",
     label: "ATENDIDOS",
   },
   {
-    number: "+60",
+    number: "8.500+",
     label: "CRIANÇAS",
   },
   {
-    number: "+40",
+    number: "6.000+",
     label: "ADULTOS",
   },
   {
-    number: "+20",
+    number: "4.800+",
+    label: "FAMÍLIAS",
+  },
+  {
+    number: "1.200+",
     label: "VOLUNTÁRIOS",
   },
 ];
@@ -38,7 +42,7 @@ export function StatsSection() {
               className="flex flex-col items-center"
             >
               <motion.div
-                className="w-24 h-24 rounded-full border-2 border-[#10B5B5] flex items-center justify-center mb-4"
+                className="w-28 h-28 rounded-full border-2 border-[#10B5B5] flex items-center justify-center mb-4"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
