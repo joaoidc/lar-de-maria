@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { cn } from "../lib/utils";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const buttonStyles =
     "bg-[#10B5B5] hover:bg-[#10B5B5]/90 text-white rounded-full px-6 py-2 transition-colors duration-300";
@@ -71,18 +72,35 @@ export function Navbar() {
                 isOpen ? "flex" : "hidden lg:flex"
               )}
             >
-              {links.map((item) => (
-                <li key={item.to} className="relative group">
-                  <Link
-                    to={item.to}
-                    className="text-gray-800 hover:text-[#10a3b4] transition-colors duration-300"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#10a3b4] transition-all duration-300 group-hover:w-full"></span>
-                </li>
-              ))}
+              {links.map((item) => {
+                const isActive =
+                  location.pathname === item.to ||
+                  (location.pathname === "/" && item.to === "/") ||
+                  (location.pathname !== "/" &&
+                    item.to !== "/" &&
+                    location.pathname.startsWith(item.to));
+
+                return (
+                  <li key={item.to} className="relative group">
+                    <Link
+                      to={item.to}
+                      className={cn(
+                        "text-gray-800 hover:text-[#10a3b4] transition-colors duration-300",
+                        isActive && "text-[#10a3b4] font-medium"
+                      )}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                    <span
+                      className={cn(
+                        "absolute -bottom-1 left-0 h-0.5 bg-[#10a3b4] transition-all duration-300",
+                        isActive ? "w-full" : "w-0 group-hover:w-full"
+                      )}
+                    ></span>
+                  </li>
+                );
+              })}
               <li className="block lg:hidden">
                 <Link
                   to="/doacoes"
