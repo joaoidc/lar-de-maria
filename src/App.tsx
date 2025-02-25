@@ -9,6 +9,7 @@ import GaleriaPage from "./pages/galeria";
 import { QuemSomosPage } from "./pages/quem-somos";
 import { ProjetosSociaisPage } from "./pages/projetos-sociais";
 import { AtividadesDoutrinariasPage } from "./pages/atividades-doutrinarias";
+import { ContatoPage } from "./pages/contato";
 
 export default function App() {
   return (
@@ -29,7 +30,7 @@ export default function App() {
                   path="/atividades-doutrinarias"
                   element={<AtividadesDoutrinariasPage />}
                 />
-                <Route path="/contato" element={<MaintenancePage />} />
+                <Route path="/contato" element={<ContatoPage />} />
                 <Route path="/doacoes" element={<MaintenancePage />} />
                 <Route path="/galeria" element={<GaleriaPage />} />
                 <Route path="*" element={<MaintenancePage />} />

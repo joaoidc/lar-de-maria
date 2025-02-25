@@ -208,7 +208,7 @@ export function QuemSomosPage() {
                   <div className="text-white">
                     <h3 className="text-xl font-bold">Lar de Maria</h3>
                     <p className="text-sm opacity-90">
-                      Transformando vidas há mais de 77 anos
+                      Solidariedade que transforma vidas há mais de 77 anos
                     </p>
                   </div>
                 </div>
