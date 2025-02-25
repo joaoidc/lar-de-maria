@@ -11,7 +11,6 @@ const images = Array.from({ length: 51 }, (_, i) => {
   return {
     url: `/images/img-${imageNumber}.JPG`, // Imagem principal
     fallbackUrl: `/images/img-${imageNumber}.jpg`, // Fallback para JPG minúsculo
-    title: `Titulo ${imageNumber}`,
     description: "Momentos especiais de nossas ações sociais",
   };
 });
@@ -86,18 +85,13 @@ export function GallerySection() {
                         target.src = image.fallbackUrl;
                       }
                     }}
-                    alt={image.title}
+                    alt="Momento especial de nossas ações sociais"
                     className="w-full h-[400px] object-cover"
                     loading="lazy" // Lazy loading para melhor performance
                   />
 
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                      <h3 className="text-2xl font-semibold mb-2">
-                        {image.title
-                          .replace(/-/g, " ")
-                          .replace(/^\w/, (c) => c.toUpperCase())}
-                      </h3>
+                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white hidden">
                       <p className="text-sm opacity-90">{image.description}</p>
                     </div>
                   </div>
