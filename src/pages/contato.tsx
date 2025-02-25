@@ -252,7 +252,9 @@ export function ContatoPage() {
                             <h4 className="text-lg font-semibold mb-1 text-gray-800">
                               Telefone
                             </h4>
-                            <p className="text-gray-600">(91) 3229-1259</p>
+                            <p className="text-gray-600">
+                              (91) 3229-1259 ou (91) 98871-1925
+                            </p>
                           </div>
                         </motion.div>
 

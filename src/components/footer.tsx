@@ -73,7 +73,7 @@ export function Footer() {
                   <p className="font-medium">contato@lardemaria.org.br</p>
                 </a>
                 <a
-                  href="https://wa.me/5591322629530"
+                  href="https://wa.me/559188711925"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 text-gray-800 hover:text-[#25D366] transition-colors group"
@@ -95,7 +95,7 @@ export function Footer() {
               {/* Layout diferente para mobile e desktop */}
               <div className="flex md:flex-col items-center md:items-start gap-6 md:gap-4">
                 <a
-                  href="#"
+                  href="https://www.facebook.com/lardemariapara/?locale=pt_BR"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center md:gap-3 text-gray-800 hover:text-[#1877F2] transition-colors group"
@@ -119,7 +119,7 @@ export function Footer() {
                   <span className="hidden md:inline">LinkedIn</span>
                 </a>
                 <a
-                  href="#"
+                  href="https://www.instagram.com/lardemariapara/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center md:gap-3 text-gray-800 hover:text-[#E4405F] transition-colors group"
@@ -131,7 +131,7 @@ export function Footer() {
                   <span className="hidden md:inline">Instagram</span>
                 </a>
                 <a
-                  href="#"
+                  href="https://www.youtube.com/@lardemariapara6187"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center md:gap-3 text-gray-800 hover:text-[#FF0000] transition-colors group"
