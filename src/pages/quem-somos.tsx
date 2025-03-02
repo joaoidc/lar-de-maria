@@ -240,19 +240,13 @@ export function QuemSomosPage() {
 
                 {/* Conteúdo do Vídeo */}
                 <div className="p-6">
-                  <div className="aspect-video rounded-lg overflow-hidden bg-gray-100 mb-6">
+                  <div className="video-container">
                     <iframe
                       src="https://www.youtube.com/embed/dglxv5k3jSs"
                       title="Lar de Maria - Parte II"
                       frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
-                      className="w-full h-full pointer-events-auto"
-                      style={{
-                        minHeight: "315px",
-                        zIndex: 10,
-                        position: "relative",
-                      }}
                     ></iframe>
                   </div>
                   <div className="space-y-4">
