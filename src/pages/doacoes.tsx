@@ -1,5 +1,3 @@
-import { MaintenancePage } from "../components/maintenance-page";
+import DoacoesPage from "./DoacoesPage";
 
-export default function DoacoesPage() {
-  return <MaintenancePage />;
-}
+export default DoacoesPage;

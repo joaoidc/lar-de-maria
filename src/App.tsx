@@ -13,6 +13,8 @@ import { AtividadesDoutrinariasPage } from "./pages/atividades-doutrinarias";
 import { ContatoPage } from "./pages/contato";
 import { ScrollToTop } from "./components/scroll-to-top";
 import LoadingSpinner from "./components/LoadingSpinner";
+import DoacoesPage from "./pages/DoacoesPage";
+import DoarAgora from "./pages/doaragora";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -44,8 +46,9 @@ export default function App() {
                   element={<AtividadesDoutrinariasPage />}
                 />
                 <Route path="/contato" element={<ContatoPage />} />
-                <Route path="/doacoes" element={<MaintenancePage />} />
+                <Route path="/doacoes" element={<DoacoesPage />} />
                 <Route path="/galeria" element={<GaleriaPage />} />
+                <Route path="/doaragora" element={<DoarAgora />} />
                 <Route path="*" element={<MaintenancePage />} />
               </Routes>
             </div>
