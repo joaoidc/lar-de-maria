@@ -208,7 +208,8 @@ export function QuemSomosPage() {
                   <div className="text-white">
                     <h3 className="text-xl font-bold">Lar de Maria</h3>
                     <p className="text-sm opacity-90">
-                      Solidariedade que transforma vidas há mais de 77 anos
+                      Vídeo Institucional do Aniversário de 71 anos do Lar de
+                      Maria
                     </p>
                   </div>
                 </div>
