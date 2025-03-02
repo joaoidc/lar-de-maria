@@ -1,3 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Garante que o padding e a borda sejam incluídos na largura total */
+}
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; /* Impede o overflow horizontal */
+}
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0; /* Remover padding */
+}
+
 .video-container {
   position: relative;
   padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
