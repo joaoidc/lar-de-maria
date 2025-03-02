@@ -44,7 +44,7 @@ const Donations = () => {
         <title>Doações - Lar de Maria</title>
         <meta
           name="description"
-          content="Faça sua doação para o Lar de Maria e ajude a manter nossos trabalhos sociais."
+          content="Descubra como você pode ajudar o Lar de Maria a manter os trabalhos sociais."
         />
       </Helmet>
 
