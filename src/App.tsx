@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { MaintenancePage } from "./components/maintenance-page";
@@ -11,8 +12,19 @@ import { ProjetosSociaisPage } from "./pages/projetos-sociais";
 import { AtividadesDoutrinariasPage } from "./pages/atividades-doutrinarias";
 import { ContatoPage } from "./pages/contato";
 import { ScrollToTop } from "./components/scroll-to-top";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    console.log("Iniciando o carregamento...");
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <LoadingSpinner />;
+
   return (
     <HelmetProvider>
       <ThemeProvider defaultTheme="light">
