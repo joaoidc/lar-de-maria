@@ -1,0 +1,29 @@
+.btn-quero-ajudar {
+  width: 195.36px;
+  height: 52px;
+  display: inline-block;
+  text-align: center;
+  background-color: #10a3b4;
+  color: white;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.btn-quero-ajudar:hover {
+  background-color: #0e7a8c;
+}
+
+.btn-entre-em-contato {
+  width: 195.36px;
+  height: 52px;
+  display: inline-block;
+  text-align: center;
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+  padding: 0;
+}

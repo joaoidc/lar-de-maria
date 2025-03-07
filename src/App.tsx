@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { Navbar } from "./components/Navbar";
@@ -5,6 +6,9 @@ import { ThemeProvider } from "./components/theme-provider";
 import { HelmetProvider } from "react-helmet-async";
 import { Footer } from "./components/footer";
 import { ScrollToTop } from "./components/scroll-to-top";
+import LoadingSpinner from "./components/LoadingSpinner";
+import DoacoesPage from "./pages/DoacoesPage";
+import DoarAgora from "./pages/doaragora";
 
 // Lazy load components
 const HomePage = lazy(() => import("./pages/Home"));
@@ -15,14 +19,17 @@ const ContatoPage = lazy(() => import("./pages/contato"));
 const GaleriaPage = lazy(() => import("./pages/galeria"));
 const MaintenancePage = lazy(() => import("./components/maintenance-page"));
 
-// Loading component
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center min-h-[50vh]">
-    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
-  </div>
-);
-
 export default function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    console.log("Iniciando o carregamento...");
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <LoadingSpinner />;
+
   return (
     <HelmetProvider>
       <ThemeProvider defaultTheme="light">
@@ -43,8 +50,9 @@ export default function App() {
                     element={<AtividadesDoutrinariasPage />}
                   />
                   <Route path="/contato" element={<ContatoPage />} />
-                  <Route path="/doacoes" element={<MaintenancePage />} />
+                  <Route path="/doacoes" element={<DoacoesPage />} />
                   <Route path="/galeria" element={<GaleriaPage />} />
+                  <Route path="/doaragora" element={<DoarAgora />} />
                   <Route path="*" element={<MaintenancePage />} />
                 </Routes>
               </Suspense>

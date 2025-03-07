@@ -2,6 +2,30 @@ import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { HeroBanner } from "../components/hero-banner";
 
+// Componente de Carregamento
+
+// CSS para o spinner
+const styles = `
+.loader {
+  border: 8px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}`;
+
+// Adicionando o estilo ao documento
+const styleSheet = document.createElement("style");
+styleSheet.type = "text/css";
+styleSheet.innerText = styles;
+document.head.appendChild(styleSheet);
+
 export function QuemSomosPage() {
   return (
     <>
@@ -208,52 +232,24 @@ export function QuemSomosPage() {
                   <div className="text-white">
                     <h3 className="text-xl font-bold">Lar de Maria</h3>
                     <p className="text-sm opacity-90">
-                      Solidariedade que transforma vidas há mais de 77 anos
+                      Vídeo Institucional do Aniversário de 71 anos do Lar de
+                      Maria
                     </p>
                   </div>
                 </div>
 
                 {/* Conteúdo do Vídeo */}
                 <div className="p-6">
-                  <div className="aspect-video rounded-lg overflow-hidden bg-gray-100 mb-6">
-                    <iframe
-                      src="https://www.youtube.com/embed/dglxv5k3jSs"
-                      title="Lar de Maria - Parte II"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                      className="w-full h-full pointer-events-auto"
-                      style={{
-                        minHeight: "315px",
-                        zIndex: 10,
-                        position: "relative",
-                      }}
-                    ></iframe>
-                  </div>
-                  <div className="space-y-4">
-                    <h4 className="text-xl font-semibold text-gray-800">
-                      Conheça o Lar de Maria
-                    </h4>
-                    <p className="text-gray-600">
-                      Assista ao nosso vídeo institucional e conheça mais sobre
-                      nossa história, nossos projetos e o impacto que causamos
-                      na vida de centenas de pessoas em Belém.
-                    </p>
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <span>Vídeo Institucional</span>
+                  <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="relative overflow-hidden rounded-lg aspect-video">
+                      <iframe
+                        className="absolute top-0 left-0 w-full h-full"
+                        src="https://www.youtube.com/embed/dglxv5k3jSs"
+                        title="Lar de Maria - Parte II"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
                     </div>
                   </div>
                 </div>

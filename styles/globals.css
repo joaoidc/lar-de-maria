@@ -92,3 +92,7 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+h2.text-3xl.lg\:text-4xl.font-playfair.font-bold.text-\[\#10a3b4\].mb-4 {
+  margin-bottom: 3rem !important;
+}
