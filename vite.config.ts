@@ -4,7 +4,7 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  base: 'https://www.lardemariapara.org/',
+  base: 'https://lar-de-maria.vercel.app/',
   assetsInclude: [
     "**/*.jpg",
     "**/*.JPG",
