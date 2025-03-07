@@ -2,13 +2,12 @@ import { Helmet } from "react-helmet-async";
 import { Banner } from "../components/banner";
 import { StatsSection } from "../components/stats-section";
 import { AboutSection } from "../components/about-section";
-import { NewsSection } from "../components/news-section";
 import { MissionSection } from "../components/mission-section";
 import { PromotionalBanner } from "../components/promotional-banner";
 import { PartnersSection } from "../components/partners-section";
 import { GallerySection } from "../components/gallery-section";
 
-export function HomePage() {
+export default function HomePage() {
   return (
     <main>
       <Helmet>
@@ -22,7 +21,6 @@ export function HomePage() {
       <GallerySection />
       <StatsSection />
       <AboutSection />
-      <NewsSection />
       <MissionSection />
       <PromotionalBanner />
       <PartnersSection />

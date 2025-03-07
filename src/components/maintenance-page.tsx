@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-export function MaintenancePage() {
+export default function MaintenancePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#e6f7f9] to-white flex items-center justify-center px-4">
       <div className="max-w-2xl mx-auto text-center">
