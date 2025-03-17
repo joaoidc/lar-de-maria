@@ -15,18 +15,12 @@ export default defineConfig(({ mode }) => {
       "**/*.webp",
     ],
     resolve: {
-      alias: [
-        { find: "@", replacement: path.resolve(__dirname, "./src") },
-        {
-          find: "@/components",
-          replacement: path.resolve(__dirname, "./src/components"),
-        },
-        { find: "@/lib", replacement: path.resolve(__dirname, "./src/lib") },
-        {
-          find: "@/hooks",
-          replacement: path.resolve(__dirname, "./src/hooks"),
-        },
-      ],
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+        "@/components": path.resolve(__dirname, "./src/components"),
+        "@/lib": path.resolve(__dirname, "./src/lib"),
+        "@/hooks": path.resolve(__dirname, "./src/hooks"),
+      },
     },
     build: {
       outDir: "dist",
@@ -49,7 +43,7 @@ export default defineConfig(({ mode }) => {
       minify: "terser",
       terserOptions: {
         compress: {
-          drop_console: true,
+          drop_console: false,
           drop_debugger: true,
         },
         format: {
