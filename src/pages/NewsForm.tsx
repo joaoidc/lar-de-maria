@@ -192,10 +192,10 @@ export function NewsForm() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <DashboardSidebar />
-      <main className="flex-1 overflow-auto ml-64">
-        <div className="container mx-auto px-8 py-8 max-w-4xl">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold">
+      <main className="flex-1 p-4 md:p-8 w-full md:ml-64">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-800">
               {isEditing ? "Editar Notícia" : "Nova Notícia"}
             </h1>
             <button
@@ -231,7 +231,7 @@ export function NewsForm() {
               </div>
             )}
 
-            <div className="p-6 space-y-6">
+            <div className="p-4 md:p-6 space-y-4 md:space-y-6">
               <div>
                 <label
                   htmlFor="title"
@@ -246,7 +246,7 @@ export function NewsForm() {
                   onChange={(e) =>
                     setFormData({ ...formData, title: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#10a3b4] focus:border-transparent"
                   required
                 />
               </div>
@@ -265,7 +265,7 @@ export function NewsForm() {
                     setFormData({ ...formData, content: e.target.value })
                   }
                   rows={8}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#10a3b4] focus:border-transparent"
                   required
                 />
               </div>
@@ -290,7 +290,7 @@ export function NewsForm() {
                       })
                     }
                     placeholder="https://exemplo.com/materia-completa"
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#10a3b4] focus:border-transparent"
                   />
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg
@@ -320,10 +320,10 @@ export function NewsForm() {
                   Imagem da Notícia
                 </label>
                 <div
-                  className={`p-8 bg-gray-50 rounded-lg border-2 border-dashed transition-colors cursor-pointer ${
+                  className={`p-4 md:p-8 bg-gray-50 rounded-lg border-2 border-dashed transition-colors cursor-pointer ${
                     isDragging
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-gray-300 hover:border-blue-300 hover:bg-gray-100"
+                      ? "border-[#10a3b4] bg-blue-50"
+                      : "border-gray-300 hover:border-[#10a3b4] hover:bg-gray-100"
                   }`}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
@@ -335,19 +335,19 @@ export function NewsForm() {
                   <div className="text-center">
                     {!imagePreview ? (
                       <>
-                        <div className="mx-auto h-24 w-24 mb-4 rounded-full bg-blue-50 p-4 flex items-center justify-center">
+                        <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-[#e6f7f9] mb-4">
                           <svg
-                            className="h-12 w-12 text-blue-400"
-                            stroke="currentColor"
+                            className="h-8 w-8 text-[#10a3b4]"
+                            xmlns="http://www.w3.org/2000/svg"
                             fill="none"
-                            viewBox="0 0 48 48"
-                            aria-hidden="true"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
                           >
                             <path
-                              d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                              strokeWidth={2}
                               strokeLinecap="round"
                               strokeLinejoin="round"
+                              d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
                             />
                           </svg>
                         </div>
@@ -355,10 +355,10 @@ export function NewsForm() {
                           <div className="text-lg font-medium text-gray-700">
                             Adicione uma imagem à sua notícia
                           </div>
-                          <div className="flex items-center justify-center text-sm text-gray-600">
+                          <div className="flex flex-col md:flex-row items-center justify-center gap-1 text-sm text-gray-600">
                             <label
                               htmlFor="file-upload"
-                              className="relative cursor-pointer rounded-md font-medium text-blue-600 hover:text-blue-500"
+                              className="relative cursor-pointer rounded-md font-medium text-[#10a3b4] hover:text-[#0d8997]"
                             >
                               <span>Clique para selecionar</span>
                               <input
@@ -370,10 +370,12 @@ export function NewsForm() {
                                 onChange={handleImageChange}
                               />
                             </label>
-                            <p className="pl-1">ou arraste e solte aqui</p>
+                            <p className="text-center md:text-left">
+                              ou arraste e solte aqui
+                            </p>
                           </div>
                           <p className="text-xs text-gray-500">
-                            Formatos aceitos: PNG, JPG ou GIF (máximo 2MB)
+                            Formatos aceitos: PNG ou JPG (máximo 2MB)
                           </p>
                         </div>
                       </>
@@ -421,18 +423,18 @@ export function NewsForm() {
               </div>
             </div>
 
-            <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 rounded-b-lg flex justify-end space-x-3">
+            <div className="px-4 md:px-6 py-4 bg-gray-50 border-t border-gray-200 rounded-b-lg flex flex-col-reverse md:flex-row justify-end gap-3">
               <button
                 type="button"
                 onClick={() => navigate("/dashboard/noticias")}
-                className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                className="w-full md:w-auto px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                className="w-full md:w-auto px-4 py-2 text-white bg-[#10a3b4] rounded-md hover:bg-[#0d8997] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#10a3b4] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
                 {loading && (
                   <svg
