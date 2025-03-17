@@ -33,7 +33,7 @@ export function QuemSomosPage() {
         <title>Quem Somos | Lar de Maria</title>
         <meta
           name="description"
-          content="Conheça nossa história de 77 anos de trabalho pela promoção humana de crianças, jovens, idosos e suas famílias."
+          content="Conheça nossa história, que há mais de 70 anos, trabalhamos pela promoção humana de crianças, jovens, idosos e suas famílias."
         />
       </Helmet>
 
@@ -57,7 +57,8 @@ export function QuemSomosPage() {
                 Quem Somos & Nossa História
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-                Há 77 anos transformando vidas através do amor e da dedicação
+                Há mais de 70 anos transformando vidas através do amor e da
+                dedicação
               </p>
             </motion.div>
 
@@ -263,7 +264,7 @@ export function QuemSomosPage() {
                       className="h-8"
                     />
                     <span className="text-sm text-gray-600">
-                      Transformando vidas há mais de 77 anos
+                      Transformando vidas há mais de 70 anos
                     </span>
                   </div>
                 </div>
