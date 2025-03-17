@@ -55,7 +55,7 @@ export function DoarAgora() {
 
       {/* Hero Section */}
       <section className="py-20 lg:py-28 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center opacity-10"></div>
+        <div className="absolute inset-0 bg-[url('public/images/img-34.JPG')] bg-cover bg-center opacity-30"></div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial="hidden"
