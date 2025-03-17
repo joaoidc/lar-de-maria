@@ -23,7 +23,14 @@ export function LatestNews() {
   async function fetchLatestNews() {
     try {
       console.log("📡 Iniciando busca de notícias...");
-      console.log("🌐 URL do Supabase:", import.meta.env.VITE_SUPABASE_URL);
+      console.log(
+        "🌐 URL do Supabase:",
+        import.meta.env.VITE_SUPABASE_URL?.substring(0, 20) + "..."
+      );
+      console.log(
+        "🔑 Chave anônima presente:",
+        !!import.meta.env.VITE_SUPABASE_ANON_KEY
+      );
 
       console.log("🔍 Preparando query...");
       const query = supabase
@@ -32,16 +39,21 @@ export function LatestNews() {
         .order("created_at", { ascending: false })
         .limit(3);
 
-      console.log("📤 Enviando query:", query);
-
+      console.log("📤 Enviando query para Supabase...");
       const { data, error, status, statusText } = await query;
 
-      console.log("📥 Resposta recebida:", {
+      console.log("📥 Resposta do Supabase:", {
         status,
         statusText,
         hasData: !!data,
         dataLength: data?.length,
-        error,
+        firstItemTitle: data?.[0]?.title,
+        error: error
+          ? {
+              message: error.message,
+              code: error.code,
+            }
+          : null,
       });
 
       if (error) {

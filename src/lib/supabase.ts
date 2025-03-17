@@ -1,53 +1,32 @@
 import { createClient } from "@supabase/supabase-js";
 
-let supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Garantir que a URL começa com https://
-if (supabaseUrl && !supabaseUrl.startsWith("https://")) {
-  supabaseUrl = `https://${supabaseUrl}`;
-}
-
-// Verificar se as variáveis de ambiente estão definidas
-if (!supabaseUrl) {
-  console.error("VITE_SUPABASE_URL não está definida");
-  throw new Error("VITE_SUPABASE_URL não está definida");
-}
-
-if (!supabaseAnonKey) {
-  console.error("VITE_SUPABASE_ANON_KEY não está definida");
-  throw new Error("VITE_SUPABASE_ANON_KEY não está definida");
-}
-
-console.log("Inicializando cliente Supabase com:", {
+console.log("Configuração Supabase:", {
   url: supabaseUrl,
   hasKey: !!supabaseAnonKey,
 });
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-export async function initializeDatabase() {
-  try {
-    // Create the news table if it doesn't exist
-    const { error } = await supabase.rpc("create_news_table", {});
-
-    if (error) {
-      // If the RPC doesn't exist, we'll create it
-      await supabase.rpc("create_rpc_create_news_table", {});
-
-      // Try creating the table again
-      const { error: retryError } = await supabase.rpc("create_news_table", {});
-      if (retryError) {
-        console.error("Error creating news table:", retryError);
-      }
-    }
-  } catch (error) {
-    console.error("Error initializing database:", error);
-  }
+// Garantir que a URL começa com https://
+let finalUrl = supabaseUrl;
+if (finalUrl && !finalUrl.startsWith("https://")) {
+  finalUrl = `https://${finalUrl}`;
 }
 
-// Call initialization when the app starts
-initializeDatabase();
+if (!finalUrl) {
+  console.error("⚠️ VITE_SUPABASE_URL não está definida");
+  throw new Error("VITE_SUPABASE_URL não está definida");
+}
+
+if (!supabaseAnonKey) {
+  console.error("⚠️ VITE_SUPABASE_ANON_KEY não está definida");
+  throw new Error("VITE_SUPABASE_ANON_KEY não está definida");
+}
+
+console.log("🔌 Inicializando cliente Supabase...");
+export const supabase = createClient(finalUrl, supabaseAnonKey);
+console.log("✅ Cliente Supabase inicializado com sucesso!");
 
 // Tipos para as tabelas
 export type News = {
@@ -55,6 +34,8 @@ export type News = {
   title: string;
   content: string;
   image_url?: string;
+  external_link?: string;
+  created_by?: string;
   created_at: string;
   updated_at: string;
 };
