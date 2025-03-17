@@ -1,7 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+let supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+// Garantir que a URL começa com https://
+if (supabaseUrl && !supabaseUrl.startsWith("https://")) {
+  supabaseUrl = `https://${supabaseUrl}`;
+}
 
 // Verificar se as variáveis de ambiente estão definidas
 if (!supabaseUrl) {
@@ -12,12 +17,6 @@ if (!supabaseUrl) {
 if (!supabaseAnonKey) {
   console.error("VITE_SUPABASE_ANON_KEY não está definida");
   throw new Error("VITE_SUPABASE_ANON_KEY não está definida");
-}
-
-// Garantir que a URL está no formato correto
-if (!supabaseUrl.startsWith("https://")) {
-  console.error("VITE_SUPABASE_URL deve começar com https://");
-  throw new Error("VITE_SUPABASE_URL deve começar com https://");
 }
 
 console.log("Inicializando cliente Supabase com:", {
