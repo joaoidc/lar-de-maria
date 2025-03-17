@@ -18,6 +18,7 @@ export default defineConfig({
     },
   },
   build: {
+    outDir: "dist",
     rollupOptions: {
       output: {
         manualChunks: {
@@ -33,7 +34,7 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 1000,
     cssCodeSplit: true,
-    sourcemap: false,
+    sourcemap: true,
     minify: "terser",
     terserOptions: {
       compress: {
@@ -49,5 +50,13 @@ export default defineConfig({
     hmr: {
       overlay: false,
     },
+  },
+  define: {
+    "process.env.VITE_SUPABASE_URL": JSON.stringify(
+      process.env.VITE_SUPABASE_URL
+    ),
+    "process.env.VITE_SUPABASE_ANON_KEY": JSON.stringify(
+      process.env.VITE_SUPABASE_ANON_KEY
+    ),
   },
 });
