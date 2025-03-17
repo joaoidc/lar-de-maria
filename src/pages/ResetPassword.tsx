@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { Helmet } from "react-helmet-async";
@@ -9,13 +9,6 @@ export default function ResetPassword() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Apenas para debug - remover depois
-    console.log("URL:", window.location.href);
-    console.log("Search:", window.location.search);
-    console.log("Hash:", window.location.hash);
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

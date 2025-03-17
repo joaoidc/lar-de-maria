@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { Navbar } from "./components/Navbar";
 import { ThemeProvider } from "./components/theme-provider";
@@ -15,6 +20,7 @@ import { LoginPage } from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import { PrivateRoute } from "./components/PrivateRoute";
+import { PublicLayout } from "./components/PublicLayout";
 
 // Lazy load components
 const QuemSomosPage = lazy(() => import("./pages/quem-somos"));
@@ -25,6 +31,21 @@ const AtividadesDoutrinariasPage = lazy(
 const ContatoPage = lazy(() => import("./pages/contato"));
 const GaleriaPage = lazy(() => import("./pages/galeria"));
 const MaintenancePage = lazy(() => import("./components/maintenance-page"));
+
+function MainLayout() {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <div className="flex-grow">
+        <Suspense fallback={<LoadingSpinner />}>
+          <Outlet />
+        </Suspense>
+      </div>
+      <Footer />
+      <ScrollToTop />
+    </div>
+  );
+}
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -42,42 +63,52 @@ export default function App() {
       <AuthProvider>
         <ThemeProvider defaultTheme="light">
           <Router>
-            <div className="flex flex-col min-h-screen">
-              <Navbar />
-              <div className="flex-grow">
-                <Suspense fallback={<LoadingSpinner />}>
-                  <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/reset-password" element={<ResetPassword />} />
-                    <Route
-                      path="/dashboard"
-                      element={
-                        <PrivateRoute>
-                          <Dashboard />
-                        </PrivateRoute>
-                      }
-                    />
-                    <Route path="/quem-somos" element={<QuemSomosPage />} />
-                    <Route
-                      path="/projetos-sociais"
-                      element={<ProjetosSociaisPage />}
-                    />
-                    <Route
-                      path="/atividades-doutrinarias"
-                      element={<AtividadesDoutrinariasPage />}
-                    />
-                    <Route path="/contato" element={<ContatoPage />} />
-                    <Route path="/doacoes" element={<DoacoesPage />} />
-                    <Route path="/galeria" element={<GaleriaPage />} />
-                    <Route path="/doaragora" element={<DoarAgora />} />
-                    <Route path="*" element={<MaintenancePage />} />
-                  </Routes>
-                </Suspense>
-              </div>
-              <Footer />
-              <ScrollToTop />
-            </div>
+            <Routes>
+              {/* Rotas públicas sem navbar */}
+              <Route
+                path="/login"
+                element={
+                  <PublicLayout>
+                    <LoginPage />
+                  </PublicLayout>
+                }
+              />
+              <Route
+                path="/reset-password"
+                element={
+                  <PublicLayout>
+                    <ResetPassword />
+                  </PublicLayout>
+                }
+              />
+
+              {/* Rotas com navbar */}
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route
+                  path="/dashboard"
+                  element={
+                    <PrivateRoute>
+                      <Dashboard />
+                    </PrivateRoute>
+                  }
+                />
+                <Route path="/quem-somos" element={<QuemSomosPage />} />
+                <Route
+                  path="/projetos-sociais"
+                  element={<ProjetosSociaisPage />}
+                />
+                <Route
+                  path="/atividades-doutrinarias"
+                  element={<AtividadesDoutrinariasPage />}
+                />
+                <Route path="/contato" element={<ContatoPage />} />
+                <Route path="/doacoes" element={<DoacoesPage />} />
+                <Route path="/galeria" element={<GaleriaPage />} />
+                <Route path="/doaragora" element={<DoarAgora />} />
+                <Route path="*" element={<MaintenancePage />} />
+              </Route>
+            </Routes>
           </Router>
         </ThemeProvider>
       </AuthProvider>
