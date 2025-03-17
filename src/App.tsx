@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "./contexts/AuthContext";
+import { Toaster } from "react-hot-toast";
 import HomePage from "./pages/Home";
 import { LoginPage } from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
@@ -16,12 +17,15 @@ import Galeria from "./pages/galeria";
 import Contato from "./pages/contato";
 import Doacoes from "./pages/doacoes";
 import { DoarAgora } from "./pages/doaragora";
+import { AllNews } from "./pages/AllNews";
+import { NewsDetail } from "./pages/NewsDetail";
 
 export default function App() {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <AuthProvider>
+          <Toaster position="top-right" />
           <Routes>
             {/* Rotas Públicas */}
             <Route path="/" element={<HomePage />} />
@@ -35,6 +39,8 @@ export default function App() {
             <Route path="/contato" element={<Contato />} />
             <Route path="/doacoes" element={<Doacoes />} />
             <Route path="/doaragora" element={<DoarAgora />} />
+            <Route path="/noticias" element={<AllNews />} />
+            <Route path="/noticias/:id" element={<NewsDetail />} />
 
             {/* Rotas de Autenticação */}
             <Route path="/login" element={<LoginPage />} />

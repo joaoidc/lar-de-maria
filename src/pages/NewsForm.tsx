@@ -3,8 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { DashboardSidebar } from "../components/DashboardSidebar";
 import { supabase } from "../lib/supabase";
+import { toast } from "react-hot-toast";
+import type { News } from "../lib/supabase";
 
-interface NewsFormData {
+interface NewsFormData extends Omit<News, "id" | "created_at" | "updated_at"> {
   title: string;
   content: string;
   image_url?: string;
@@ -23,6 +25,7 @@ export function NewsForm() {
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isExternalUrl, setIsExternalUrl] = useState(true);
 
   const isEditing = !!id;
 
@@ -48,14 +51,19 @@ export function NewsForm() {
 
       if (error) throw error;
       if (data) {
-        setFormData(data);
+        setFormData({
+          title: data.title,
+          content: data.content,
+          image_url: data.image_url || "",
+        });
         if (data.image_url) {
           setImagePreview(data.image_url);
+          setIsExternalUrl(true);
         }
       }
     } catch (error) {
       console.error("Error fetching news:", error);
-      setError("Erro ao carregar a notícia. Por favor, tente novamente.");
+      toast.error("Erro ao carregar a notícia");
     }
   }
 
@@ -64,6 +72,8 @@ export function NewsForm() {
     if (file) {
       setImageFile(file);
       setImagePreview(URL.createObjectURL(file));
+      setIsExternalUrl(false);
+      setFormData({ ...formData, image_url: "" });
     }
   }
 
@@ -73,24 +83,61 @@ export function NewsForm() {
     setError(null);
 
     try {
-      let image_url = formData.image_url;
+      // If using external URL, use it directly
+      let image_url = isExternalUrl ? formData.image_url : null;
 
-      if (imageFile) {
-        const fileExt = imageFile.name.split(".").pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `news/${fileName}`;
+      // Only try to upload if we have a file and are not using external URL
+      if (imageFile && !isExternalUrl) {
+        try {
+          const fileExt = imageFile.name.split(".").pop();
+          const fileName = `${Date.now()}.${fileExt}`;
+          const filePath = `news/${fileName}`;
 
-        const { error: uploadError } = await supabase.storage
-          .from("images")
-          .upload(filePath, imageFile);
+          // First, check if the bucket exists
+          const { data: buckets } = await supabase.storage.listBuckets();
+          const newsBucket = buckets?.find((b) => b.name === "news");
 
-        if (uploadError) throw uploadError;
+          // If bucket doesn't exist, create it
+          if (!newsBucket) {
+            const { error: createBucketError } =
+              await supabase.storage.createBucket("news", {
+                public: true,
+                fileSizeLimit: 1024 * 1024 * 2, // 2MB limit
+              });
 
-        const {
-          data: { publicUrl },
-        } = supabase.storage.from("images").getPublicUrl(filePath);
+            if (createBucketError) {
+              console.error("Error creating bucket:", createBucketError);
+              throw createBucketError;
+            }
+          }
 
-        image_url = publicUrl;
+          // Now try to upload the file
+          const { error: uploadError } = await supabase.storage
+            .from("news")
+            .upload(filePath, imageFile);
+
+          if (uploadError) {
+            console.error("Error uploading image:", uploadError);
+            throw uploadError;
+          }
+
+          // Get the public URL
+          const {
+            data: { publicUrl },
+          } = supabase.storage.from("news").getPublicUrl(filePath);
+
+          image_url = publicUrl;
+        } catch (uploadError) {
+          console.error("Error handling image upload:", uploadError);
+          toast.error(
+            "Erro ao fazer upload da imagem. Por favor, tente novamente."
+          );
+          setError(
+            "Erro ao fazer upload da imagem. Por favor, tente novamente."
+          );
+          setLoading(false);
+          return;
+        }
       }
 
       const newsData = {
@@ -109,10 +156,25 @@ export function NewsForm() {
 
       if (error) throw error;
 
+      toast.success(
+        isEditing
+          ? "Notícia atualizada com sucesso!"
+          : "Notícia criada com sucesso!"
+      );
       navigate("/dashboard/noticias");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving news:", error);
-      setError("Erro ao salvar a notícia. Por favor, tente novamente.");
+
+      // Handle specific error cases
+      if (error.message?.includes("column of 'news'")) {
+        setError(
+          "Erro na estrutura da tabela. Por favor, execute o script de migração."
+        );
+        toast.error("Erro na estrutura da tabela");
+      } else {
+        setError("Erro ao salvar a notícia. Por favor, tente novamente.");
+        toast.error("Erro ao salvar a notícia");
+      }
     } finally {
       setLoading(false);
     }
@@ -123,16 +185,18 @@ export function NewsForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-100">
       <DashboardSidebar />
-
-      {/* Main Content */}
-      <div className="md:ml-64 p-8 pb-20 md:pb-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex items-center mb-6">
+      <main className="flex-1 overflow-auto ml-64">
+        <div className="container mx-auto px-8 py-8 max-w-4xl">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-bold">
+              {isEditing ? "Editar Notícia" : "Nova Notícia"}
+            </h1>
             <button
+              type="button"
               onClick={() => navigate("/dashboard/noticias")}
-              className="mr-4 text-gray-600 hover:text-gray-800"
+              className="flex items-center text-gray-600 hover:text-gray-800"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +204,7 @@ export function NewsForm() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-6 h-6"
+                className="w-5 h-5 mr-1"
               >
                 <path
                   strokeLinecap="round"
@@ -148,23 +212,21 @@ export function NewsForm() {
                   d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
                 />
               </svg>
+              Voltar
             </button>
-            <h1 className="text-2xl font-semibold text-gray-800">
-              {isEditing ? "Editar Notícia" : "Nova Notícia"}
-            </h1>
           </div>
-
-          {error && (
-            <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6">
-              {error}
-            </div>
-          )}
 
           <form
             onSubmit={handleSubmit}
-            className="bg-white rounded-lg shadow p-6"
+            className="bg-white rounded-lg shadow-md"
           >
-            <div className="space-y-6">
+            {error && (
+              <div className="p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
+                {error}
+              </div>
+            )}
+
+            <div className="p-6 space-y-6">
               <div>
                 <label
                   htmlFor="title"
@@ -179,7 +241,7 @@ export function NewsForm() {
                   onChange={(e) =>
                     setFormData({ ...formData, title: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#10a3b4] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
               </div>
@@ -197,84 +259,150 @@ export function NewsForm() {
                   onChange={(e) =>
                     setFormData({ ...formData, content: e.target.value })
                   }
-                  rows={6}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#10a3b4] focus:border-transparent"
+                  rows={8}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-3">
                   Imagem
                 </label>
-                <div className="mt-1 flex items-center space-x-4">
-                  {imagePreview && (
-                    <div className="relative">
-                      <img
-                        src={imagePreview}
-                        alt="Preview"
-                        className="w-32 h-32 object-cover rounded-lg"
+                <div className="space-y-4">
+                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <label className="inline-flex items-center mb-3">
+                      <input
+                        type="radio"
+                        className="form-radio text-blue-500"
+                        checked={isExternalUrl}
+                        onChange={() => setIsExternalUrl(true)}
                       />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setImageFile(null);
-                          setImagePreview(null);
-                          setFormData({ ...formData, image_url: "" });
-                        }}
-                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-4 h-4"
+                      <span className="ml-2 text-gray-700">URL externa</span>
+                    </label>
+                    {isExternalUrl && (
+                      <input
+                        type="text"
+                        value={formData.image_url || ""}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            image_url: e.target.value,
+                          })
+                        }
+                        placeholder="https://exemplo.com/imagem.jpg"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    )}
+                  </div>
+
+                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <label className="inline-flex items-center mb-3">
+                      <input
+                        type="radio"
+                        className="form-radio text-blue-500"
+                        checked={!isExternalUrl}
+                        onChange={() => setIsExternalUrl(false)}
+                      />
+                      <span className="ml-2 text-gray-700">
+                        Upload de arquivo
+                      </span>
+                    </label>
+                    {!isExternalUrl && (
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="w-full text-sm text-gray-500
+                          file:mr-4 file:py-2 file:px-4
+                          file:rounded-md file:border-0
+                          file:text-sm file:font-medium
+                          file:bg-blue-50 file:text-blue-700
+                          hover:file:bg-blue-100"
+                      />
+                    )}
+                  </div>
+
+                  {imagePreview && (
+                    <div className="mt-4">
+                      <div className="relative w-full max-w-sm mx-auto">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="rounded-lg shadow-md w-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setImagePreview(null);
+                            setImageFile(null);
+                            setFormData({ ...formData, image_url: "" });
+                          }}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </button>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   )}
-                  <label className="cursor-pointer bg-white px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#10a3b4]">
-                    <span className="text-sm font-medium text-gray-700">
-                      {imagePreview ? "Trocar imagem" : "Selecionar imagem"}
-                    </span>
-                    <input
-                      type="file"
-                      className="hidden"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                    />
-                  </label>
                 </div>
               </div>
+            </div>
 
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="bg-[#10a3b4] text-white px-6 py-2 rounded-lg hover:bg-[#0d8997] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? (
-                    <div className="flex items-center space-x-2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                      <span>Salvando...</span>
-                    </div>
-                  ) : (
-                    "Salvar"
-                  )}
-                </button>
-              </div>
+            <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 rounded-b-lg flex justify-end space-x-3">
+              <button
+                type="button"
+                onClick={() => navigate("/dashboard/noticias")}
+                className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+              >
+                {loading && (
+                  <svg
+                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                )}
+                {loading ? "Salvando..." : isEditing ? "Atualizar" : "Criar"}
+              </button>
             </div>
           </form>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
