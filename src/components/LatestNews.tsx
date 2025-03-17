@@ -16,29 +16,55 @@ export function LatestNews() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log("🔄 LatestNews montado - iniciando fetch...");
     fetchLatestNews();
   }, []);
 
   async function fetchLatestNews() {
     try {
-      console.log("Iniciando busca de notícias...");
+      console.log("📡 Iniciando busca de notícias...");
+      console.log("🌐 URL do Supabase:", import.meta.env.VITE_SUPABASE_URL);
 
-      const { data, error } = await supabase
+      console.log("🔍 Preparando query...");
+      const query = supabase
         .from("news")
         .select("*")
         .order("created_at", { ascending: false })
         .limit(3);
 
+      console.log("📤 Enviando query:", query);
+
+      const { data, error, status, statusText } = await query;
+
+      console.log("📥 Resposta recebida:", {
+        status,
+        statusText,
+        hasData: !!data,
+        dataLength: data?.length,
+        error,
+      });
+
       if (error) {
-        console.error("Erro ao buscar notícias:", error);
-        setError(error.message);
-        throw error;
+        console.error("❌ Erro detalhado:", {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code,
+        });
+        setError(`Erro: ${error.message}`);
+        return;
       }
 
-      console.log("Notícias recebidas:", data);
-      setNews(data || []);
+      if (!data || data.length === 0) {
+        console.log("ℹ️ Nenhuma notícia encontrada");
+        setNews([]);
+        return;
+      }
+
+      console.log("✅ Notícias recebidas:", data);
+      setNews(data);
     } catch (error) {
-      console.error("Erro ao buscar últimas notícias:", error);
+      console.error("💥 Erro ao buscar últimas notícias:", error);
       setError(
         error instanceof Error ? error.message : "Erro ao carregar notícias"
       );
@@ -59,6 +85,24 @@ export function LatestNews() {
     return (
       <div className="text-center py-8">
         <p className="text-red-500">Erro ao carregar notícias: {error}</p>
+        <button
+          onClick={() => {
+            setError(null);
+            setLoading(true);
+            fetchLatestNews();
+          }}
+          className="mt-4 px-4 py-2 bg-[#10a3b4] text-white rounded hover:bg-[#0d8997]"
+        >
+          Tentar novamente
+        </button>
+      </div>
+    );
+  }
+
+  if (news.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-500">Nenhuma notícia disponível no momento.</p>
       </div>
     );
   }
@@ -91,11 +135,17 @@ export function LatestNews() {
                   {item.title}
                 </h3>
                 <p className="text-gray-600 mb-4 line-clamp-3">
-                  {item.content}
+                  {item.content.length > 150
+                    ? `${item.content.substring(0, 150)}...`
+                    : item.content}
                 </p>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">
-                    {new Date(item.created_at).toLocaleDateString("pt-BR")}
+                    {new Date(item.created_at).toLocaleDateString("pt-BR", {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    })}
                   </span>
                   <Link
                     to={`/noticias/${item.id}`}
