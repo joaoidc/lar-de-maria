@@ -9,12 +9,19 @@ import { ScrollToTop } from "./components/scroll-to-top";
 import LoadingSpinner from "./components/LoadingSpinner";
 import DoacoesPage from "./pages/DoacoesPage";
 import DoarAgora from "./pages/doaragora";
+import { AuthProvider } from "./contexts/AuthContext";
+import HomePage from "./pages/Home";
+import { LoginPage } from "./pages/Login";
+import ResetPassword from "./pages/ResetPassword";
+import Dashboard from "./pages/Dashboard";
+import { PrivateRoute } from "./components/PrivateRoute";
 
 // Lazy load components
-const HomePage = lazy(() => import("./pages/Home"));
 const QuemSomosPage = lazy(() => import("./pages/quem-somos"));
 const ProjetosSociaisPage = lazy(() => import("./pages/projetos-sociais"));
-const AtividadesDoutrinariasPage = lazy(() => import("./pages/atividades-doutrinarias"));
+const AtividadesDoutrinariasPage = lazy(
+  () => import("./pages/atividades-doutrinarias")
+);
 const ContatoPage = lazy(() => import("./pages/contato"));
 const GaleriaPage = lazy(() => import("./pages/galeria"));
 const MaintenancePage = lazy(() => import("./components/maintenance-page"));
@@ -32,36 +39,48 @@ export default function App() {
 
   return (
     <HelmetProvider>
-      <ThemeProvider defaultTheme="light">
-        <Router>
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <div className="flex-grow">
-              <Suspense fallback={<LoadingSpinner />}>
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/quem-somos" element={<QuemSomosPage />} />
-                  <Route
-                    path="/projetos-sociais"
-                    element={<ProjetosSociaisPage />}
-                  />
-                  <Route
-                    path="/atividades-doutrinarias"
-                    element={<AtividadesDoutrinariasPage />}
-                  />
-                  <Route path="/contato" element={<ContatoPage />} />
-                  <Route path="/doacoes" element={<DoacoesPage />} />
-                  <Route path="/galeria" element={<GaleriaPage />} />
-                  <Route path="/doaragora" element={<DoarAgora />} />
-                  <Route path="*" element={<MaintenancePage />} />
-                </Routes>
-              </Suspense>
+      <AuthProvider>
+        <ThemeProvider defaultTheme="light">
+          <Router>
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <div className="flex-grow">
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route
+                      path="/dashboard"
+                      element={
+                        <PrivateRoute>
+                          <Dashboard />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route path="/quem-somos" element={<QuemSomosPage />} />
+                    <Route
+                      path="/projetos-sociais"
+                      element={<ProjetosSociaisPage />}
+                    />
+                    <Route
+                      path="/atividades-doutrinarias"
+                      element={<AtividadesDoutrinariasPage />}
+                    />
+                    <Route path="/contato" element={<ContatoPage />} />
+                    <Route path="/doacoes" element={<DoacoesPage />} />
+                    <Route path="/galeria" element={<GaleriaPage />} />
+                    <Route path="/doaragora" element={<DoarAgora />} />
+                    <Route path="*" element={<MaintenancePage />} />
+                  </Routes>
+                </Suspense>
+              </div>
+              <Footer />
+              <ScrollToTop />
             </div>
-            <Footer />
-            <ScrollToTop />
-          </div>
-        </Router>
-      </ThemeProvider>
+          </Router>
+        </ThemeProvider>
+      </AuthProvider>
     </HelmetProvider>
   );
 }
