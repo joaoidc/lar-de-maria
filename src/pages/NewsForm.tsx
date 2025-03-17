@@ -10,6 +10,7 @@ interface NewsFormData extends Omit<News, "id" | "created_at" | "updated_at"> {
   title: string;
   content: string;
   image_url?: string;
+  external_link?: string;
 }
 
 export function NewsForm() {
@@ -22,10 +23,11 @@ export function NewsForm() {
     title: "",
     content: "",
     image_url: "",
+    external_link: "",
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [isExternalUrl, setIsExternalUrl] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
 
   const isEditing = !!id;
 
@@ -55,10 +57,10 @@ export function NewsForm() {
           title: data.title,
           content: data.content,
           image_url: data.image_url || "",
+          external_link: data.external_link || "",
         });
         if (data.image_url) {
           setImagePreview(data.image_url);
-          setIsExternalUrl(true);
         }
       }
     } catch (error) {
@@ -67,13 +69,38 @@ export function NewsForm() {
     }
   }
 
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault();
+    setIsDragging(true);
+  }
+
+  function handleDragLeave(e: React.DragEvent) {
+    e.preventDefault();
+    setIsDragging(false);
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      handleImageFile(file);
+    } else {
+      toast.error("Por favor, envie apenas arquivos de imagem");
+    }
+  }
+
+  function handleImageFile(file: File) {
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+    setFormData({ ...formData, image_url: "" });
+  }
+
   async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (file) {
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
-      setIsExternalUrl(false);
-      setFormData({ ...formData, image_url: "" });
+      handleImageFile(file);
     }
   }
 
@@ -83,35 +110,14 @@ export function NewsForm() {
     setError(null);
 
     try {
-      // If using external URL, use it directly
-      let image_url = isExternalUrl ? formData.image_url : null;
+      let image_url = null;
 
-      // Only try to upload if we have a file and are not using external URL
-      if (imageFile && !isExternalUrl) {
+      if (imageFile) {
         try {
           const fileExt = imageFile.name.split(".").pop();
           const fileName = `${Date.now()}.${fileExt}`;
           const filePath = `news/${fileName}`;
 
-          // First, check if the bucket exists
-          const { data: buckets } = await supabase.storage.listBuckets();
-          const newsBucket = buckets?.find((b) => b.name === "news");
-
-          // If bucket doesn't exist, create it
-          if (!newsBucket) {
-            const { error: createBucketError } =
-              await supabase.storage.createBucket("news", {
-                public: true,
-                fileSizeLimit: 1024 * 1024 * 2, // 2MB limit
-              });
-
-            if (createBucketError) {
-              console.error("Error creating bucket:", createBucketError);
-              throw createBucketError;
-            }
-          }
-
-          // Now try to upload the file
           const { error: uploadError } = await supabase.storage
             .from("news")
             .upload(filePath, imageFile);
@@ -121,7 +127,6 @@ export function NewsForm() {
             throw uploadError;
           }
 
-          // Get the public URL
           const {
             data: { publicUrl },
           } = supabase.storage.from("news").getPublicUrl(filePath);
@@ -143,7 +148,8 @@ export function NewsForm() {
       const newsData = {
         title: formData.title,
         content: formData.content,
-        image_url,
+        image_url: image_url || formData.image_url,
+        external_link: formData.external_link || null,
       };
 
       let error;
@@ -165,7 +171,6 @@ export function NewsForm() {
     } catch (error: any) {
       console.error("Error saving news:", error);
 
-      // Handle specific error cases
       if (error.message?.includes("column of 'news'")) {
         setError(
           "Erro na estrutura da tabela. Por favor, execute o script de migração."
@@ -266,98 +271,152 @@ export function NewsForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Imagem
+                <label
+                  htmlFor="external_link"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Link Externo{" "}
+                  <span className="text-gray-500 text-xs">(opcional)</span>
                 </label>
-                <div className="space-y-4">
-                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <label className="inline-flex items-center mb-3">
-                      <input
-                        type="radio"
-                        className="form-radio text-blue-500"
-                        checked={isExternalUrl}
-                        onChange={() => setIsExternalUrl(true)}
+                <div className="relative">
+                  <input
+                    type="url"
+                    id="external_link"
+                    value={formData.external_link}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        external_link: e.target.value,
+                      })
+                    }
+                    placeholder="https://exemplo.com/materia-completa"
+                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg
+                      className="h-5 w-5 text-gray-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
                       />
-                      <span className="ml-2 text-gray-700">URL externa</span>
-                    </label>
-                    {isExternalUrl && (
-                      <input
-                        type="text"
-                        value={formData.image_url || ""}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            image_url: e.target.value,
-                          })
-                        }
-                        placeholder="https://exemplo.com/imagem.jpg"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    )}
+                    </svg>
                   </div>
+                </div>
+                <p className="mt-1 text-sm text-gray-500">
+                  Adicione um link para a fonte original ou matéria completa, se
+                  houver
+                </p>
+              </div>
 
-                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <label className="inline-flex items-center mb-3">
-                      <input
-                        type="radio"
-                        className="form-radio text-blue-500"
-                        checked={!isExternalUrl}
-                        onChange={() => setIsExternalUrl(false)}
-                      />
-                      <span className="ml-2 text-gray-700">
-                        Upload de arquivo
-                      </span>
-                    </label>
-                    {!isExternalUrl && (
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        className="w-full text-sm text-gray-500
-                          file:mr-4 file:py-2 file:px-4
-                          file:rounded-md file:border-0
-                          file:text-sm file:font-medium
-                          file:bg-blue-50 file:text-blue-700
-                          hover:file:bg-blue-100"
-                      />
-                    )}
-                  </div>
-
-                  {imagePreview && (
-                    <div className="mt-4">
-                      <div className="relative w-full max-w-sm mx-auto">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Imagem da Notícia
+                </label>
+                <div
+                  className={`p-8 bg-gray-50 rounded-lg border-2 border-dashed transition-colors cursor-pointer ${
+                    isDragging
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-gray-300 hover:border-blue-300 hover:bg-gray-100"
+                  }`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  onClick={() =>
+                    document.getElementById("file-upload")?.click()
+                  }
+                >
+                  <div className="text-center">
+                    {!imagePreview ? (
+                      <>
+                        <div className="mx-auto h-24 w-24 mb-4 rounded-full bg-blue-50 p-4 flex items-center justify-center">
+                          <svg
+                            className="h-12 w-12 text-blue-400"
+                            stroke="currentColor"
+                            fill="none"
+                            viewBox="0 0 48 48"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                              strokeWidth={2}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="text-lg font-medium text-gray-700">
+                            Adicione uma imagem à sua notícia
+                          </div>
+                          <div className="flex items-center justify-center text-sm text-gray-600">
+                            <label
+                              htmlFor="file-upload"
+                              className="relative cursor-pointer rounded-md font-medium text-blue-600 hover:text-blue-500"
+                            >
+                              <span>Clique para selecionar</span>
+                              <input
+                                id="file-upload"
+                                name="file-upload"
+                                type="file"
+                                accept="image/*"
+                                className="sr-only"
+                                onChange={handleImageChange}
+                              />
+                            </label>
+                            <p className="pl-1">ou arraste e solte aqui</p>
+                          </div>
+                          <p className="text-xs text-gray-500">
+                            Formatos aceitos: PNG, JPG ou GIF (máximo 2MB)
+                          </p>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="relative group">
                         <img
                           src={imagePreview}
                           alt="Preview"
-                          className="rounded-lg shadow-md w-full object-cover"
+                          className="rounded-lg shadow-md w-full max-h-[300px] object-cover"
                         />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setImagePreview(null);
-                            setImageFile(null);
-                            setFormData({ ...formData, image_url: "" });
-                          }}
-                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-4 h-4"
+                        <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setImagePreview(null);
+                              setImageFile(null);
+                              setFormData({ ...formData, image_url: "" });
+                            }}
+                            className="bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transform hover:scale-110 transition-transform"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                        </button>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={2}
+                              stroke="currentColor"
+                              className="w-5 h-5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                        <p className="mt-2 text-sm text-gray-500">
+                          Clique na imagem para alterar ou no X para remover
+                        </p>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

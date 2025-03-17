@@ -156,6 +156,17 @@ export function Footer() {
               © 2025 - Todos os direitos reservados ao{" "}
               <span className="text-[#10B5B5]">Lar de Maria</span>
             </p>
+            <p className="text-center text-xs md:text-sm">
+              Desenvolvido por{" "}
+              <a
+                href="http://www.lannadevinger.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#10B5B5] hover:text-[#0d8997] transition-colors"
+              >
+                Devinger
+              </a>
+            </p>
           </div>
         </div>
       </div>
