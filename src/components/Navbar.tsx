@@ -16,7 +16,7 @@ export function Navbar() {
     { to: "/atividades-doutrinarias", label: "Atividades doutrinárias" },
     { to: "/galeria", label: "Galeria" },
     { to: "/contato", label: "Contato" },
-    // { to: "/doacoes", label: "Doações" },
+    { to: "/doacoes", label: "Doações" },
   ];
 
   return (
@@ -114,7 +114,7 @@ export function Navbar() {
           </nav>
 
           <div className="hidden lg:block">
-            <Link to="/doacoes" className={buttonStyles}>
+            <Link to="/doaragora" className={buttonStyles}>
               Quero Ajudar
             </Link>
           </div>

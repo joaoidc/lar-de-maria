@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { HeroBanner } from "../components/hero-banner";
+import { PublicLayout } from "../components/PublicLayout";
 
 export function ContatoPage() {
   return (
-    <>
+    <PublicLayout>
       <Helmet>
         <title>Contato | Lar de Maria</title>
         <meta
@@ -444,7 +445,7 @@ export function ContatoPage() {
           </div>
         </section>
       </div>
-    </>
+    </PublicLayout>
   );
 }
 

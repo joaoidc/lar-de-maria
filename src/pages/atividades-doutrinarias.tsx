@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { HeroBanner } from "../components/hero-banner";
+import { PublicLayout } from "../components/PublicLayout";
 
 type Atividade = {
   horario: string;
@@ -48,7 +49,7 @@ export function AtividadesDoutrinariasPage() {
   const [diaAtivo, setDiaAtivo] = useState("Segunda-feira");
 
   return (
-    <>
+    <PublicLayout>
       <Helmet>
         <title>Atividades Doutrinárias | Lar de Maria</title>
         <meta
@@ -197,7 +198,7 @@ export function AtividadesDoutrinariasPage() {
           </div>
         </section>
       </div>
-    </>
+    </PublicLayout>
   );
 }
 

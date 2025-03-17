@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { HeroBanner } from "../components/hero-banner";
+import { PublicLayout } from "../components/PublicLayout";
 
 // Componente de Carregamento
 
@@ -28,7 +29,7 @@ document.head.appendChild(styleSheet);
 
 export function QuemSomosPage() {
   return (
-    <>
+    <PublicLayout>
       <Helmet>
         <title>Quem Somos | Lar de Maria</title>
         <meta
@@ -539,7 +540,7 @@ export function QuemSomosPage() {
           </div>
         </section>
       </div>
-    </>
+    </PublicLayout>
   );
 }
 

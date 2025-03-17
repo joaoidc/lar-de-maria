@@ -7,10 +7,11 @@ import { PromotionalBanner } from "../components/promotional-banner";
 import { PartnersSection } from "../components/partners-section";
 import { GallerySection } from "../components/gallery-section";
 import { NewsSection } from "../components/news-section";
+import { PublicLayout } from "../components/PublicLayout";
 
 export default function HomePage() {
   return (
-    <main>
+    <PublicLayout>
       <Helmet>
         <title>Lar de Maria - Centro Espírita</title>
         <meta
@@ -27,6 +28,6 @@ export default function HomePage() {
       <NewsSection />
       <PartnersSection />
       {/* Outros componentes da home */}
-    </main>
+    </PublicLayout>
   );
 }

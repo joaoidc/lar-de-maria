@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { HeroBanner } from "../components/hero-banner";
 import CTASection from "../components/CTASection";
+import { PublicLayout } from "../components/PublicLayout";
 import "../styles/ProjetosSociais.css";
 
 // Dados dos projetos
@@ -104,7 +105,7 @@ export function ProjetosSociaisPage() {
   const projetoSelecionado = projetosData.find((p) => p.id === projetoAtivo);
 
   return (
-    <>
+    <PublicLayout>
       <Helmet>
         <title>Projetos Sociais | Lar de Maria</title>
         <meta
@@ -306,7 +307,7 @@ export function ProjetosSociaisPage() {
         {/* Seção Final com CTA */}
         <CTASection />
       </div>
-    </>
+    </PublicLayout>
   );
 }
 
