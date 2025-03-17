@@ -13,6 +13,7 @@ interface News {
 export function LatestNews() {
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchLatestNews();
@@ -20,16 +21,27 @@ export function LatestNews() {
 
   async function fetchLatestNews() {
     try {
+      console.log("Iniciando busca de notícias...");
+
       const { data, error } = await supabase
         .from("news")
         .select("*")
         .order("created_at", { ascending: false })
         .limit(3);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Erro ao buscar notícias:", error);
+        setError(error.message);
+        throw error;
+      }
+
+      console.log("Notícias recebidas:", data);
       setNews(data || []);
     } catch (error) {
-      console.error("Error fetching latest news:", error);
+      console.error("Erro ao buscar últimas notícias:", error);
+      setError(
+        error instanceof Error ? error.message : "Erro ao carregar notícias"
+      );
     } finally {
       setLoading(false);
     }
@@ -39,6 +51,14 @@ export function LatestNews() {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#10a3b4]"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-red-500">Erro ao carregar notícias: {error}</p>
       </div>
     );
   }
