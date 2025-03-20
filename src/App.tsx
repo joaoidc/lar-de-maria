@@ -1,95 +1,25 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
+import { RouterProvider } from "react-router-dom";
+import type { ExtendedFutureConfig } from "./types/router";
 import { AuthProvider } from "./contexts/AuthContext";
-import { Toaster } from "react-hot-toast";
-import HomePage from "./pages/Home";
-import { LoginPage } from "./pages/Login";
-import ResetPassword from "./pages/ResetPassword";
-import { Dashboard } from "./pages/Dashboard";
-import { News } from "./pages/News";
-import { NewsForm } from "./pages/NewsForm";
-import { Settings } from "./pages/Settings";
-import { PrivateRoute } from "./components/PrivateRoute";
-import { QuemSomosPage } from "./pages/quem-somos";
-import ProjetosSociais from "./pages/projetos-sociais";
-import AtividadesDoutrinarias from "./pages/atividades-doutrinarias";
-import Galeria from "./pages/galeria";
-import Contato from "./pages/contato";
-import Doacoes from "./pages/doacoes";
-import { DoarAgora } from "./pages/doaragora";
-import { AllNews } from "./pages/AllNews";
-import { NewsDetail } from "./pages/NewsDetail";
+import { HelmetProvider } from "react-helmet-async";
+import router from "./lib/router";
 
-export default function App() {
+// Configuração que funciona tanto na v6 quanto na v7
+const routerConfig = {
+  future: {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+  } as ExtendedFutureConfig,
+};
+
+function App() {
   return (
     <HelmetProvider>
-      <BrowserRouter>
-        <AuthProvider>
-          <Toaster position="top-right" />
-          <Routes>
-            {/* Rotas Públicas */}
-            <Route path="/" element={<HomePage />} />
-            <Route path="/quem-somos" element={<QuemSomosPage />} />
-            <Route path="/projetos-sociais" element={<ProjetosSociais />} />
-            <Route
-              path="/atividades-doutrinarias"
-              element={<AtividadesDoutrinarias />}
-            />
-            <Route path="/galeria" element={<Galeria />} />
-            <Route path="/contato" element={<Contato />} />
-            <Route path="/doacoes" element={<Doacoes />} />
-            <Route path="/doaragora" element={<DoarAgora />} />
-            <Route path="/noticias" element={<AllNews />} />
-            <Route path="/noticias/:id" element={<NewsDetail />} />
-
-            {/* Rotas de Autenticação */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-
-            {/* Dashboard Routes */}
-            <Route
-              path="/dashboard"
-              element={
-                <PrivateRoute>
-                  <Dashboard />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/dashboard/noticias"
-              element={
-                <PrivateRoute>
-                  <News />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/dashboard/noticias/nova"
-              element={
-                <PrivateRoute>
-                  <NewsForm />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/dashboard/noticias/:id"
-              element={
-                <PrivateRoute>
-                  <NewsForm />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/dashboard/configuracoes"
-              element={
-                <PrivateRoute>
-                  <Settings />
-                </PrivateRoute>
-              }
-            />
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
+      <AuthProvider>
+        <RouterProvider router={router} {...routerConfig} />
+      </AuthProvider>
     </HelmetProvider>
   );
 }
+
+export default App;

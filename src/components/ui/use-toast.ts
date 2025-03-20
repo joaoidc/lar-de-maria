@@ -2,9 +2,9 @@
 
 // Inspired by react-hot-toast library
 import * as React from "react";
-import { toast } from "sonner";
+import { toast as sonnerToast } from "sonner";
 
-import type { ToastActionElement, ToastProps } from "@/src/components/ui/toast";
+import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
@@ -91,8 +91,6 @@ export const reducer = (state: State, action: Action): State => {
     case "DISMISS_TOAST": {
       const { toastId } = action;
 
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
       if (toastId) {
         addToRemoveQueue(toastId);
       } else {
@@ -156,7 +154,7 @@ function toast({ ...props }: Toast) {
       ...props,
       id,
       open: true,
-      onOpenChange: (open) => {
+      onOpenChange: (open: boolean) => {
         if (!open) dismiss();
       },
     },
@@ -170,13 +168,17 @@ function toast({ ...props }: Toast) {
 }
 
 export function useToast() {
+  const dismiss = (toastId?: string) => {
+    dispatch({ type: "DISMISS_TOAST", toastId });
+  };
+
   return {
     toast,
-    dismiss: toast.dismiss,
-    error: (message: string) => toast.error(message),
-    success: (message: string) => toast.success(message),
-    warning: (message: string) => toast.warning(message),
-    info: (message: string) => toast.info(message),
-    loading: (message: string) => toast.loading(message),
+    dismiss,
+    error: (message: string) => sonnerToast.error(message),
+    success: (message: string) => sonnerToast.success(message),
+    warning: (message: string) => sonnerToast.warning(message),
+    info: (message: string) => sonnerToast.info(message),
+    loading: (message: string) => sonnerToast.loading(message),
   };
 }
