@@ -4,7 +4,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { DashboardSidebar } from "../components/DashboardSidebar";
 import { supabase } from "../lib/supabase";
 import { Helmet } from "react-helmet-async";
-import { UserManagement } from "./UserManagement";
 import { toast } from "react-hot-toast";
 import {
   Tabs,
