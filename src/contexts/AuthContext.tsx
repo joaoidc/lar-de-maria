@@ -6,14 +6,15 @@ import {
   startTransition,
   useCallback,
 } from "react";
-import { User } from "@supabase/supabase-js";
+import { User, SupabaseClient } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 
-type AuthContextType = {
+export type AuthContextType = {
   user: User | null;
-  loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  loading: boolean;
+  supabase: SupabaseClient;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -64,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signIn, signOut, supabase }}>
       {children}
     </AuthContext.Provider>
   );

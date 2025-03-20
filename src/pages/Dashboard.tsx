@@ -5,6 +5,7 @@ import { DashboardSidebar } from "../components/DashboardSidebar";
 import { supabase } from "../lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2 } from "lucide-react";
+import { formatBytes } from "../utils/format-bytes";
 
 interface DashboardMetrics {
   totalNews: number;
@@ -56,7 +57,8 @@ const pulseAnimation = {
 
 export function Dashboard() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, supabase } = useAuth();
+  const [userName, setUserName] = useState<string | null>(null);
   const [metrics, setMetrics] = useState<DashboardMetrics>({
     totalNews: 0,
     recentNews: 0,
@@ -72,6 +74,18 @@ export function Dashboard() {
       navigate("/login");
     }
   }, [user, navigate]);
+
+  useEffect(() => {
+    async function loadUserProfile() {
+      if (!user) return;
+
+      if (user.user_metadata?.full_name) {
+        setUserName(user.user_metadata.full_name);
+      }
+    }
+
+    loadUserProfile();
+  }, [user]);
 
   useEffect(() => {
     fetchMetrics();
@@ -223,16 +237,18 @@ export function Dashboard() {
       >
         <div className="max-w-7xl mx-auto">
           <motion.div
-            className="mb-8 sm:mb-12"
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-8"
           >
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-3">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               Painel de Controle
             </h1>
             <p className="text-base sm:text-lg text-gray-600">
-              Bem-vindo ao painel administrativo do Lar de Maria
+              {userName
+                ? `Olá, ${userName}. Seja bem vindo!`
+                : "Olá. Seja bem vindo!"}
             </p>
           </motion.div>
 
