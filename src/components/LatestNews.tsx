@@ -8,6 +8,7 @@ interface News {
   content: string;
   created_at: string;
   image_url?: string;
+  status: "published" | "draft";
 }
 
 export function LatestNews() {
@@ -36,6 +37,7 @@ export function LatestNews() {
       const query = supabase
         .from("news")
         .select("*")
+        .eq("status", "published")
         .order("created_at", { ascending: false })
         .limit(3);
 

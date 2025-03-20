@@ -8,6 +8,7 @@ interface News {
   content: string;
   created_at: string;
   image_url?: string;
+  status: "published" | "draft";
 }
 
 export function NewsSection() {
@@ -23,6 +24,7 @@ export function NewsSection() {
       const { data, error } = await supabase
         .from("news")
         .select("*")
+        .eq("status", "published")
         .order("created_at", { ascending: false })
         .limit(3);
 

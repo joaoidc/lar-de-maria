@@ -11,6 +11,7 @@ interface News {
   created_at: string;
   image_url?: string;
   external_link?: string;
+  status: "published" | "draft";
 }
 
 export function NewsDetail() {
@@ -19,21 +20,24 @@ export function NewsDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchNewsDetail();
+    fetchNews();
   }, [id]);
 
-  async function fetchNewsDetail() {
+  async function fetchNews() {
+    if (!id) return;
+
     try {
       const { data, error } = await supabase
         .from("news")
         .select("*")
         .eq("id", id)
+        .eq("status", "published")
         .single();
 
       if (error) throw error;
       setNews(data);
     } catch (error) {
-      console.error("Error fetching news detail:", error);
+      console.error("Error fetching news:", error);
     } finally {
       setLoading(false);
     }

@@ -11,6 +11,7 @@ interface NewsFormData extends Omit<News, "id" | "created_at" | "updated_at"> {
   content: string;
   image_url?: string;
   external_link?: string;
+  status: "published" | "draft";
 }
 
 export function NewsForm() {
@@ -24,6 +25,7 @@ export function NewsForm() {
     content: "",
     image_url: "",
     external_link: "",
+    status: "draft",
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -58,6 +60,7 @@ export function NewsForm() {
           content: data.content,
           image_url: data.image_url || "",
           external_link: data.external_link || "",
+          status: data.status || "published",
         });
         if (data.image_url) {
           setImagePreview(data.image_url);
@@ -110,57 +113,42 @@ export function NewsForm() {
     setError(null);
 
     try {
-      let image_url = null;
+      let image_url = formData.image_url;
 
       if (imageFile) {
-        try {
-          const fileExt = imageFile.name.split(".").pop();
-          const fileName = `${Date.now()}.${fileExt}`;
-          const filePath = `news/${fileName}`;
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from("images")
+          .upload(`${Date.now()}-${imageFile.name}`, imageFile);
 
-          const { error: uploadError } = await supabase.storage
-            .from("news")
-            .upload(filePath, imageFile);
+        if (uploadError) throw uploadError;
 
-          if (uploadError) {
-            console.error("Error uploading image:", uploadError);
-            throw uploadError;
-          }
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from("images").getPublicUrl(uploadData.path);
 
-          const {
-            data: { publicUrl },
-          } = supabase.storage.from("news").getPublicUrl(filePath);
-
-          image_url = publicUrl;
-        } catch (uploadError) {
-          console.error("Error handling image upload:", uploadError);
-          toast.error(
-            "Erro ao fazer upload da imagem. Por favor, tente novamente."
-          );
-          setError(
-            "Erro ao fazer upload da imagem. Por favor, tente novamente."
-          );
-          setLoading(false);
-          return;
-        }
+        image_url = publicUrl;
       }
 
       const newsData = {
         title: formData.title,
         content: formData.content,
-        image_url: image_url || formData.image_url,
+        image_url: image_url || null,
         external_link: formData.external_link || null,
+        status: formData.status,
       };
 
-      let error;
+      console.log("Saving news with data:", newsData);
 
-      if (isEditing) {
-        ({ error } = await supabase.from("news").update(newsData).eq("id", id));
-      } else {
-        ({ error } = await supabase.from("news").insert([newsData]));
+      const { data, error } = isEditing
+        ? await supabase.from("news").update(newsData).eq("id", id)
+        : await supabase.from("news").insert([newsData]).select();
+
+      if (error) {
+        console.error("Database error:", error);
+        throw error;
       }
 
-      if (error) throw error;
+      console.log("Saved news:", data);
 
       toast.success(
         isEditing
@@ -170,16 +158,8 @@ export function NewsForm() {
       navigate("/dashboard/noticias");
     } catch (error: any) {
       console.error("Error saving news:", error);
-
-      if (error.message?.includes("column of 'news'")) {
-        setError(
-          "Erro na estrutura da tabela. Por favor, execute o script de migração."
-        );
-        toast.error("Erro na estrutura da tabela");
-      } else {
-        setError("Erro ao salvar a notícia. Por favor, tente novamente.");
-        toast.error("Erro ao salvar a notícia");
-      }
+      setError("Erro ao salvar a notícia. Por favor, tente novamente.");
+      toast.error("Erro ao salvar a notícia");
     } finally {
       setLoading(false);
     }
@@ -423,22 +403,63 @@ export function NewsForm() {
               </div>
             </div>
 
-            <div className="px-4 md:px-6 py-4 bg-gray-50 border-t border-gray-200 rounded-b-lg flex flex-col-reverse md:flex-row justify-end gap-3">
-              <button
-                type="button"
-                onClick={() => navigate("/dashboard/noticias")}
-                className="w-full md:w-auto px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-              >
-                Cancelar
-              </button>
+            <div className="px-4 md:px-6 py-4 bg-gray-50 border-t border-gray-200 rounded-b-lg flex flex-col-reverse md:flex-row justify-between gap-3">
+              <div className="flex flex-col md:flex-row gap-3">
+                <button
+                  type="button"
+                  onClick={() => navigate("/dashboard/noticias")}
+                  className="w-full md:w-auto px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setFormData((prev) => ({ ...prev, status: "draft" }));
+                    handleSubmit(e);
+                  }}
+                  disabled={loading}
+                  className="w-full md:w-auto px-4 py-2 text-[#10a3b4] bg-white border border-[#10a3b4] rounded-md hover:bg-[#e6f7f9] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#10a3b4] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {loading && (
+                    <svg
+                      className="animate-spin h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                  )}
+                  {loading ? "Salvando..." : "Salvar como Rascunho"}
+                </button>
+              </div>
               <button
                 type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setFormData((prev) => ({ ...prev, status: "published" }));
+                  handleSubmit(e);
+                }}
                 disabled={loading}
-                className="w-full md:w-auto px-4 py-2 text-white bg-[#10a3b4] rounded-md hover:bg-[#0d8997] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#10a3b4] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                className="w-full md:w-auto px-4 py-2 text-white bg-[#10a3b4] rounded-md hover:bg-[#0d8997] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#10a3b4] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading && (
                   <svg
-                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                    className="animate-spin h-4 w-4"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -458,7 +479,11 @@ export function NewsForm() {
                     ></path>
                   </svg>
                 )}
-                {loading ? "Salvando..." : isEditing ? "Atualizar" : "Criar"}
+                {loading
+                  ? "Salvando..."
+                  : isEditing
+                  ? "Publicar Alterações"
+                  : "Publicar Notícia"}
               </button>
             </div>
           </form>

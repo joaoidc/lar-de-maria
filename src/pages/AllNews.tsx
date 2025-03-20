@@ -10,6 +10,7 @@ interface News {
   content: string;
   created_at: string;
   image_url?: string;
+  status: "published" | "draft";
 }
 
 const ITEMS_PER_PAGE = 9;
@@ -29,7 +30,8 @@ export function AllNews() {
       // Fetch total count
       const { count } = await supabase
         .from("news")
-        .select("*", { count: "exact", head: true });
+        .select("*", { count: "exact", head: true })
+        .eq("status", "published");
 
       setTotalPages(Math.ceil((count || 0) / ITEMS_PER_PAGE));
 
@@ -37,6 +39,7 @@ export function AllNews() {
       const { data, error } = await supabase
         .from("news")
         .select("*")
+        .eq("status", "published")
         .order("created_at", { ascending: false })
         .range(
           (currentPage - 1) * ITEMS_PER_PAGE,
