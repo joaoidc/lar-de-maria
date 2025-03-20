@@ -9,13 +9,14 @@ import {
 import { User, SupabaseClient } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 
-export type AuthContextType = {
+interface AuthContextType {
   user: User | null;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  updateProfile: (data: { name?: string; role?: string }) => Promise<void>;
   loading: boolean;
   supabase: SupabaseClient;
-};
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -64,8 +65,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (error) throw error;
   };
 
+  const updateProfile = async (data: { name?: string; role?: string }) => {
+    if (!user) throw new Error("No user logged in");
+
+    const { error } = await supabase.auth.updateUser({
+      data: {
+        ...user.user_metadata,
+        ...data,
+      },
+    });
+
+    if (error) throw error;
+
+    // Atualizar o usuário local
+    setUser((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        user_metadata: {
+          ...prev.user_metadata,
+          ...data,
+        },
+      };
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signOut, supabase }}>
+    <AuthContext.Provider
+      value={{ user, loading, signIn, signOut, updateProfile, supabase }}
+    >
       {children}
     </AuthContext.Provider>
   );
