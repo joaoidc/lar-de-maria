@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "./contexts/AuthContext";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "react-hot-toast";
 import HomePage from "./pages/Home";
 import { LoginPage } from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
-import { Dashboard } from "@/components/Dashboard";
+import { Dashboard } from "./pages/Dashboard";
 import { News } from "./pages/News";
 import { NewsForm } from "./pages/NewsForm";
 import { Settings } from "./pages/Settings";
@@ -19,14 +19,13 @@ import Doacoes from "./pages/doacoes";
 import { DoarAgora } from "./pages/doaragora";
 import { AllNews } from "./pages/AllNews";
 import { NewsDetail } from "./pages/NewsDetail";
-import { AuthCallback } from "@/routes/auth/callback";
 
 export default function App() {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <AuthProvider>
-          <Toaster />
+          <Toaster position="top-right" />
           <Routes>
             {/* Rotas Públicas */}
             <Route path="/" element={<HomePage />} />
@@ -46,7 +45,6 @@ export default function App() {
             {/* Rotas de Autenticação */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
 
             {/* Dashboard Routes */}
             <Route
