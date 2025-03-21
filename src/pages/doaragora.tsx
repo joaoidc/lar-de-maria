@@ -35,7 +35,7 @@ export function DoarAgora() {
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText("000000");
+    navigator.clipboard.writeText("04.934.428/0001-62");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -158,7 +158,7 @@ export function DoarAgora() {
                   <div className="flex flex-col space-y-4">
                     <div className="flex items-center justify-between bg-white rounded-lg border border-gray-200 p-3">
                       <span className="font-medium text-gray-800">
-                        00000000
+                      04.934.428/0001-62
                       </span>
                       <motion.button
                         whileHover={{ scale: 1.05 }}
@@ -182,19 +182,19 @@ export function DoarAgora() {
                     <div className="flex items-center">
                       <Heart className="w-5 h-5 text-[#10a3b4] mr-2" />
                       <p>
-                        <strong>Nome:</strong> Lar de Maria Financeiro
+                        <strong>Nome:</strong> Lar de Maria
                       </p>
                     </div>
                     <div className="flex items-center">
                       <Phone className="w-5 h-5 text-[#10a3b4] mr-2" />
                       <p>
-                        <strong>Tipo de chave:</strong> Telefone
+                        <strong>Tipo de chave:</strong> CNPJ
                       </p>
                     </div>
                     <div className="flex items-center">
                       <Building className="w-5 h-5 text-[#10a3b4] mr-2" />
                       <p>
-                        <strong>Banco:</strong> Nome do Banco
+                        <strong>Banco:</strong> Caixa Econômica Federal
                       </p>
                     </div>
                   </div>
