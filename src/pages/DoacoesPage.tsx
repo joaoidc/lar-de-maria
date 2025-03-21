@@ -46,7 +46,7 @@ export function DoacoesPage() {
 
         {/* Hero Section */}
         <section className="py-20 lg:py-28 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('public/images/img-27.JPG')] bg-cover bg-center opacity-30" />
+          <div className="absolute inset-0 bg-[url('https://res.cloudinary.com/dgmhjjizh/image/upload/v1742591803/img-27_mbjwje.jpg')] bg-cover bg-center opacity-30" />
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial="hidden"
