@@ -57,7 +57,7 @@ export function DoarAgora() {
 
         {/* Hero Section */}
         <section className="py-20 lg:py-28 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('public/images/img-34.JPG')] bg-cover bg-center opacity-30" />
+          <div className="absolute inset-0 bg-[url('https://res.cloudinary.com/dgmhjjizh/image/upload/v1742591671/img-34_tctjtv.jpg')] bg-cover bg-center opacity-30" />
           <div className="container mx-auto px-4 relative z-10">
             <motion.div
               initial="hidden"
@@ -158,7 +158,7 @@ export function DoarAgora() {
                   <div className="flex flex-col space-y-4">
                     <div className="flex items-center justify-between bg-white rounded-lg border border-gray-200 p-3">
                       <span className="font-medium text-gray-800">
-                      04.934.428/0001-62
+                        04.934.428/0001-62
                       </span>
                       <motion.button
                         whileHover={{ scale: 1.05 }}
