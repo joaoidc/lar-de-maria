@@ -135,7 +135,7 @@ export function DoarAgora() {
                     ou fale diretamente conosco
                   </p>
                   <a
-                    href="https://wa.me/5599999999999"
+                    href="https://wa.me/559188711925"
                     className="bg-[#25D366] text-white font-medium py-3 px-8 rounded-full text-lg transition-all shadow-lg"
                   >
                     Fale Conosco no WhatsApp
@@ -340,7 +340,7 @@ export function DoarAgora() {
                 generosidade. Qualquer duvida ou sugestão, estamos a disposição.
               </p>
               <motion.a
-                href="https://wa.me/5599999999999"
+                href="https://wa.me/559188711925"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-white text-[#10a3b4] hover:bg-[#e6f7f9] font-medium py-3 px-8 rounded-full text-lg transition-all shadow-lg inline-flex items-center"
