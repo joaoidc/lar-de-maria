@@ -246,9 +246,7 @@ export function Dashboard() {
               Painel de Controle
             </h1>
             <p className="text-base sm:text-lg text-gray-600">
-              {userName
-                ? `Olá, ${userName}. Seja bem vindo!`
-                : "Olá. Seja bem vindo!"}
+              {userName ? `Olá, ${userName}. Seja bem vindo!` : "Carregando..."}
             </p>
           </motion.div>
 
@@ -540,6 +538,35 @@ export function Dashboard() {
                 Configurações
               </span>
             </motion.button>
+          </motion.div>
+
+          {/* Botão de Logout Mobile */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden mt-8"
+          >
+            <button
+              onClick={() => supabase.auth.signOut()}
+              className="w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-5 h-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                />
+              </svg>
+              Sair do Painel
+            </button>
           </motion.div>
         </div>
       </motion.div>
