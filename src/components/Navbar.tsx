@@ -16,7 +16,7 @@ export function Navbar() {
   const location = useLocation();
 
   const buttonStyles =
-    "bg-[#10B5B5] hover:bg-[#10B5B5]/90 text-white rounded-full px-6 py-2 transition-colors duration-300";
+    "bg-[#10B5B5] hover:bg-[#10B5B5]/90 text-white rounded-full px-6 py-2 transition-colors duration-300 whitespace-nowrap";
 
   const links = [
     { to: "/", label: "Início" },
@@ -235,8 +235,8 @@ export function Navbar() {
               })}
               <li className="block lg:hidden w-full text-center">
                 <Link
-                  to="/doacoes"
-                  className={cn(buttonStyles, "inline-block")}
+                  to="/doaragora"
+                  className={cn(buttonStyles, "inline-block w-auto")}
                   onClick={() => setIsOpen(false)}
                 >
                   Quero Ajudar
