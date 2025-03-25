@@ -48,15 +48,10 @@ export function AboutSection() {
             </p>
             <p className="text-white text-lg leading-relaxed mb-8">
               Movidos pelos valores do amor e da caridade, seus idealizadores,
-              como
-              <span className="font-semibold">
-                {" "}
-                Oswaldo de Assunção Castro e Olga Castro
-              </span>
-              , sonhavam em criar um espaço de acolhimento e transformação
-              social. Ao longo dos anos, a instituição contou com o esforço
-              coletivo de inúmeros colaboradores e voluntários, que ajudaram a
-              consolidar esse projeto, tornando o Lar de Maria uma referência em
+              sonhavam em criar um espaço de acolhimento e transformação social.
+              Ao longo dos anos, a instituição contou com o esforço coletivo de
+              inúmeros colaboradores e voluntários, que ajudaram a consolidar
+              esse projeto, tornando o Lar de Maria uma referência em
               assistência e educação social na cidade de Belém.
             </p>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
