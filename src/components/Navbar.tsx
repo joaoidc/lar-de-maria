@@ -75,7 +75,7 @@ export function Navbar() {
 
           <nav
             className={cn(
-              "fixed inset-0 bg-white/95 backdrop-blur-sm lg:bg-transparent lg:static transition-all duration-300 ease-in-out z-40",
+              "fixed inset-0 bg-white/95 backdrop-blur-sm lg:bg-transparent lg:static transition-all duration-300 ease-in-out z-40 w-full overflow-y-auto lg:overflow-visible",
               isOpen
                 ? "opacity-100 visible"
                 : "opacity-0 invisible lg:opacity-100 lg:visible"
@@ -83,14 +83,17 @@ export function Navbar() {
           >
             <ul
               className={cn(
-                "flex flex-col items-center justify-center h-full space-y-8 lg:flex-row lg:space-y-0 lg:space-x-6",
+                "min-h-screen lg:min-h-0 flex flex-col items-center justify-center space-y-8 lg:flex-row lg:space-y-0 lg:space-x-6 px-4 lg:px-0",
                 isOpen ? "flex" : "hidden lg:flex"
               )}
             >
               {links.map((item) => {
                 if (item.submenu) {
                   return (
-                    <li key={item.label} className="relative group">
+                    <li
+                      key={item.label}
+                      className="relative group w-full lg:w-auto text-center"
+                    >
                       <div className="hidden lg:block relative">
                         <NavigationMenu>
                           <NavigationMenuList className="space-x-0">
@@ -139,7 +142,7 @@ export function Navbar() {
                       </div>
 
                       {/* Mobile version */}
-                      <div className="lg:hidden">
+                      <div className="lg:hidden w-full">
                         <button
                           onClick={() =>
                             setOpenSubmenu(
@@ -147,7 +150,7 @@ export function Navbar() {
                             )
                           }
                           className={cn(
-                            "text-gray-800 hover:text-[#10a3b4] transition-colors duration-300 flex items-center",
+                            "text-gray-800 hover:text-[#10a3b4] transition-colors duration-300 flex items-center justify-center w-full",
                             (location.pathname === "/quem-somos" ||
                               location.pathname === "/transparencia") &&
                               "text-[#10a3b4] font-medium"
@@ -173,13 +176,13 @@ export function Navbar() {
                           </svg>
                         </button>
                         {openSubmenu === item.label && (
-                          <ul className="mt-2 space-y-2">
+                          <ul className="mt-2 space-y-2 w-full">
                             {item.submenu.map((subItem) => (
-                              <li key={subItem.to}>
+                              <li key={subItem.to} className="w-full">
                                 <Link
                                   to={subItem.to}
                                   className={cn(
-                                    "block px-4 py-2 text-sm text-gray-800 hover:text-[#10a3b4] transition-colors duration-300",
+                                    "block w-full px-4 py-2 text-sm text-gray-800 hover:text-[#10a3b4] transition-colors duration-300 text-center",
                                     location.pathname === subItem.to &&
                                       "text-[#10a3b4] font-medium"
                                   )}
@@ -207,11 +210,14 @@ export function Navbar() {
                     location.pathname.startsWith(item.to));
 
                 return (
-                  <li key={item.to} className="relative group">
+                  <li
+                    key={item.to}
+                    className="relative group w-full lg:w-auto text-center"
+                  >
                     <Link
                       to={item.to}
                       className={cn(
-                        "text-gray-800 hover:text-[#10a3b4] transition-colors duration-300",
+                        "text-gray-800 hover:text-[#10a3b4] transition-colors duration-300 block w-full",
                         isActive && "text-[#10a3b4] font-medium"
                       )}
                       onClick={() => setIsOpen(false)}
@@ -220,17 +226,17 @@ export function Navbar() {
                     </Link>
                     <span
                       className={cn(
-                        "absolute -bottom-1 left-0 h-0.5 bg-[#10a3b4] transition-all duration-300",
+                        "absolute -bottom-1 left-0 h-0.5 bg-[#10a3b4] transition-all duration-300 hidden lg:block",
                         isActive ? "w-full" : "w-0 group-hover:w-full"
                       )}
                     ></span>
                   </li>
                 );
               })}
-              <li className="block lg:hidden">
+              <li className="block lg:hidden w-full text-center">
                 <Link
                   to="/doacoes"
-                  className={buttonStyles}
+                  className={cn(buttonStyles, "inline-block")}
                   onClick={() => setIsOpen(false)}
                 >
                   Quero Ajudar
