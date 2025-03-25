@@ -170,7 +170,7 @@ export function QuemSomosPage() {
                       sociedade, com o simbólico corte da fita pelo delegado da
                       primeira região federal da criança, Salomão Levy. Estavam
                       presentes também o até então presidente da instituição o
-                      senhor Oswaldo Pacheco Dillon, e o fundador Oliveiros de
+                      senhor Oswaldo Pacheco Dillon, e o fundador Oli de
                       Assunção Castro. Nesse contexto, a instituição já estava
                       sob a gestão de sua terceira presidência. Oliveiros de
                       Castro, juntamente com Délio Cabral Marques, administraram

@@ -17,6 +17,8 @@ import Doacoes from "../pages/doacoes";
 import { DoarAgora } from "../pages/doaragora";
 import { AllNews } from "../pages/AllNews";
 import { NewsDetail } from "../pages/NewsDetail";
+import Transparencia from "../pages/Transparencia";
+import DocumentsAdmin from "../pages/DocumentsAdmin";
 
 // Configuração que funciona tanto na v6 quanto na v7
 const routerConfig = {
@@ -31,6 +33,10 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: <HomePage />,
+    },
+    {
+      path: "/transparencia",
+      element: <Transparencia />,
     },
     {
       path: "/quem-somos",
@@ -113,6 +119,14 @@ const router = createBrowserRouter(
       element: (
         <PrivateRoute>
           <Settings />
+        </PrivateRoute>
+      ),
+    },
+    {
+      path: "/dashboard/documentos",
+      element: (
+        <PrivateRoute>
+          <DocumentsAdmin />
         </PrivateRoute>
       ),
     },
