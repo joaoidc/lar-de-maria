@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import type { Database } from "../types/supabase";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -25,31 +26,14 @@ if (!supabaseAnonKey) {
 }
 
 console.log("🔌 Inicializando cliente Supabase...");
-export const supabase = createClient(finalUrl, supabaseAnonKey);
+export const supabase = createClient<Database>(finalUrl, supabaseAnonKey);
 console.log("✅ Cliente Supabase inicializado com sucesso!");
 
 // Tipos para as tabelas
-export type News = {
-  id: number;
-  title: string;
-  content: string;
-  image_url?: string;
-  external_link?: string;
-  created_by?: string;
-  created_at: string;
-  updated_at: string;
-};
+export type News = Database["public"]["Tables"]["noticias"]["Row"];
+export type NewsInput = Database["public"]["Tables"]["noticias"]["Insert"];
 
-export type RelatorioSocial = {
-  id: string;
-  title: string;
-  date: string;
-  file_url: string;
-  created_at: string;
-  updated_at: string;
-};
-
-export type RelatorioSocialInput = Omit<
-  RelatorioSocial,
-  "id" | "created_at" | "updated_at"
->;
+export type RelatorioSocial =
+  Database["public"]["Tables"]["relatorios_sociais"]["Row"];
+export type RelatorioSocialInput =
+  Database["public"]["Tables"]["relatorios_sociais"]["Insert"];
