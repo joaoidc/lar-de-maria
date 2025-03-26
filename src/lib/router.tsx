@@ -19,6 +19,7 @@ import { AllNews } from "../pages/AllNews";
 import { NewsDetail } from "../pages/NewsDetail";
 import Transparencia from "../pages/Transparencia";
 import DocumentsAdmin from "../pages/DocumentsAdmin";
+import RelatoriosSociais from "@/pages/dashboard/RelatoriosSociais";
 
 // Configuração que funciona tanto na v6 quanto na v7
 const routerConfig = {
@@ -127,6 +128,14 @@ const router = createBrowserRouter(
       element: (
         <PrivateRoute>
           <DocumentsAdmin />
+        </PrivateRoute>
+      ),
+    },
+    {
+      path: "/dashboard/relatorios-sociais",
+      element: (
+        <PrivateRoute>
+          <RelatoriosSociais />
         </PrivateRoute>
       ),
     },

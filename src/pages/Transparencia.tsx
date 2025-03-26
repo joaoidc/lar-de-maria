@@ -1,152 +1,150 @@
-import { useState } from "react";
-import { cn } from "@/lib/utils";
-
-type Document = {
-  id: string;
-  title: string;
-  category: string;
-  date: string;
-  url: string;
-  fileType: "pdf";
-};
-
-// Dados de exemplo - depois você pode substituir por dados reais do backend
-const documents: Document[] = [
-  {
-    id: "1",
-    title: "Relatório Financeiro 2023",
-    category: "Financeiro",
-    date: "2023-12",
-    url: "/docs/relatorio-2023.pdf",
-    fileType: "pdf",
-  },
-  {
-    id: "2",
-    title: "Prestação de Contas - 1º Semestre 2023",
-    category: "Prestação de Contas",
-    date: "2023-06",
-    url: "/docs/prestacao-1sem-2023.pdf",
-    fileType: "pdf",
-  },
-];
-
-const categories = [
-  "Todos",
-  "Financeiro",
-  "Prestação de Contas",
-  "Relatórios",
-  "Documentos Institucionais",
-];
+import { useState, useEffect } from "react";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/footer";
+import { Search, FileText, Download, ExternalLink } from "lucide-react";
+import { supabase, type RelatorioSocial } from "@/lib/supabase";
 
 export default function Transparencia() {
-  const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [searchTerm, setSearchTerm] = useState("");
+  const [relatorios, setRelatorios] = useState<RelatorioSocial[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredDocuments = documents.filter((doc) => {
-    const matchesCategory =
-      selectedCategory === "Todos" || doc.category === selectedCategory;
-    const matchesSearch = doc.title
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  useEffect(() => {
+    fetchRelatorios();
+  }, []);
+
+  async function fetchRelatorios() {
+    try {
+      const { data, error } = await supabase
+        .from("relatorios_sociais")
+        .select("*")
+        .order("date", { ascending: false });
+
+      if (error) throw error;
+      setRelatorios(data || []);
+    } catch (error) {
+      console.error("Erro ao buscar relatórios:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const filteredDocuments = relatorios.filter((doc) =>
+    doc.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">
-          Portal da Transparência
-        </h1>
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
 
-        {/* Texto introdutório */}
-        <p className="text-gray-600 mb-8 max-w-3xl">
-          Bem-vindo ao Portal da Transparência do Lar de Maria. Aqui você
-          encontra todos os documentos relacionados à nossa gestão financeira e
-          administrativa, demonstrando nosso compromisso com a transparência e
-          responsabilidade social.
-        </p>
-
-        {/* Filtros e Busca */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Buscar documentos..."
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#10a3b4] focus:border-transparent"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={cn(
-                  "px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors duration-200",
-                  selectedCategory === category
-                    ? "bg-[#10a3b4] text-white"
-                    : "bg-white text-gray-600 hover:bg-gray-100"
-                )}
-              >
-                {category}
-              </button>
-            ))}
+      <main className="flex-1 bg-gradient-to-b from-gray-50 to-white">
+        {/* Hero Section */}
+        <div className="relative bg-[#10a3b4] text-white py-16">
+          <div
+            className="absolute inset-0 opacity-10"
+            style={{
+              backgroundImage:
+                "url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          />
+          <div className="relative mx-auto max-w-4xl px-4 text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              Portal da Transparência
+            </h1>
+            <p className="text-lg md:text-xl text-white/90 mx-auto max-w-2xl">
+              Bem-vindo ao Portal da Transparência do Lar de Maria. Aqui você
+              encontra nossos relatórios sociais, demonstrando o impacto de
+              nossas ações e nosso compromisso com a transparência.
+            </p>
           </div>
         </div>
 
-        {/* Lista de Documentos */}
-        <div className="grid gap-4">
-          {filteredDocuments.map((doc) => (
-            <div
-              key={doc.id}
-              className="bg-white rounded-lg shadow-sm p-4 flex items-center justify-between hover:shadow-md transition-shadow duration-200"
-            >
-              <div className="flex-1">
-                <h3 className="text-lg font-medium text-gray-900">
-                  {doc.title}
-                </h3>
-                <div className="flex gap-2 mt-2">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                    {doc.category}
-                  </span>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                    {new Date(doc.date).toLocaleDateString("pt-BR", {
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </span>
+        <div className="mx-auto max-w-4xl px-4 py-12">
+          {/* Search Section */}
+          <div className="mb-12">
+            <div className="max-w-xl mx-auto relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <input
+                type="text"
+                placeholder="Buscar relatórios..."
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#10a3b4] focus:border-transparent shadow-sm transition-all duration-200"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* Documents List */}
+          <div className="space-y-6">
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#10a3b4] mx-auto"></div>
+              </div>
+            ) : (
+              filteredDocuments.map((doc) => (
+                <div
+                  key={doc.id}
+                  className="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-all duration-300 border border-gray-100"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+                    <div className="flex items-start gap-4">
+                      <div className="hidden sm:flex items-center justify-center w-12 h-12 rounded-lg bg-[#10a3b4]/10 text-[#10a3b4]">
+                        <FileText className="h-6 w-6" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                          {doc.title}
+                        </h3>
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#10a3b4]/10 text-[#10a3b4]">
+                          {new Date(doc.date).toLocaleDateString("pt-BR", {
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <a
+                        href={doc.file_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 px-4 py-2 border border-gray-200 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#10a3b4] transition-all duration-200 min-w-[120px]"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        Visualizar
+                      </a>
+                      <a
+                        href={doc.file_url}
+                        download
+                        className="inline-flex items-center justify-center gap-2 px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-[#10a3b4] hover:bg-[#10a3b4]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#10a3b4] transition-all duration-200 min-w-[120px] shadow-sm"
+                      >
+                        <Download className="h-4 w-4" />
+                        Download
+                      </a>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-2">
-                <a
-                  href={doc.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#10a3b4]"
-                >
-                  Visualizar
-                </a>
-                <a
-                  href={doc.url}
-                  download
-                  className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-[#10a3b4] hover:bg-[#10a3b4]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#10a3b4]"
-                >
-                  Download
-                </a>
-              </div>
-            </div>
-          ))}
+              ))
+            )}
 
-          {filteredDocuments.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-500">
-                Nenhum documento encontrado para os filtros selecionados.
-              </p>
-            </div>
-          )}
+            {!loading && filteredDocuments.length === 0 && (
+              <div className="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-100">
+                <Search className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                <p className="text-gray-500 text-lg">
+                  Nenhum relatório encontrado para a busca realizada.
+                </p>
+                <p className="text-gray-400 mt-2">
+                  Tente usar termos diferentes na sua pesquisa.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }

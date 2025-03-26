@@ -39,3 +39,17 @@ export type News = {
   created_at: string;
   updated_at: string;
 };
+
+export type RelatorioSocial = {
+  id: string;
+  title: string;
+  date: string;
+  file_url: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type RelatorioSocialInput = Omit<
+  RelatorioSocial,
+  "id" | "created_at" | "updated_at"
+>;
