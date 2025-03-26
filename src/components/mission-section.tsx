@@ -16,26 +16,27 @@ const institutionalCards: Card[] = [
       "Fidelidade",
       "Solidariedade",
       "Gestão",
-      "Responsabilidade Social"
+      "Responsabilidade Social",
     ],
-    isList: true
+    isList: true,
   },
   {
     title: "Negócio",
-    description:
-      "Promoção do homem integral.",
-    isList: false
+    description: "Promoção do homem integral.",
+    isList: false,
   },
   {
     title: "Missão",
-    description: "Realizar ações de promoção humana, em seus múltiplos aspectos, balizadas nos princípios espíritas, contribuindo para a formação de redes de inclusão social.",
-    isList: false
+    description:
+      "Realizar ações de promoção humana, em seus múltiplos aspectos, balizadas nos princípios espíritas, contribuindo para a formação de redes de inclusão social.",
+    isList: false,
   },
   {
     title: "Visão",
-    description: "Lar de Maria, integrado em suas atividades, ser reconhecido como referência no Movimento Espírita e na Rede Social, por meio do trabalho com crianças e adolescentes, extensivo as suas famílias até 1012.",
-    isList: false
-  }
+    description:
+      "Lar de Maria, integrado em suas atividades, ser reconhecido como referência no Movimento Espírita e na Rede Social, por meio do trabalho com crianças e adolescentes e suas famílias.",
+    isList: false,
+  },
 ];
 
 const departmentCards: Card[] = [
@@ -48,27 +49,29 @@ const departmentCards: Card[] = [
       "Afetividade",
       "Fraternidade",
       "Caridade",
-      "Aprendizado Constante"
+      "Aprendizado Constante",
     ],
-    isList: true
+    isList: true,
   },
   {
     title: "Negócio",
     subtitle: "DEORD",
     description: "Estudo, Difusão e Vivência da Doutrina Espírita",
-    isList: false
+    isList: false,
   },
   {
     title: "Missão",
     subtitle: "DEORD",
-    description: "Realizar ações de estudo, divulgação e vivência da Doutrina Espírita, contribuindo para a formação do homem de bem.",
-    isList: false
+    description:
+      "Realizar ações de estudo, divulgação e vivência da Doutrina Espírita, contribuindo para a formação do homem de bem.",
+    isList: false,
   },
   {
     title: "Visão",
     subtitle: "DEORD",
-    description: "União interna, excelência na área de estudos, conjugadas à ações práticas de caridade e ao movimento de unificação",
-    isList: false
+    description:
+      "União interna, excelência na área de estudos, conjugadas à ações práticas de caridade e ao movimento de unificação",
+    isList: false,
   },
   {
     title: "Valores",
@@ -79,28 +82,29 @@ const departmentCards: Card[] = [
       "Afetividade",
       "Responsabilidade Social",
       "Respeito à Diversidade",
-      "Educação Integral"
+      "Educação Integral",
     ],
-    isList: true
+    isList: true,
   },
   {
     title: "Negócio",
     subtitle: "DEAPS",
     description: "Promoção Sócio-educacional do ser humano",
-    isList: false
+    isList: false,
   },
   {
     title: "Missão",
     subtitle: "DEAPS",
-    description: "Desenvolver programas, projetos sócio-educacionais voltados a crianças, adolescentes e idosos em situação de vulnerabilidade social, extensivos às suas famílias fundamentados na Metodologia do Ser Integral, ompondo a rede de inclusão social",
-    isList: false
+    description:
+      "Desenvolver programas, projetos sócio-educacionais voltados a crianças, adolescentes e idosos em situação de vulnerabilidade social, extensivos às suas famílias fundamentados na Metodologia do Ser Integral, ompondo a rede de inclusão social",
+    isList: false,
   },
   {
     title: "Visão",
     subtitle: "DEAPS",
-    description: "Ser referência em atendimento sócio-educacional na Amazônia, até 2015",
-    isList: false
-  }
+    description: "Ser referência em atendimento sócio-educacional na Amazônia",
+    isList: false,
+  },
 ];
 
 export function MissionSection() {
@@ -109,21 +113,21 @@ export function MissionSection() {
   return (
     <section className="relative py-16 lg:py-24 overflow-hidden">
       {/* Background Image with Parallax */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0"
         style={{
           backgroundImage: `url('https://res.cloudinary.com/dggewyuon/image/upload/v1740509133/2_pardxp.png')`,
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-          backgroundAttachment: 'fixed',
-          willChange: 'transform'
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundAttachment: "fixed",
+          willChange: "transform",
         }}
         animate={{
-          height: showDepartments ? '150%' : '100%'
+          height: showDepartments ? "150%" : "100%",
         }}
         transition={{
           duration: 0.3,
-          ease: "easeInOut"
+          ease: "easeInOut",
         }}
       >
         {/* Overlay mais suave */}
@@ -131,21 +135,21 @@ export function MissionSection() {
       </motion.div>
 
       {/* Background Pattern */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0"
         animate={{
-          height: showDepartments ? '150%' : '100%'
+          height: showDepartments ? "150%" : "100%",
         }}
         transition={{
           duration: 0.3,
-          ease: "easeInOut"
+          ease: "easeInOut",
         }}
       >
-        <div 
+        <div
           className="absolute inset-0 bg-repeat opacity-10"
           style={{
             backgroundImage: `url('https://res.cloudinary.com/dggewyuon/image/upload/v1739215911/pattern_xtukqf.png')`,
-            backgroundAttachment: 'fixed'
+            backgroundAttachment: "fixed",
           }}
         ></div>
       </motion.div>
@@ -208,7 +212,12 @@ export function MissionSection() {
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-fr">
                     {departmentCards.slice(0, 4).map((card, index) => (
-                      <CardComponent key={card.title + card.subtitle} card={card} index={index} isCompact={true} />
+                      <CardComponent
+                        key={card.title + card.subtitle}
+                        card={card}
+                        index={index}
+                        isCompact={true}
+                      />
                     ))}
                   </div>
                 </motion.div>
@@ -224,7 +233,12 @@ export function MissionSection() {
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-fr">
                     {departmentCards.slice(4).map((card, index) => (
-                      <CardComponent key={card.title + card.subtitle} card={card} index={index} isCompact={true} />
+                      <CardComponent
+                        key={card.title + card.subtitle}
+                        card={card}
+                        index={index}
+                        isCompact={true}
+                      />
                     ))}
                   </div>
                 </motion.div>
@@ -238,7 +252,15 @@ export function MissionSection() {
 }
 
 // Componente de Card extraído para reutilização
-function CardComponent({ card, index, isCompact = false }: { card: Card; index: number; isCompact?: boolean }) {
+function CardComponent({
+  card,
+  index,
+  isCompact = false,
+}: {
+  card: Card;
+  index: number;
+  isCompact?: boolean;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -253,54 +275,129 @@ function CardComponent({ card, index, isCompact = false }: { card: Card; index: 
           damping: 20,
         },
       }}
-      className={`group bg-white/95 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 relative h-full flex flex-col ${isCompact ? 'text-sm' : ''}`}
+      className={`group bg-white/95 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 relative h-full flex flex-col ${
+        isCompact ? "text-sm" : ""
+      }`}
     >
       {/* Gradiente decorativo no topo */}
       <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#10a3b4] to-[#FF9F1C]" />
-      
-      <div className={`${isCompact ? 'p-4' : 'p-8'} flex flex-col flex-grow`}>
+
+      <div className={`${isCompact ? "p-4" : "p-8"} flex flex-col flex-grow`}>
         <motion.div
           initial={{ scale: 0.5 }}
           whileInView={{ scale: 1 }}
           viewport={{ once: true }}
           transition={{ delay: index * 0.1 + 0.2 }}
-          className={`${isCompact ? 'mb-3' : 'mb-6'}`}
+          className={`${isCompact ? "mb-3" : "mb-6"}`}
         >
           {/* Ícones para cada tipo de card */}
-          <div className={`${isCompact ? 'mb-2' : 'mb-4'}`}>
+          <div className={`${isCompact ? "mb-2" : "mb-4"}`}>
             {card.title === "Valores" && (
-              <div className={`${isCompact ? 'w-8 h-8' : 'w-12 h-12'} rounded-lg bg-[#10a3b4]/10 flex items-center justify-center mb-2`}>
-                <svg className={`${isCompact ? 'w-4 h-4' : 'w-6 h-6'} text-[#10a3b4]`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              <div
+                className={`${
+                  isCompact ? "w-8 h-8" : "w-12 h-12"
+                } rounded-lg bg-[#10a3b4]/10 flex items-center justify-center mb-2`}
+              >
+                <svg
+                  className={`${
+                    isCompact ? "w-4 h-4" : "w-6 h-6"
+                  } text-[#10a3b4]`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
                 </svg>
               </div>
             )}
             {card.title === "Negócio" && (
-              <div className={`${isCompact ? 'w-8 h-8' : 'w-12 h-12'} rounded-lg bg-[#10a3b4]/10 flex items-center justify-center mb-2`}>
-                <svg className={`${isCompact ? 'w-4 h-4' : 'w-6 h-6'} text-[#10a3b4]`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              <div
+                className={`${
+                  isCompact ? "w-8 h-8" : "w-12 h-12"
+                } rounded-lg bg-[#10a3b4]/10 flex items-center justify-center mb-2`}
+              >
+                <svg
+                  className={`${
+                    isCompact ? "w-4 h-4" : "w-6 h-6"
+                  } text-[#10a3b4]`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
                 </svg>
               </div>
             )}
             {card.title === "Missão" && (
-              <div className={`${isCompact ? 'w-8 h-8' : 'w-12 h-12'} rounded-lg bg-[#10a3b4]/10 flex items-center justify-center mb-2`}>
-                <svg className={`${isCompact ? 'w-4 h-4' : 'w-6 h-6'} text-[#10a3b4]`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              <div
+                className={`${
+                  isCompact ? "w-8 h-8" : "w-12 h-12"
+                } rounded-lg bg-[#10a3b4]/10 flex items-center justify-center mb-2`}
+              >
+                <svg
+                  className={`${
+                    isCompact ? "w-4 h-4" : "w-6 h-6"
+                  } text-[#10a3b4]`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
                 </svg>
               </div>
             )}
             {card.title === "Visão" && (
-              <div className={`${isCompact ? 'w-8 h-8' : 'w-12 h-12'} rounded-lg bg-[#10a3b4]/10 flex items-center justify-center mb-2`}>
-                <svg className={`${isCompact ? 'w-4 h-4' : 'w-6 h-6'} text-[#10a3b4]`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              <div
+                className={`${
+                  isCompact ? "w-8 h-8" : "w-12 h-12"
+                } rounded-lg bg-[#10a3b4]/10 flex items-center justify-center mb-2`}
+              >
+                <svg
+                  className={`${
+                    isCompact ? "w-4 h-4" : "w-6 h-6"
+                  } text-[#10a3b4]`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
                 </svg>
               </div>
             )}
           </div>
 
           <div className="flex items-center justify-between">
-            <h3 className={`${isCompact ? 'text-lg' : 'text-2xl'} font-playfair text-gray-800 group-hover:text-[#10a3b4] transition-colors`}>
+            <h3
+              className={`${
+                isCompact ? "text-lg" : "text-2xl"
+              } font-playfair text-gray-800 group-hover:text-[#10a3b4] transition-colors`}
+            >
               {card.title}
             </h3>
             {card.subtitle && (
@@ -323,12 +420,18 @@ function CardComponent({ card, index, isCompact = false }: { card: Card; index: 
                 className="flex items-center group"
               >
                 <div className="w-1.5 h-1.5 rounded-full bg-[#FF9F1C] mr-2 group-hover:scale-125 transition-transform"></div>
-                <span className="group-hover:text-gray-800 transition-colors">{item}</span>
+                <span className="group-hover:text-gray-800 transition-colors">
+                  {item}
+                </span>
               </motion.li>
             ))}
           </ul>
         ) : (
-          <p className={`text-gray-600 leading-relaxed group-hover:text-gray-800 transition-colors flex-grow ${isCompact ? 'text-sm' : ''}`}>
+          <p
+            className={`text-gray-600 leading-relaxed group-hover:text-gray-800 transition-colors flex-grow ${
+              isCompact ? "text-sm" : ""
+            }`}
+          >
             {card.description}
           </p>
         )}

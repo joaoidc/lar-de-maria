@@ -114,17 +114,17 @@ export function Navbar() {
                                 {item.label}
                               </NavigationMenuTrigger>
                               <NavigationMenuContent>
-                                <div className="absolute left-0 top-2 w-[200px] bg-white rounded-md shadow-lg p-2">
+                                <div className="absolute left-0 top-2 w-[200px] bg-white rounded-md shadow-lg p-2 text-left">
                                   {item.submenu.map((subItem) => (
                                     <NavigationMenuLink
                                       key={subItem.to}
                                       asChild
-                                      className="block"
+                                      className="block text-left"
                                     >
                                       <Link
                                         to={subItem.to}
                                         className={cn(
-                                          "block w-full select-none rounded-md p-3 text-sm leading-none no-underline outline-none transition-colors text-gray-800 hover:text-[#10a3b4] hover:bg-gray-50",
+                                          "block w-full select-none rounded-md px-3 py-2 text-sm no-underline outline-none transition-colors text-gray-800 hover:text-[#10a3b4] hover:bg-gray-50 text-left",
                                           location.pathname === subItem.to &&
                                             "text-[#10a3b4] font-medium bg-gray-50"
                                         )}
