@@ -4,11 +4,13 @@ import { useAuth } from "../contexts/AuthContext";
 import { DashboardSidebar } from "../components/DashboardSidebar";
 import { supabase } from "../lib/supabase";
 import { toast } from "react-hot-toast";
-import type { News } from "../lib/supabase";
+import type { Database } from "../types/supabase";
 import { NewsFormButtons } from "../components/NewsFormButtons";
 
-export interface NewsFormData
-  extends Omit<News, "id" | "created_at" | "updated_at"> {
+type News = Database["public"]["Tables"]["noticias"]["Row"];
+type NewsInput = Database["public"]["Tables"]["noticias"]["Insert"];
+
+export interface NewsFormData {
   title: string;
   content: string;
   image_url?: string;

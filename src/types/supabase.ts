@@ -15,6 +15,8 @@ export interface Database {
           title: string;
           content: string;
           image_url: string | null;
+          external_link: string | null;
+          status: "published" | "draft";
           created_at: string;
           updated_at: string | null;
         };
@@ -23,6 +25,8 @@ export interface Database {
           title: string;
           content: string;
           image_url?: string | null;
+          external_link?: string | null;
+          status?: "published" | "draft";
           created_at?: string;
           updated_at?: string | null;
         };
@@ -31,6 +35,8 @@ export interface Database {
           title?: string;
           content?: string;
           image_url?: string | null;
+          external_link?: string | null;
+          status?: "published" | "draft";
           created_at?: string;
           updated_at?: string | null;
         };
