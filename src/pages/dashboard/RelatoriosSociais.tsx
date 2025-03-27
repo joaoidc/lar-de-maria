@@ -39,6 +39,13 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DashboardSidebar } from "@/components/DashboardSidebar";
 import { useSidebarContext } from "../../contexts/SidebarContext";
 import { Link } from "react-router-dom";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type RelatorioSocial = {
   id: string;
@@ -65,17 +72,21 @@ export default function RelatoriosSociais() {
   });
   const { isCollapsed } = useSidebarContext();
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState<"date" | "title" | "created_at">(
+    "created_at"
+  );
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   useEffect(() => {
     fetchRelatorios();
-  }, []);
+  }, [sortBy, sortOrder]);
 
   async function fetchRelatorios() {
     try {
       const { data, error } = await supabase
         .from("relatorios_sociais")
         .select("*")
-        .order("date", { ascending: false });
+        .order(sortBy, { ascending: sortOrder === "asc" });
 
       if (error) throw error;
       setRelatorios(data || []);
@@ -529,15 +540,94 @@ export default function RelatoriosSociais() {
                 </div>
 
                 {/* Search Input */}
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Pesquisar por título"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#10a3b4]/20 focus:border-[#10a3b4]"
-                  />
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Pesquisar por título ou período..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#10a3b4]/20 focus:border-[#10a3b4]"
+                    />
+                  </div>
+
+                  {/* Sort Controls */}
+                  <div className="flex gap-2">
+                    <Select
+                      value={sortBy}
+                      onValueChange={(value: "date" | "title" | "created_at") =>
+                        setSortBy(value)
+                      }
+                    >
+                      <SelectTrigger className="w-[180px] border-gray-200 text-sm focus:ring-2 focus:ring-[#10a3b4]/20 focus:border-[#10a3b4] bg-white">
+                        <SelectValue placeholder="Ordenar por" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white border border-gray-200">
+                        <SelectItem
+                          value="created_at"
+                          className="hover:bg-gray-50"
+                        >
+                          Data de publicação
+                        </SelectItem>
+                        <SelectItem value="date" className="hover:bg-gray-50">
+                          Período do relatório
+                        </SelectItem>
+                        <SelectItem value="title" className="hover:bg-gray-50">
+                          Título
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() =>
+                        setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                      }
+                      className="border-gray-200 hover:bg-gray-100"
+                    >
+                      {sortOrder === "asc" ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="m3 8 4-4 4 4" />
+                          <path d="M7 4v16" />
+                          <path d="M11 12h10" />
+                          <path d="M11 16h7" />
+                          <path d="M11 20h4" />
+                          <path d="M11 8h13" />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M3 16l4 4 4-4" />
+                          <path d="M7 20V4" />
+                          <path d="M11 12h10" />
+                          <path d="M11 16h7" />
+                          <path d="M11 20h4" />
+                          <path d="M11 8h13" />
+                        </svg>
+                      )}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
