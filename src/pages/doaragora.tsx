@@ -121,7 +121,7 @@ export function DoarAgora() {
                 </h3>
                 <div className="flex justify-center mb-6">
                   <img
-                    src="https://res.cloudinary.com/dggewyuon/image/upload/v1740514162/qr-code-example.png"
+                    src="https://res.cloudinary.com/dgmhjjizh/image/upload/v1743095324/pix_qpxdsm.png"
                     alt="QR Code"
                     className="w-48 h-48 border-4 border-[#e6f7f9] rounded-lg shadow-md"
                   />
