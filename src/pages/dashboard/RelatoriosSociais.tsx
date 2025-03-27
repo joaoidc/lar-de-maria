@@ -177,14 +177,12 @@ export default function RelatoriosSociais() {
         toast.success("Relatório adicionado com sucesso!");
       }
 
-      setIsDialogOpen(false);
-      setFormData({ title: "", date: "", file: null });
-      setEditingRelatorio(null);
-      setRemoveCurrentFile(false);
+      handleDialogClose();
       fetchRelatorios();
     } catch (error) {
       console.error("Erro ao salvar relatório:", error);
       toast.error("Erro ao salvar relatório");
+      resetForm();
     } finally {
       setUploading(false);
     }
@@ -240,6 +238,23 @@ export default function RelatoriosSociais() {
     return titleMatch || dateMatch;
   });
 
+  // Função para resetar o formulário
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      date: "",
+      file: null,
+    });
+    setEditingRelatorio(null);
+    setRemoveCurrentFile(false);
+  };
+
+  // Função para fechar o diálogo e resetar o formulário
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+    resetForm();
+  };
+
   return (
     <div className="flex h-screen bg-[#F8FAFC]">
       {/* Sidebar - Desktop */}
@@ -270,7 +285,13 @@ export default function RelatoriosSociais() {
 
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="bg-white text-[#10a3b4] hover:bg-white/90 w-full sm:w-auto font-medium shadow-md">
+                  <Button
+                    className="bg-white text-[#10a3b4] hover:bg-white/90 w-full sm:w-auto font-medium shadow-md"
+                    onClick={() => {
+                      resetForm();
+                      setIsDialogOpen(true);
+                    }}
+                  >
                     <Plus className="w-4 h-4 mr-2" />
                     Adicionar Relatório
                   </Button>
