@@ -119,6 +119,33 @@ export default function Transparencia() {
                         href={doc.file_url}
                         download
                         className="inline-flex items-center justify-center gap-2 px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-[#10a3b4] hover:bg-[#10a3b4]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#10a3b4] transition-all duration-200 min-w-[120px] shadow-sm"
+                        onClick={async (e) => {
+                          e.preventDefault();
+                          try {
+                            const filePath = doc.file_url.split("/").pop();
+                            if (!filePath) return;
+
+                            const { data, error } = await supabase.storage
+                              .from("documents")
+                              .download(`relatorios/${filePath}`);
+
+                            if (error) throw error;
+
+                            const blob = new Blob([data], {
+                              type: "application/pdf",
+                            });
+                            const url = window.URL.createObjectURL(blob);
+                            const link = document.createElement("a");
+                            link.href = url;
+                            link.download = `${doc.title}.pdf`;
+                            document.body.appendChild(link);
+                            link.click();
+                            window.URL.revokeObjectURL(url);
+                            document.body.removeChild(link);
+                          } catch (error) {
+                            console.error("Erro ao baixar arquivo:", error);
+                          }
+                        }}
                       >
                         <Download className="h-4 w-4" />
                         Download
