@@ -37,6 +37,3 @@ export type RelatorioSocial =
   Database["public"]["Tables"]["relatorios_sociais"]["Row"];
 export type RelatorioSocialInput =
   Database["public"]["Tables"]["relatorios_sociais"]["Insert"];
-
-const { data: newsData } = await supabase.from('news').select('*').eq('status', 'published');
-const { data: draftData } = await supabase.from('news').select('*').eq('status', 'draft');
