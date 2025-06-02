@@ -30,10 +30,13 @@ export const supabase = createClient<Database>(finalUrl, supabaseAnonKey);
 console.log("✅ Cliente Supabase inicializado com sucesso!");
 
 // Tipos para as tabelas
-export type News = Database["public"]["Tables"]["noticias"]["Row"];
-export type NewsInput = Database["public"]["Tables"]["noticias"]["Insert"];
+export type News = Database["public"]["Tables"]["news"]["Row"];
+export type NewsInput = Database["public"]["Tables"]["news"]["Insert"];
 
 export type RelatorioSocial =
   Database["public"]["Tables"]["relatorios_sociais"]["Row"];
 export type RelatorioSocialInput =
   Database["public"]["Tables"]["relatorios_sociais"]["Insert"];
+
+const { data: newsData } = await supabase.from('news').select('*').eq('status', 'published');
+const { data: draftData } = await supabase.from('news').select('*').eq('status', 'draft');
