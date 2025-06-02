@@ -27,7 +27,7 @@ const projetosData = [
     title: "Despertar p/ a Cidadania",
     icon: "🌟",
     publicoAlvo: "Crianças a partir de 10 anos e Adolescentes até 17 anos",
-    apresentacao: "O projeto Despertar para a Cidadania, realizado desde 2009, tem como objetivo ampliar o universo informacional, artístico e cultural dos adolescentes, estimulando a interação social. A iniciativa busca desenvolver competências que favoreçam a construção da identidade e da cidadania, preparar para a vida adulta e para o convívio social mais amplo.",
+    apresentacao: "O projeto Despertar para a Cidadania, tem como objetivo ampliar o universo informacional, artístico e cultural dos adolescentes, estimulando a interação social. A iniciativa busca desenvolver competências que favoreçam a construção da identidade e da cidadania, preparar para a vida adulta e para o convívio social mais amplo.",
     atividades: [
       "Oficina de Informática",
       "Atividades Esportivas (Futebol)",
