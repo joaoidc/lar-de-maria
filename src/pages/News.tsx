@@ -14,6 +14,7 @@ import {
   List,
   Pencil,
   Trash2,
+  MoreVertical,
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-hot-toast";
@@ -58,6 +59,7 @@ export function News() {
     newsId: null,
   });
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) {
@@ -66,6 +68,18 @@ export function News() {
     }
     fetchNews();
   }, [user, navigate, filters]);
+
+  // Fecha o menu quando clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (openMenuId && !(event.target as Element).closest('.menu-container')) {
+        setOpenMenuId(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [openMenuId]);
 
   const fetchNews = async () => {
     try {
@@ -439,26 +453,102 @@ export function News() {
                           </span>
                         </div>
                       </div>
-                      <div className="flex gap-4 sm:gap-2">
+                      <div className="relative menu-container">
+                        {/* Botão de três pontinhos em telas menores */}
                         <button
-                          onClick={() =>
-                            navigate(`/dashboard/noticias/${item.id}`)
-                          }
-                          className="p-2 text-[#10a3b4] hover:text-[#0d8997] transition-colors"
-                          aria-label="Editar"
+                          onClick={() => setOpenMenuId(openMenuId === item.id ? null : item.id)}
+                          className="md:hidden p-2 text-gray-500 hover:text-gray-700 transition-colors"
                         >
-                          <Pencil className="h-5 w-5 sm:h-4 sm:w-4" />
+                          <MoreVertical className="h-5 w-5" />
                         </button>
-                        {item.status === "draft" && (
+
+                        {/* Menu dropdown em telas menores */}
+                        <AnimatePresence>
+                          {openMenuId === item.id && (
+                            <motion.div
+                              initial={{ opacity: 0, scale: 0.95 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0, scale: 0.95 }}
+                              transition={{ duration: 0.1 }}
+                              className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg py-1 z-10 md:hidden"
+                            >
+                              <button
+                                onClick={() => {
+                                  navigate(`/dashboard/noticias/${item.id}`);
+                                  setOpenMenuId(null);
+                                }}
+                                className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                              >
+                                <Pencil className="h-4 w-4" />
+                                Editar
+                              </button>
+                              {item.status === "draft" && (
+                                <button
+                                  onClick={() => {
+                                    handlePublish(item.id);
+                                    setOpenMenuId(null);
+                                  }}
+                                  disabled={publishLoading === item.id}
+                                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2 disabled:opacity-50"
+                                >
+                                  {publishLoading === item.id ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                  ) : (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      strokeWidth={2}
+                                      stroke="currentColor"
+                                      className="h-4 w-4"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                      />
+                                    </svg>
+                                  )}
+                                  Publicar
+                                </button>
+                              )}
+                              <button
+                                onClick={() => {
+                                  setDeleteModal({ show: true, newsId: item.id });
+                                  setOpenMenuId(null);
+                                }}
+                                className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                                Excluir
+                              </button>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+
+                        {/* Botões em telas maiores */}
+                        <div className="hidden md:flex items-center gap-2">
                           <button
-                            onClick={() => handlePublish(item.id)}
-                            disabled={publishLoading === item.id}
-                            className="group relative inline-flex items-center gap-1 px-3 py-1.5 text-sm text-white bg-[#10a3b4] hover:bg-[#0d8997] rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            onClick={() =>
+                              navigate(`/dashboard/noticias/${item.id}`)
+                            }
+                            className="group relative p-2 text-[#10a3b4] hover:text-[#0d8997] transition-colors"
+                            aria-label="Editar"
                           >
-                            {publishLoading === item.id ? (
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
-                              <>
+                            <Pencil className="h-4 w-4" />
+                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                              Editar notícia
+                            </span>
+                          </button>
+                          {item.status === "draft" && (
+                            <button
+                              onClick={() => handlePublish(item.id)}
+                              disabled={publishLoading === item.id}
+                              className="group relative inline-flex items-center justify-center p-2 text-white bg-[#10a3b4] hover:bg-[#0d8997] rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              {publishLoading === item.id ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : (
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
@@ -473,23 +563,25 @@ export function News() {
                                     d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
                                   />
                                 </svg>
-                                <span className="hidden sm:inline">Publicar</span>
-                              </>
-                            )}
+                              )}
+                              <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                                Publicar notícia
+                              </span>
+                            </button>
+                          )}
+                          <button
+                            onClick={() =>
+                              setDeleteModal({ show: true, newsId: item.id })
+                            }
+                            className="group relative p-2 text-red-500 hover:text-red-600 transition-colors"
+                            aria-label="Excluir"
+                          >
+                            <Trash2 className="h-4 w-4" />
                             <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                              Publicar notícia
+                              Excluir notícia
                             </span>
                           </button>
-                        )}
-                        <button
-                          onClick={() =>
-                            setDeleteModal({ show: true, newsId: item.id })
-                          }
-                          className="p-2 text-red-500 hover:text-red-600 transition-colors"
-                          aria-label="Excluir"
-                        >
-                          <Trash2 className="h-5 w-5 sm:h-4 sm:w-4" />
-                        </button>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
@@ -539,58 +631,137 @@ export function News() {
                       <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">
                         {item.title}
                       </h3>
-                      <div className="mt-auto pt-3 sm:pt-4 border-t border-gray-100 flex items-center gap-2">
-                        <button
-                          onClick={() =>
-                            navigate(`/dashboard/noticias/${item.id}`)
-                          }
-                          className="flex-1 text-[#10a3b4] hover:text-[#0d8997] transition-colors inline-flex items-center justify-center gap-1 py-2"
-                        >
-                          <Pencil className="h-5 w-5 sm:h-4 sm:w-4" />
-                          <span className="hidden sm:inline">Editar</span>
-                        </button>
-                        {item.status === "draft" && (
+                      <div className="mt-auto pt-4 border-t border-gray-100 flex items-center gap-2 justify-end">
+                        <div className="relative menu-container">
+                          {/* Botão de três pontinhos em telas menores */}
                           <button
-                            onClick={() => handlePublish(item.id)}
-                            disabled={publishLoading === item.id}
-                            className="group relative flex-1 text-white bg-[#10a3b4] hover:bg-[#0d8997] transition-colors inline-flex items-center justify-center gap-1 py-2 px-3 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                            onClick={() => setOpenMenuId(openMenuId === item.id ? null : item.id)}
+                            className="md:hidden p-2 text-gray-500 hover:text-gray-700 transition-colors"
                           >
-                            {publishLoading === item.id ? (
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
-                              <>
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  strokeWidth={2}
-                                  stroke="currentColor"
-                                  className="w-4 h-4"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                  />
-                                </svg>
-                                <span>Publicar</span>
-                              </>
-                            )}
-                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                              Publicar notícia
-                            </span>
+                            <MoreVertical className="h-5 w-5" />
                           </button>
-                        )}
-                        <div className="w-px h-6 bg-gray-200" />
-                        <button
-                          onClick={() =>
-                            setDeleteModal({ show: true, newsId: item.id })
-                          }
-                          className="flex-1 text-red-500 hover:text-red-600 transition-colors inline-flex items-center justify-center gap-1 py-2"
-                        >
-                          <Trash2 className="h-5 w-5 sm:h-4 sm:w-4" />
-                          <span className="hidden sm:inline">Excluir</span>
-                        </button>
+
+                          {/* Menu dropdown em telas menores */}
+                          <AnimatePresence>
+                            {openMenuId === item.id && (
+                              <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                transition={{ duration: 0.1 }}
+                                className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg py-1 z-10 md:hidden"
+                              >
+                                <button
+                                  onClick={() => {
+                                    navigate(`/dashboard/noticias/${item.id}`);
+                                    setOpenMenuId(null);
+                                  }}
+                                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                                >
+                                  <Pencil className="h-4 w-4" />
+                                  Editar
+                                </button>
+                                {item.status === "draft" && (
+                                  <button
+                                    onClick={() => {
+                                      handlePublish(item.id);
+                                      setOpenMenuId(null);
+                                    }}
+                                    disabled={publishLoading === item.id}
+                                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2 disabled:opacity-50"
+                                  >
+                                    {publishLoading === item.id ? (
+                                      <Loader2 className="h-4 w-4 animate-spin" />
+                                    ) : (
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={2}
+                                        stroke="currentColor"
+                                        className="h-4 w-4"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                      </svg>
+                                    )}
+                                    Publicar
+                                  </button>
+                                )}
+                                <button
+                                  onClick={() => {
+                                    setDeleteModal({ show: true, newsId: item.id });
+                                    setOpenMenuId(null);
+                                  }}
+                                  className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                  Excluir
+                                </button>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+
+                          {/* Botões em telas maiores */}
+                          <div className="hidden md:flex items-center gap-2">
+                            <button
+                              onClick={() =>
+                                navigate(`/dashboard/noticias/${item.id}`)
+                              }
+                              className="group relative p-2 text-[#10a3b4] hover:text-[#0d8997] transition-colors"
+                              aria-label="Editar"
+                            >
+                              <Pencil className="h-4 w-4" />
+                              <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                                Editar notícia
+                              </span>
+                            </button>
+                            {item.status === "draft" && (
+                              <button
+                                onClick={() => handlePublish(item.id)}
+                                disabled={publishLoading === item.id}
+                                className="group relative inline-flex items-center justify-center p-2 text-white bg-[#10a3b4] hover:bg-[#0d8997] rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              >
+                                {publishLoading === item.id ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={2}
+                                    stroke="currentColor"
+                                    className="h-4 w-4"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                  </svg>
+                                )}
+                                <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                                  Publicar notícia
+                                </span>
+                              </button>
+                            )}
+                            <button
+                              onClick={() =>
+                                setDeleteModal({ show: true, newsId: item.id })
+                              }
+                              className="group relative p-2 text-red-500 hover:text-red-600 transition-colors"
+                              aria-label="Excluir"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                              <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                                Excluir notícia
+                              </span>
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
