@@ -25,7 +25,6 @@ const atividadesDoutrinariasPorDia: AtividadesPorDia = {
   ],
   "Quarta-feira": [
     { horario: "9h às 10h30", atividade: "Plantão do Passe" },
-    { horario: "19h às 20h30", atividade: "Estudo do Espiritismo" },
   ],
   "Quinta-feira": [
     { horario: "18h", atividade: "Alcoólicos Anônimos (AA)" },
