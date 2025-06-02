@@ -37,9 +37,10 @@ export function NewsFormButtons({
 
         <button
           type="button"
-          onClick={(e) => {
+          onClick={async (e) => {
             e.preventDefault();
-            setFormData({ ...formData, status: "draft" });
+            setFormData((prev) => ({ ...prev, status: "draft" }));
+            await new Promise(resolve => setTimeout(resolve, 0));
             onSubmit(e);
           }}
           disabled={loading}
@@ -92,9 +93,10 @@ export function NewsFormButtons({
 
         <button
           type="button"
-          onClick={(e) => {
+          onClick={async (e) => {
             e.preventDefault();
-            setFormData({ ...formData, status: "published" });
+            setFormData((prev) => ({ ...prev, status: "published" }));
+            await new Promise(resolve => setTimeout(resolve, 0));
             onSubmit(e);
           }}
           disabled={loading}

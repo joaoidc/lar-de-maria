@@ -9,7 +9,7 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      noticias: {
+      news: {
         Row: {
           id: string;
           title: string;

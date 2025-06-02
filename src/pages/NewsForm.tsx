@@ -7,8 +7,8 @@ import { toast } from "react-hot-toast";
 import type { Database } from "../types/supabase";
 import { NewsFormButtons } from "../components/NewsFormButtons";
 
-type News = Database["public"]["Tables"]["noticias"]["Row"];
-type NewsInput = Database["public"]["Tables"]["noticias"]["Insert"];
+type News = Database["public"]["Tables"]["news"]["Row"];
+type NewsInput = Database["public"]["Tables"]["news"]["Insert"];
 
 export interface NewsFormData {
   title: string;
@@ -29,7 +29,7 @@ export function NewsForm() {
     content: "",
     image_url: "",
     external_link: "",
-    status: "draft",
+    status: "published",
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -139,26 +139,38 @@ export function NewsForm() {
         image_url: image_url || null,
         external_link: formData.external_link || null,
         status: formData.status,
+        updated_at: new Date().toISOString()
       };
 
-      const { data, error } = isEditing
-        ? await supabase.from("news").update(newsData).eq("id", id)
-        : await supabase.from("news").insert([newsData]).select();
+      console.log('Enviando notícia com status:', formData.status);
 
-      if (error) throw error;
+      let result;
+      if (isEditing) {
+        result = await supabase
+          .from("news")
+          .update(newsData)
+          .eq("id", id)
+          .select()
+          .single();
+      } else {
+        result = await supabase
+          .from("news")
+          .insert([newsData])
+          .select()
+          .single();
+      }
+
+      if (result.error) {
+        console.error('Erro do Supabase:', result.error);
+        throw result.error;
+      }
+
+      console.log('Resposta do Supabase:', result.data);
 
       toast.success(
         isEditing
-          ? `Notícia ${
-              formData.status === "published"
-                ? "publicada"
-                : "salva como rascunho"
-            } com sucesso!`
-          : `Notícia ${
-              formData.status === "published"
-                ? "publicada"
-                : "salva como rascunho"
-            }!`
+          ? `Notícia ${formData.status === "published" ? "publicada" : "salva como rascunho"} com sucesso!`
+          : `Notícia ${formData.status === "published" ? "publicada" : "salva como rascunho"}!`
       );
       navigate("/dashboard/noticias");
     } catch (error: any) {
