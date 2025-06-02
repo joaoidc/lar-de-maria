@@ -6,72 +6,75 @@ import CTASection from "../components/CTASection";
 import { PublicLayout } from "../components/PublicLayout";
 import "../styles/ProjetosSociais.css";
 
-// Dados dos projetos
 const projetosData = [
   {
     id: "educacao-vida",
-    title: "Educação para a Vida",
+    title: "Educa para a Vida",
     icon: "📚",
     publicoAlvo: "Crianças de 6 a 11 anos",
+    apresentacao: "O projeto Educação para a Vida, tem como objetivo atender crianças em situação de vulnerabilidade social, promovendo a inclusão social por meio de atividades socioeducativas. A iniciativa busca contribuir para a formação integral das participantes, fortalecendo os vínculos familiares e comunitários, garantindo o acesso aos direitos sociais e oferecendo acompanhamento pedagógico contínuo.",
     atividades: [
       "Oficinas sociopedagógicas",
       "Acompanhamento psicossocial e pedagógico",
-      "Formações continuadas para educadores",
-      "Oficinas de informática, música, dança, artes manuais e esportes",
+      "Formação continuada para Educadores Sociais",
+      "Oficina de Informática, música, dança, atividades manuais e esportivas",
       "Atividades de leitura e mediação de histórias",
-      "Temas: autoconhecimento, comunicação compassiva, educação socioambiental",
+      "Temáticas trabalhadas ao longo das atividades: autoconhecimento, comunicação compassiva, educação socioambiental, campanhas de mobilização social",
     ],
   },
   {
     id: "despertar-cidadania",
     title: "Despertar p/ a Cidadania",
     icon: "🌟",
-    publicoAlvo: "Adolescentes de 12 a 17 anos",
+    publicoAlvo: "Crianças a partir de 10 anos e Adolescentes até 17 anos",
+    apresentacao: "O projeto Despertar para a Cidadania, realizado desde 2009, tem como objetivo ampliar o universo informacional, artístico e cultural dos adolescentes, estimulando a interação social. A iniciativa busca desenvolver competências que favoreçam a construção da identidade e da cidadania, preparar para a vida adulta e para o convívio social mais amplo.",
     atividades: [
-      "Oficinas de informática (pacote Office, segurança online)",
-      "Atividades esportivas (futebol, vôlei, queimada)",
-      "Papo Cabeça: reflexões sobre valores, emoções e perspectivas de vida",
-      "Oficinas socioambientais (jardinagem, escultura com areia)",
-      "Orientação vocacional e empreendedorismo",
-      "Acompanhamento pedagógico e familiar",
-      "Atividades artísticas e culturais (dança, violão, flauta doce)",
+      "Oficina de Informática",
+      "Atividades Esportivas (Futebol)",
+      "Atividades artística e cultural (Capoeira, Dança)",
+      "Estudo do Ser Integral: reflexões sobre valores, emoções e perspectivas de vida",
+      "Matemática",
+      "Redação"
     ],
   },
   {
     id: "novo-amanha",
     title: "Novo Amanhã",
     icon: "🌅",
-    publicoAlvo: "Idosos de 60 a 90 anos",
+    publicoAlvo: "Pessoas idosas a partir de 60 anos",
+    apresentacao: "O projeto Novo Amanhã tem como objetivo atender pessoas idosas no período da manhã, por meio de atividades educativo-reflexivas, recreativas e oficinas de trabalhos manuais. A iniciativa busca promover um envelhecimento ativo e saudável, contribuindo para a prevenção do isolamento social e de doenças a ele associadas.",
     atividades: [
-      "Encontros de reflexão (palestras sobre saúde, direitos do idoso, meio ambiente)",
-      "Oficinas de trabalhos manuais (panos de prato, toalhas)",
+      "Encontros de reflexão (palestras sobre saúde, direitos da pessoa idosa, meio ambiente)",
+      "Oficinas de trabalhos manuais (artesanato, pintura em tecido, produção de objetos com materiais recicláveis)",
       "Aulas de dança (clássica e regional)",
       "Atividades intergeracionais com crianças",
-      "Acompanhamento socioassistencial (atendimentos individuais e recadastramento)",
+      "Acompanhamento socioassistencial"
     ],
   },
   {
     id: "familia-cidada",
     title: "Família Cidadã",
     icon: "👨‍👩‍👧‍👦",
-    publicoAlvo: "Famílias das crianças e adolescentes atendidos",
+    publicoAlvo: "Famílias das crianças e adolescentes, adultos, pessoas idosas atendidos pelo Lar de Maria",
+    apresentacao: "Executa o acompanhamento sociopedagógico das famílias vinculadas às ações e projetos do Lar de Maria.",
     atividades: [
       "Entrevistas individuais e coleta de dados cadastrais",
       "Articulação com a rede de serviços (CRAS, CREAS, CAPS, Conselho Tutelar)",
       "Encontros de grupos de convivência familiar",
-      "Campanhas educativas (Maio Laranja, Agosto Lilás, Setembro Amarelo)",
-      "Visitas domiciliares e institucionais",
+      "Campanhas educativas (Dia mundial da conscientização do Autismo, Dia Nacional do combate ao Bullying e violência nas Escolas, Maio Laranja, Diga não ao Trabalho Infantil, Combate à violência contra a Mulher, Setembro Amarelo, Dia Nacional da Pessoa Idosa, Dia da consciência Negra)",
+      "Visitas institucionais"
     ],
   },
   {
     id: "alegria-sorrir",
     title: "Alegria de Sorrir",
     icon: "😊",
-    publicoAlvo: "Crianças, adolescentes e idosos",
+    publicoAlvo: "Crianças, Adolescentes e pessoas idosas atendidas pelos projetos",
+    apresentacao: "O Projeto Alegria de Sorrir é uma iniciativa da Associação Lar de Maria em parceria com um grupo de odontólogos voluntários. A ação tem como objetivo oferecer atendimentos odontológicos educativos, preventivos, curativos e reabilitadores a crianças, Adolescentes e idosos atendidos pelos projetos sociais desenvolvidos pela instituição.",
     atividades: [
       "Atendimento odontológico educativo, preventivo e curativo",
       "Orientações sobre saúde bucal para responsáveis",
-      "Consultas três vezes por semana (prioridade para crianças)",
+      "Consultas três vezes por semana (prioridade para crianças)"
     ],
   },
   {
@@ -90,12 +93,12 @@ const projetosData = [
     id: "trabalho-renda",
     title: "Trabalho e Renda no Lar",
     icon: "🧵",
-    publicoAlvo: "Mães de família, jovens e idosos",
+    publicoAlvo: "Jovens, mulheres, adultos e pessoas idosas",
+    apresentacao: "Promover iniciativas de geração de trabalho e renda, com foco na inclusão produtiva de jovens, mulheres, adultos e pessoas idosas, contribuindo para a autonomia e o fortalecimento de vínculos sociais.",
     atividades: [
-      "Curso de Costura Prática e Produção Artesanal",
-      "Técnicas de desenho, corte, costura manual e em máquina",
-      "Reformas e customização de peças",
-      "Certificação ao final do curso",
+      "Implementar ações de desenvolvimento de capacitação para o trabalho",
+      "Promover atividades de geração de renda ao público atendido",
+      "Esclarecer e orientar o público atendido sobre mercado de trabalho"
     ],
   },
 ];
@@ -276,10 +279,18 @@ export function ProjetosSociaisPage() {
                         {projetoSelecionado?.title}
                       </h3>
                     </div>
-                    <p className="text-gray-600 text-lg">
+                    <p className="text-gray-600 text-lg mb-4">
                       <strong className="text-[#10a3b4]">Público-Alvo:</strong>{" "}
                       {projetoSelecionado?.publicoAlvo}
                     </p>
+                    {projetoSelecionado?.apresentacao && (
+                      <div className="bg-[#10a3b4]/5 p-6 rounded-xl mb-8">
+                        <h4 className="text-[#10a3b4] font-medium mb-3">Apresentação</h4>
+                        <p className="text-gray-600 leading-relaxed">
+                          {projetoSelecionado.apresentacao}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
 
