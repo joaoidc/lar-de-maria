@@ -29,7 +29,7 @@ export function NewsForm() {
     content: "",
     image_url: "",
     external_link: "",
-    status: "published",
+    status: "draft",
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -64,7 +64,7 @@ export function NewsForm() {
           content: data.content,
           image_url: data.image_url || "",
           external_link: data.external_link || "",
-          status: data.status || "published",
+          status: data.status,
         });
         if (data.image_url) {
           setImagePreview(data.image_url);
@@ -142,7 +142,8 @@ export function NewsForm() {
         updated_at: new Date().toISOString()
       };
 
-      console.log('Enviando notícia com status:', formData.status);
+      console.log('Status antes de enviar:', formData.status);
+      console.log('Dados da notícia:', newsData);
 
       let result;
       if (isEditing) {
