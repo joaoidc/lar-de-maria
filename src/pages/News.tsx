@@ -29,7 +29,7 @@ interface NewsItem {
 
 interface FilterOptions {
   search: string;
-  orderBy: "created_at" | "title";
+  orderBy: string;
   orderDirection: "asc" | "desc";
   status: "all" | "published" | "draft";
   dateRange: "all" | "today" | "week" | "month";
@@ -40,6 +40,7 @@ export function News() {
   const { user } = useAuth();
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [publishLoading, setPublishLoading] = useState<string | null>(null);
   const [filters, setFilters] = useState<FilterOptions>({
     search: "",
     orderBy: "created_at",
@@ -115,6 +116,32 @@ export function News() {
       console.error("Erro ao buscar notícias:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handlePublish = async (newsId: string) => {
+    try {
+      setPublishLoading(newsId);
+      const { error } = await supabase
+        .from("news")
+        .update({ status: "published", updated_at: new Date().toISOString() })
+        .eq("id", newsId);
+
+      if (error) throw error;
+
+      // Atualiza a lista localmente
+      setNews((prevNews) =>
+        prevNews.map((item) =>
+          item.id === newsId ? { ...item, status: "published" } : item
+        )
+      );
+
+      toast.success("Notícia publicada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao publicar notícia:", error);
+      toast.error("Erro ao publicar notícia");
+    } finally {
+      setPublishLoading(null);
     }
   };
 
@@ -421,6 +448,38 @@ export function News() {
                         >
                           <Pencil className="h-5 w-5 sm:h-4 sm:w-4" />
                         </button>
+                        {item.status === "draft" && (
+                          <button
+                            onClick={() => handlePublish(item.id)}
+                            disabled={publishLoading === item.id}
+                            className="group relative inline-flex items-center gap-1 px-3 py-1.5 text-sm text-white bg-[#10a3b4] hover:bg-[#0d8997] rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {publishLoading === item.id ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth={2}
+                                  stroke="currentColor"
+                                  className="h-4 w-4"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  />
+                                </svg>
+                                <span className="hidden sm:inline">Publicar</span>
+                              </>
+                            )}
+                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                              Publicar notícia
+                            </span>
+                          </button>
+                        )}
                         <button
                           onClick={() =>
                             setDeleteModal({ show: true, newsId: item.id })
@@ -489,6 +548,38 @@ export function News() {
                           <Pencil className="h-5 w-5 sm:h-4 sm:w-4" />
                           <span className="hidden sm:inline">Editar</span>
                         </button>
+                        {item.status === "draft" && (
+                          <button
+                            onClick={() => handlePublish(item.id)}
+                            disabled={publishLoading === item.id}
+                            className="group relative flex-1 text-white bg-[#10a3b4] hover:bg-[#0d8997] transition-colors inline-flex items-center justify-center gap-1 py-2 px-3 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {publishLoading === item.id ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth={2}
+                                  stroke="currentColor"
+                                  className="w-4 h-4"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  />
+                                </svg>
+                                <span>Publicar</span>
+                              </>
+                            )}
+                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                              Publicar notícia
+                            </span>
+                          </button>
+                        )}
                         <div className="w-px h-6 bg-gray-200" />
                         <button
                           onClick={() =>

@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 interface NewsFormData {
   title: string;
@@ -39,7 +40,7 @@ export function NewsFormButtons({
           type="button"
           onClick={async (e) => {
             e.preventDefault();
-            setFormData((prev) => ({ ...prev, status: "draft" }));
+            await setFormData((prev) => ({ ...prev, status: "draft" }));
             await new Promise(resolve => setTimeout(resolve, 0));
             onSubmit(e);
           }}
@@ -48,26 +49,7 @@ export function NewsFormButtons({
         >
           {loading ? (
             <>
-              <svg
-                className="animate-spin h-5 w-5"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
+              <Loader2 className="h-5 w-5 animate-spin" />
               Salvando...
             </>
           ) : (
@@ -95,7 +77,7 @@ export function NewsFormButtons({
           type="button"
           onClick={async (e) => {
             e.preventDefault();
-            setFormData((prev) => ({ ...prev, status: "published" }));
+            await setFormData((prev) => ({ ...prev, status: "published" }));
             await new Promise(resolve => setTimeout(resolve, 0));
             onSubmit(e);
           }}
@@ -104,26 +86,7 @@ export function NewsFormButtons({
         >
           {loading ? (
             <>
-              <svg
-                className="animate-spin h-5 w-5"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
+              <Loader2 className="h-5 w-5 animate-spin" />
               Salvando...
             </>
           ) : (
@@ -142,7 +105,7 @@ export function NewsFormButtons({
                   d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              Publicar
+              {formData.status === "draft" ? "Publicar" : "Salvar e Publicar"}
             </>
           )}
         </button>
