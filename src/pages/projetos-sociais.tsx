@@ -9,7 +9,7 @@ import "../styles/ProjetosSociais.css";
 const projetosData = [
   {
     id: "educacao-vida",
-    title: "Educa para a Vida",
+    title: "Educação para a Vida",
     icon: "📚",
     publicoAlvo: "Crianças de 6 a 11 anos",
     apresentacao: "O projeto Educação para a Vida, tem como objetivo atender crianças em situação de vulnerabilidade social, promovendo a inclusão social por meio de atividades socioeducativas. A iniciativa busca contribuir para a formação integral das participantes, fortalecendo os vínculos familiares e comunitários, garantindo o acesso aos direitos sociais e oferecendo acompanhamento pedagógico contínuo.",
