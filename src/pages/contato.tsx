@@ -145,13 +145,13 @@ export function ContatoPage() {
                           <span>(91) 3223-0032</span>
                         </a>
                         <a
-                          href="https://wa.me/5591985464442"
+                          href="https://wa.me/559188711925"
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center text-gray-600 hover:text-[#10a3b4] transition-colors"
                         >
                           <span className="mr-2">WhatsApp:</span>
-                          <span>(91) 98546-4442</span>
+                          <span>(91) 88711-925</span>
                         </a>
                         <a
                           href="mailto:contato@lardemaria.org.br"

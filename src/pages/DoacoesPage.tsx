@@ -151,7 +151,7 @@ export function DoacoesPage() {
                   className="border-2 border-[#10a3b4] text-[#10a3b4] hover:bg-[#10a3b4] hover:text-white font-medium py-2 px-6 rounded-full transition-all"
                   onClick={() => {
                     window.location.href =
-                      "https://wa.me/5591985464442?text=Gostaria%20de%20saber%20mais%20sobre%20como%20posso%20me%20voluntariar%20no%20Lar%20de%20Maria";
+                      "https://wa.me/559188711925?text=Gostaria%20de%20saber%20mais%20sobre%20como%20posso%20me%20voluntariar%20no%20Lar%20de%20Maria";
                   }}
                 >
                   Me voluntariar
