@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { useSidebarContext } from "../contexts/SidebarContext";
 import { DashboardSidebar } from "../components/DashboardSidebar";
 import { supabase } from "../lib/supabase";
 import { Helmet } from "react-helmet-async";
@@ -26,6 +27,7 @@ const PASSWORD_REGEX =
 export function Settings() {
   const navigate = useNavigate();
   const { user, signOut, updateProfile } = useAuth();
+  const { isCollapsed } = useSidebarContext();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -219,7 +221,9 @@ export function Settings() {
 
       <DashboardSidebar />
 
-      <main className="md:ml-64 min-h-screen pb-28">
+      <main className={`min-h-screen pb-28 transition-all duration-300 ${
+        isCollapsed ? "md:ml-20" : "md:ml-64"
+      }`}>
         <div className="p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto">
             <h1 className="text-xl font-bold text-gray-900 sm:text-2xl lg:text-3xl mb-6">

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { useSidebarContext } from "../contexts/SidebarContext";
 import { DashboardSidebar } from "../components/DashboardSidebar";
 import { supabase } from "../lib/supabase";
 import { toast } from "react-hot-toast";
 import type { Database } from "../types/supabase";
 import { NewsFormButtons } from "../components/NewsFormButtons";
+import { ImageConfigModal } from "../components/ImageConfigModal";
 
 type News = Database["public"]["Tables"]["news"]["Row"];
 type NewsInput = Database["public"]["Tables"]["news"]["Insert"];
@@ -15,6 +17,7 @@ export interface NewsFormData {
   content: string;
   image_url?: string;
   external_link?: string;
+  image_fit?: "cover" | "contain";
   status: "published" | "draft";
 }
 
@@ -22,6 +25,7 @@ export function NewsForm() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useAuth();
+  const { isCollapsed } = useSidebarContext();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<NewsFormData>({
@@ -29,11 +33,15 @@ export function NewsForm() {
     content: "",
     image_url: "",
     external_link: "",
+    image_fit: "cover",
     status: "draft",
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [tempImagePreview, setTempImagePreview] = useState<string | null>(null);
+  const [tempImageFile, setTempImageFile] = useState<File | null>(null);
 
   const isEditing = !!id;
 
@@ -51,11 +59,11 @@ export function NewsForm() {
 
   async function fetchNews() {
     try {
-      const { data, error } = await supabase
-        .from("news")
+      const { data, error } = await ((supabase
+        .from("news") as any)
         .select("*")
         .eq("id", id)
-        .single();
+        .single());
 
       if (error) throw error;
       if (data) {
@@ -64,6 +72,7 @@ export function NewsForm() {
           content: data.content,
           image_url: data.image_url || "",
           external_link: data.external_link || "",
+          image_fit: (data.image_fit as "cover" | "contain") || "cover",
           status: data.status,
         });
         if (data.image_url) {
@@ -99,9 +108,9 @@ export function NewsForm() {
   }
 
   function handleImageFile(file: File) {
-    setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
-    setFormData({ ...formData, image_url: "" });
+    setTempImageFile(file);
+    setTempImagePreview(URL.createObjectURL(file));
+    setShowImageModal(true);
   }
 
   async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -111,12 +120,40 @@ export function NewsForm() {
     }
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  function handleConfirmImage(imageFit: "cover" | "contain") {
+    if (tempImagePreview) {
+      if (tempImageFile) {
+        setImageFile(tempImageFile);
+      }
+      setImagePreview(tempImagePreview);
+      setFormData({ ...formData, image_fit: imageFit });
+      setShowImageModal(false);
+    }
+  }
+
+  function handleCancelImage() {
+    setTempImageFile(null);
+    setTempImagePreview(null);
+    setShowImageModal(false);
+  }
+
+  function handleEditImage() {
+    if (imagePreview) {
+      setTempImagePreview(imagePreview);
+      setTempImageFile(imageFile); 
+      setShowImageModal(true);
+    }
+  }
+
+  async function handleSubmit(e: React.FormEvent, statusOverride?: "published" | "draft") {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
+      // Usar statusOverride se fornecido, caso contrário usar o do formData
+      const finalStatus = statusOverride || formData.status;
+      
       let image_url = formData.image_url;
 
       if (imageFile) {
@@ -138,27 +175,27 @@ export function NewsForm() {
         content: formData.content,
         image_url: image_url || null,
         external_link: formData.external_link || null,
-        status: formData.status,
+        image_fit: formData.image_fit || "cover",
+        status: finalStatus,
         updated_at: new Date().toISOString()
       };
 
-      console.log('Status antes de enviar:', formData.status);
-      console.log('Dados da notícia:', newsData);
+      console.log("Enviando image_fit:", formData.image_fit); // Debug
 
       let result;
       if (isEditing) {
-        result = await supabase
-          .from("news")
+        result = await ((supabase
+          .from("news") as any)
           .update(newsData)
           .eq("id", id)
-          .select()
-          .single();
+          .select("*")
+          .single());
       } else {
-        result = await supabase
-          .from("news")
+        result = await ((supabase
+          .from("news") as any)
           .insert([newsData])
-          .select()
-          .single();
+          .select("*")
+          .single());
       }
 
       if (result.error) {
@@ -167,6 +204,7 @@ export function NewsForm() {
       }
 
       console.log('Resposta do Supabase:', result.data);
+      console.log('image_fit salvo:', result.data?.image_fit);
 
       toast.success(
         isEditing
@@ -190,7 +228,9 @@ export function NewsForm() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <DashboardSidebar />
-      <main className="flex-1 p-4 md:p-8 pb-24 w-full md:ml-64">
+      <main className={`flex-1 p-4 md:p-8 pb-24 w-full transition-all duration-300 ${
+        isCollapsed ? "md:ml-20" : "md:ml-64"
+      }`}>
         <div className="max-w-4xl mx-auto">
           <div className="bg-white md:bg-transparent fixed md:relative top-0 left-0 right-0 md:top-auto md:left-auto md:right-auto z-10 px-4 py-3 md:p-0 shadow-sm md:shadow-none mb-4">
             <div className="flex items-center gap-3">
@@ -319,6 +359,71 @@ export function NewsForm() {
                   <label className="block text-sm font-medium text-gray-700 mb-3">
                     Imagem da Notícia
                   </label>
+                  {imagePreview && (
+                    <div className="mb-4">
+                      <div className="relative group rounded-lg shadow-md overflow-hidden border-2 border-gray-200">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-full max-h-[300px] object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-opacity rounded-lg flex items-center justify-center gap-2">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEditImage();
+                            }}
+                            className="opacity-0 group-hover:opacity-100 bg-[#10a3b4] text-white px-4 py-2 rounded-md hover:bg-[#0d8997] transform hover:scale-105 transition-all flex items-center gap-2"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={2}
+                              stroke="currentColor"
+                              className="w-4 h-4"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                              />
+                            </svg>
+                            Editar imagem
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setImagePreview(null);
+                              setImageFile(null);
+                              setFormData({ ...formData, image_url: "" });
+                            }}
+                            className="opacity-0 group-hover:opacity-100 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transform hover:scale-110 transition-all"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={2}
+                              stroke="currentColor"
+                              className="w-5 h-5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      <p className="mt-2 text-sm text-gray-500 text-center">
+                        Passe o mouse sobre a imagem para editar ou remover
+                      </p>
+                    </div>
+                  )}
                   <div
                     className={`p-4 md:p-8 bg-gray-50 rounded-lg border-2 border-dashed transition-colors cursor-pointer ${
                       isDragging
@@ -333,7 +438,7 @@ export function NewsForm() {
                     }
                   >
                     <div className="text-center">
-                      {!imagePreview ? (
+                      {!imagePreview && (
                         <>
                           <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-[#e6f7f9] mb-4">
                             <svg
@@ -379,44 +484,6 @@ export function NewsForm() {
                             </p>
                           </div>
                         </>
-                      ) : (
-                        <div className="relative group">
-                          <img
-                            src={imagePreview}
-                            alt="Preview"
-                            className="rounded-lg shadow-md w-full max-h-[300px] object-cover"
-                          />
-                          <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setImagePreview(null);
-                                setImageFile(null);
-                                setFormData({ ...formData, image_url: "" });
-                              }}
-                              className="bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transform hover:scale-110 transition-transform"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={2}
-                                stroke="currentColor"
-                                className="w-5 h-5"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M6 18L18 6M6 6l12 12"
-                                />
-                              </svg>
-                            </button>
-                          </div>
-                          <p className="mt-2 text-sm text-gray-500">
-                            Clique na imagem para alterar ou no X para remover
-                          </p>
-                        </div>
                       )}
                     </div>
                   </div>
@@ -433,6 +500,16 @@ export function NewsForm() {
           </div>
         </div>
       </main>
+
+      {/* Modal de configuração da imagem */}
+      <ImageConfigModal
+        open={showImageModal}
+        onOpenChange={setShowImageModal}
+        imagePreview={tempImagePreview}
+        currentImageFit={formData.image_fit || "cover"}
+        onConfirm={handleConfirmImage}
+        onCancel={handleCancelImage}
+      />
     </div>
   );
 }

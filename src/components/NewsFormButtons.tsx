@@ -14,7 +14,7 @@ interface NewsFormButtonsProps {
   loading: boolean;
   setFormData: React.Dispatch<React.SetStateAction<NewsFormData>>;
   formData: NewsFormData;
-  onSubmit: (e: React.FormEvent) => Promise<void>;
+  onSubmit: (e: React.FormEvent, status?: "published" | "draft") => Promise<void>;
 }
 
 export function NewsFormButtons({
@@ -38,11 +38,9 @@ export function NewsFormButtons({
 
         <button
           type="button"
-          onClick={async (e) => {
+          onClick={(e) => {
             e.preventDefault();
-            await setFormData((prev) => ({ ...prev, status: "draft" }));
-            await new Promise(resolve => setTimeout(resolve, 0));
-            onSubmit(e);
+            onSubmit(e, "draft");
           }}
           disabled={loading}
           className="w-full sm:w-auto px-4 py-2 text-[#10a3b4] bg-white border border-[#10a3b4] rounded-md hover:bg-[#e6f7f9] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#10a3b4] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
@@ -75,11 +73,9 @@ export function NewsFormButtons({
 
         <button
           type="button"
-          onClick={async (e) => {
+          onClick={(e) => {
             e.preventDefault();
-            await setFormData((prev) => ({ ...prev, status: "published" }));
-            await new Promise(resolve => setTimeout(resolve, 0));
-            onSubmit(e);
+            onSubmit(e, "published");
           }}
           disabled={loading}
           className="w-full sm:w-auto px-4 py-2 bg-[#10a3b4] text-white rounded-md hover:bg-[#0d8997] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#10a3b4] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"

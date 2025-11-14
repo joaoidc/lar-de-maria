@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { useSidebarContext } from "../contexts/SidebarContext";
 import { DashboardSidebar } from "../components/DashboardSidebar";
 import { supabase } from "../lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
@@ -58,6 +59,7 @@ const pulseAnimation = {
 export function Dashboard() {
   const navigate = useNavigate();
   const { user, supabase } = useAuth();
+  const { isCollapsed } = useSidebarContext();
   const [userName, setUserName] = useState<string | null>(null);
   const [metrics, setMetrics] = useState<DashboardMetrics>({
     totalNews: 0,
@@ -230,7 +232,9 @@ export function Dashboard() {
       <DashboardSidebar />
 
       <motion.div
-        className="md:ml-64 p-4 sm:p-6 lg:p-8 pb-24 md:pb-8"
+        className={`p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 transition-all duration-300 ${
+          isCollapsed ? "md:ml-20" : "md:ml-64"
+        }`}
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}

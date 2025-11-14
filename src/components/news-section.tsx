@@ -57,7 +57,7 @@ export function NewsSection() {
               {news.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full"
                 >
                   {item.image_url && (
                     <img
@@ -66,14 +66,14 @@ export function NewsSection() {
                       className="w-full h-48 object-cover"
                     />
                   )}
-                  <div className="p-6">
+                  <div className="p-6 flex flex-col flex-1">
                     <h3 className="font-semibold text-xl text-gray-800 mb-3">
                       {item.title}
                     </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-3">
+                    <p className="text-gray-600 mb-4 line-clamp-3 flex-1">
                       {item.content}
                     </p>
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center mt-auto pt-4 border-t border-gray-100">
                       <span className="text-sm text-gray-500">
                         {new Date(item.created_at).toLocaleDateString("pt-BR")}
                       </span>

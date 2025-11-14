@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { useSidebarContext } from "../../contexts/SidebarContext";
 import { DashboardSidebar } from "../../components/DashboardSidebar";
 import { supabase } from "../../lib/supabase";
 import { toast } from "react-hot-toast";
@@ -16,6 +17,7 @@ interface News {
 export function NewsManagement() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isCollapsed } = useSidebarContext();
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -64,7 +66,9 @@ export function NewsManagement() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <DashboardSidebar />
-      <main className="flex-1 overflow-auto ml-64">
+      <main className={`flex-1 overflow-auto transition-all duration-300 ${
+        isCollapsed ? "md:ml-20" : "md:ml-64"
+      }`}>
         <div className="container mx-auto px-8 py-8 max-w-4xl">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold">Gerenciar Notícias</h1>
