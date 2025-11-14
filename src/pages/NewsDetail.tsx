@@ -11,6 +11,7 @@ interface News {
   created_at: string;
   image_url?: string;
   external_link?: string;
+  image_fit?: "cover" | "contain";
   status: "published" | "draft";
 }
 
@@ -20,24 +21,43 @@ export function NewsDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0); // Scroll para o topo
     fetchNews();
   }, [id]);
 
   async function fetchNews() {
     if (!id) return;
 
+    console.log("========== CARREGANDO NOTÍCIA ID:", id, "==========");
+
     try {
-      const { data, error } = await supabase
-        .from("news")
+      const { data, error } = await ((supabase
+        .from("news") as any)
         .select("*")
         .eq("id", id)
         .eq("status", "published")
-        .single();
+        .single());
 
-      if (error) throw error;
-      setNews(data);
+      if (error) {
+        console.error("❌ ERRO ao buscar notícia:", error);
+        throw error;
+      }
+
+      console.log("✅ DADOS COMPLETOS RECEBIDOS:", data);
+      console.log("🖼️ IMAGE_FIT RECEBIDO:", data?.image_fit);
+      console.log("📸 IMAGE_URL:", data?.image_url);
+      
+      // Garantir que image_fit tenha um valor padrão se não vier do banco
+      const newsData = {
+        ...data,
+        image_fit: data?.image_fit || "cover"
+      };
+      
+      console.log("🎯 IMAGE_FIT FINAL (após fallback):", newsData.image_fit);
+      
+      setNews(newsData);
     } catch (error) {
-      console.error("Error fetching news:", error);
+      console.error("❌ Error fetching news:", error);
     } finally {
       setLoading(false);
     }
@@ -76,13 +96,55 @@ export function NewsDetail() {
 
       <div className="min-h-screen bg-gradient-to-b from-white to-[#e6f7f9]">
         <div className="container mx-auto px-4 py-16">
-          <article className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+          <article className={`max-w-4xl mx-auto bg-white rounded-2xl shadow-lg ${
+            news.image_fit === "contain" ? "" : "overflow-hidden"
+          }`}>
             {news.image_url && (
-              <img
-                src={news.image_url}
-                alt={news.title}
-                className="w-full h-[400px] object-cover"
-              />
+              <>
+                {console.log("🔄 RENDERIZANDO IMAGEM - image_fit:", news.image_fit)}
+                <div
+                  className={`w-full ${
+                    news.image_fit === "contain"
+                      ? "min-h-[400px] flex items-center justify-center bg-gray-50 p-4 rounded-t-2xl"
+                      : "h-[400px] overflow-hidden"
+                  }`}
+                  style={
+                    news.image_fit === "contain"
+                      ? { 
+                          minHeight: "400px", 
+                          display: "flex", 
+                          alignItems: "center", 
+                          justifyContent: "center",
+                          backgroundColor: "#f9fafb",
+                          padding: "1rem"
+                        }
+                      : { height: "400px", overflow: "hidden" }
+                  }
+                >
+                  <img
+                    src={news.image_url}
+                    alt={news.title}
+                    className={`${
+                      news.image_fit === "contain"
+                        ? "max-w-full max-h-[600px] w-auto h-auto object-contain"
+                        : "w-full h-full object-cover"
+                    }`}
+                    style={
+                      news.image_fit === "contain"
+                        ? { 
+                            maxWidth: "100%", 
+                            maxHeight: "600px", 
+                            width: "auto", 
+                            height: "auto", 
+                            objectFit: "contain",
+                            display: "block"
+                          }
+                        : { width: "100%", height: "100%", objectFit: "cover" }
+                    }
+                    onLoad={() => console.log("🖼️ IMAGEM CARREGADA - Modo:", news.image_fit)}
+                  />
+                </div>
+              </>
             )}
             <div className="p-8">
               <h1 className="text-3xl lg:text-4xl font-playfair text-gray-800 mb-6">

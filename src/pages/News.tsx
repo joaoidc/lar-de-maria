@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { useSidebarContext } from "../contexts/SidebarContext";
 import { DashboardSidebar } from "../components/DashboardSidebar";
 import { supabase } from "../lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
@@ -40,6 +41,7 @@ export function News() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
+  const { isCollapsed } = useSidebarContext();
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [publishLoading, setPublishLoading] = useState<string | null>(null);
@@ -210,7 +212,9 @@ export function News() {
 
       <DashboardSidebar />
 
-      <main className="md:ml-64 min-h-screen pb-28">
+      <main className={`min-h-screen pb-28 transition-all duration-300 ${
+        isCollapsed ? "md:ml-20" : "md:ml-64"
+      }`}>
         <div className="p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6">

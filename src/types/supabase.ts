@@ -16,6 +16,7 @@ export interface Database {
           content: string;
           image_url: string | null;
           external_link: string | null;
+          image_fit: "cover" | "contain" | null;
           status: "published" | "draft";
           created_at: string;
           updated_at: string | null;
@@ -26,6 +27,7 @@ export interface Database {
           content: string;
           image_url?: string | null;
           external_link?: string | null;
+          image_fit?: "cover" | "contain" | null;
           status?: "published" | "draft";
           created_at?: string;
           updated_at?: string | null;
@@ -36,6 +38,7 @@ export interface Database {
           content?: string;
           image_url?: string | null;
           external_link?: string | null;
+          image_fit?: "cover" | "contain" | null;
           status?: "published" | "draft";
           created_at?: string;
           updated_at?: string | null;
