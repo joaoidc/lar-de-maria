@@ -112,7 +112,7 @@ export function DashboardSidebar() {
                     <h1 className="text-lg font-semibold text-gray-900">
                       Lar de Maria
                     </h1>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-xs text-gray-500">
                       Painel Administrativo
                     </p>
                   </div>
