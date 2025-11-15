@@ -139,10 +139,10 @@ export function News() {
   const handlePublish = async (newsId: string) => {
     try {
       setPublishLoading(newsId);
-      const { error } = await supabase
-        .from("news")
+      const { error } = await ((supabase
+        .from("news") as any)
         .update({ status: "published", updated_at: new Date().toISOString() })
-        .eq("id", newsId);
+        .eq("id", newsId));
 
       if (error) throw error;
 
@@ -165,19 +165,19 @@ export function News() {
   async function handleDelete(id: string) {
     try {
       // Primeiro, vamos buscar a notícia para ver se tem imagem
-      const { data: newsItem } = await supabase
-        .from("news")
+      const { data: newsItem } = await ((supabase
+        .from("news") as any)
         .select("image_url")
         .eq("id", id)
-        .single();
+        .single());
 
       // Se tiver imagem, vamos excluir do storage
       if (newsItem?.image_url) {
         const imagePath = newsItem.image_url.split("/").pop();
         if (imagePath) {
           const { error: storageError } = await supabase.storage
-            .from("news")
-            .remove([`news/${imagePath}`]);
+            .from("images")
+            .remove([imagePath]);
 
           if (storageError) {
             console.error("Error deleting image:", storageError);
