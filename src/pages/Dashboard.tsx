@@ -71,6 +71,42 @@ export function Dashboard() {
   const [recentActivity, setRecentActivity] = useState<any[]>([]);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
+  // Função para determinar saudação baseada na hora
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) {
+      return {
+        text: "Bom dia",
+        icon: (
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        ),
+      };
+    } else if (hour >= 12 && hour < 18) {
+      return {
+        text: "Boa tarde",
+        icon: (
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3" />
+          </svg>
+        ),
+      };
+    } else {
+      return {
+        text: "Boa noite",
+        icon: (
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        ),
+      };
+    }
+  };
+
+  const greeting = getGreeting();
+
   useEffect(() => {
     if (!user) {
       navigate("/login");
@@ -197,24 +233,24 @@ export function Dashboard() {
         </div>
 
         <div className="flex items-end justify-between">
-          <p className="text-2xl font-semibold text-gray-900 tabular-nums tracking-tight">
+          <p className="text-2xl font-semibold text-gray-900 tabular-nums tracking-tight min-w-[80px]">
             {value}
-            {type === "storage" && (
+            {type === "storage" && typeof value === "string" && !isNaN(parseFloat(value)) && (
               <span className="text-sm font-normal text-gray-500 ml-1">MB</span>
             )}
           </p>
 
-          {type === "storage" && (
+          {type === "storage" && typeof value === "string" && !isNaN(parseFloat(value)) && (
             <div className="flex flex-col items-end">
               <div className="w-24 bg-gray-100 rounded-full h-1.5 mb-1">
                 <motion.div
                   className={`${getProgressColor(
-                    parseInt(value),
+                    parseFloat(value) || 0,
                     100
                   )} h-1.5 rounded-full`}
                   initial={{ width: "0%" }}
                   animate={{
-                    width: `${Math.min((parseInt(value) / 100) * 100, 100)}%`,
+                    width: `${Math.min(((parseFloat(value) || 0) / 100) * 100, 100)}%`,
                   }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
                 />
@@ -228,13 +264,18 @@ export function Dashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-x-hidden">
       <DashboardSidebar />
 
       <motion.div
-        className={`p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 transition-all duration-300 ${
+        className={`w-full md:w-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 transition-all duration-300 ${
           isCollapsed ? "md:ml-20" : "md:ml-64"
         }`}
+        style={{
+          ...(window.innerWidth >= 768 && {
+            width: isCollapsed ? 'calc(100vw - 5rem)' : 'calc(100vw - 16rem)'
+          })
+        }}
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
@@ -243,15 +284,53 @@ export function Dashboard() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-8"
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="mb-8"
           >
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-              Painel de Controle
-            </h1>
-            <p className="text-base sm:text-lg text-gray-600">
-              {userName ? `Olá, ${userName}. Seja bem vindo!` : "Carregando..."}
-            </p>
+            <div className="bg-gradient-to-r from-[#10a3b4] to-[#10B5B5] rounded-xl shadow-md p-6 sm:p-8 text-white">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex-1">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className="flex items-center gap-3 mb-2"
+                  >
+                    <div className="text-[#10a3b4] bg-white/90 p-2 rounded-lg">
+                      {greeting.icon}
+                    </div>
+                    <div>
+                      <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-white">
+                        {greeting.text}
+                        {userName && (
+                          <span className="text-white/90 font-normal">, {userName}</span>
+                        )}
+                      </h1>
+                      <p className="text-white/80 text-sm sm:text-base mt-1">
+                        Bem vindo ao Painel de Controle
+                      </p>
+                    </div>
+                  </motion.div>
+                </div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2, duration: 0.4 }}
+                  className="flex-shrink-0"
+                >
+                  <div className="bg-white/15 backdrop-blur-sm rounded-lg px-4 py-3 border border-white/20">
+                    <p className="text-xs text-white/70 mb-1">Último acesso</p>
+                    <p className="text-sm font-medium">
+                      {new Date().toLocaleDateString("pt-BR", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
           </motion.div>
 
           <motion.div
@@ -328,7 +407,11 @@ export function Dashboard() {
 
             <MetricCard
               title="Armazenamento"
-              value={metrics.storageUsed.split(" ")[0]}
+              value={
+                metrics.storageUsed === "Calculando..." || metrics.storageUsed === "Erro ao calcular"
+                  ? metrics.storageUsed
+                  : metrics.storageUsed.split(" ")[0]
+              }
               icon={
                 <svg
                   className="w-full h-full text-yellow-600"
@@ -436,14 +519,27 @@ export function Dashboard() {
                             </p>
                           </div>
                           <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="ml-2 sm:ml-4 text-[#10a3b4] hover:text-[#10B5B5] transition-colors text-sm sm:text-base whitespace-nowrap"
+                            whileHover={{ scale: 1.05, y: -2 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="ml-2 sm:ml-4 px-4 py-2 bg-gradient-to-r from-[#10a3b4] to-[#10B5B5] text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-xs sm:text-sm font-medium whitespace-nowrap flex items-center gap-2"
                             onClick={() =>
                               navigate(`/dashboard/noticias/${activity.id}`)
                             }
                           >
-                            Ver detalhes →
+                            <span>Ver detalhes</span>
+                            <svg 
+                              className="w-4 h-4" 
+                              fill="none" 
+                              viewBox="0 0 24 24" 
+                              stroke="currentColor"
+                            >
+                              <path 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                strokeWidth={2} 
+                                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                              />
+                            </svg>
                           </motion.button>
                         </div>
                       </motion.div>
