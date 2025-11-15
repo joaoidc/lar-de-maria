@@ -256,16 +256,16 @@ export default function RelatoriosSociais() {
   };
 
   return (
-    <div className="flex h-screen bg-[#F8FAFC]">
+    <div className="flex h-screen bg-[#F8FAFC] overflow-x-hidden">
       {/* Sidebar - Desktop */}
       <div className="hidden lg:flex">
         <DashboardSidebar />
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto min-w-0">
         <div
-          className={`p-4 lg:p-8 max-w-7xl mx-auto transition-all duration-300 pb-20 lg:pb-8 ${
+          className={`p-4 lg:p-8 max-w-7xl mx-auto transition-[margin] duration-300 pb-20 lg:pb-8 ${
             isCollapsed ? "lg:ml-20" : "lg:ml-64"
           }`}
         >

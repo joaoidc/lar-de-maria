@@ -226,11 +226,18 @@ export function NewsForm() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 overflow-x-hidden">
       <DashboardSidebar />
-      <main className={`flex-1 p-4 md:p-8 pb-24 w-full transition-all duration-300 ${
-        isCollapsed ? "md:ml-20" : "md:ml-64"
-      }`}>
+      <main 
+        className={`flex-1 p-4 md:p-8 pb-24 w-full md:w-auto transition-all duration-300 min-w-0 ${
+          isCollapsed ? "md:ml-20" : "md:ml-64"
+        }`}
+        style={{
+          ...(window.innerWidth >= 768 && {
+            width: isCollapsed ? 'calc(100vw - 5rem)' : 'calc(100vw - 16rem)'
+          })
+        }}
+      >
         <div className="max-w-4xl mx-auto">
           <div className="bg-white md:bg-transparent fixed md:relative top-0 left-0 right-0 md:top-auto md:left-auto md:right-auto z-10 px-4 py-3 md:p-0 shadow-sm md:shadow-none mb-4">
             <div className="flex items-center gap-3">

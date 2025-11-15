@@ -205,16 +205,23 @@ export function News() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-x-hidden">
       <Helmet>
         <title>Gerenciar Notícias | Lar de Maria</title>
       </Helmet>
 
       <DashboardSidebar />
 
-      <main className={`min-h-screen pb-28 transition-all duration-300 ${
-        isCollapsed ? "md:ml-20" : "md:ml-64"
-      }`}>
+      <main 
+        className={`w-full md:w-auto min-h-screen pb-28 transition-all duration-300 ${
+          isCollapsed ? "md:ml-20" : "md:ml-64"
+        }`}
+        style={{
+          ...(window.innerWidth >= 768 && {
+            width: isCollapsed ? 'calc(100vw - 5rem)' : 'calc(100vw - 16rem)'
+          })
+        }}
+      >
         <div className="p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6">

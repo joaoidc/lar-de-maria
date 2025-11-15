@@ -64,11 +64,18 @@ export function NewsManagement() {
   if (!user) return null;
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 overflow-x-hidden">
       <DashboardSidebar />
-      <main className={`flex-1 overflow-auto transition-all duration-300 ${
-        isCollapsed ? "md:ml-20" : "md:ml-64"
-      }`}>
+      <main 
+        className={`flex-1 overflow-auto transition-all duration-300 min-w-0 w-full md:w-auto ${
+          isCollapsed ? "md:ml-20" : "md:ml-64"
+        }`}
+        style={{
+          ...(window.innerWidth >= 768 && {
+            width: isCollapsed ? 'calc(100vw - 5rem)' : 'calc(100vw - 16rem)'
+          })
+        }}
+      >
         <div className="container mx-auto px-8 py-8 max-w-4xl">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold">Gerenciar Notícias</h1>
